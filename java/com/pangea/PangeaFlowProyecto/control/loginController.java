@@ -86,7 +86,6 @@ public class loginController {
         bandej=consultarMensajes(idusu, idban);
          mails = new ArrayList<Post>();
          while (bandej.getPosts().size()>j){
-        
          mail=bandej.getPosts().get(j);
          mails.add(mail);
          j++;
