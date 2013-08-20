@@ -150,6 +150,4 @@ public class loginController {
         return port.consultarBandejas(usuarioActual);
     }
 
-
-   
 }
