@@ -190,107 +190,6 @@
 </xs:sequence>
 </xs:complexType>
 
-<xs:complexType name="ConsultarBandejas">
-<xs:sequence>
-<xs:element name="usuarioActual" type="tns:usuario" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="ConsultarBandejasResponse">
-<xs:sequence>
-<xs:element name="return" type="tns:wrBandeja" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="wrBandeja">
-<xs:sequence>
-<xs:element name="bandejas" type="tns:bandeja" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
-<xs:element name="estatus" type="xs:string" minOccurs="0"/>
-<xs:element name="observacion" type="xs:string" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="EliminarMensajeTemporal">
-<xs:sequence>
-<xs:element name="usuarioActual" type="tns:usuario" minOccurs="0"/>
-<xs:element name="mensajeActual" type="tns:mensaje" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="mensaje">
-<xs:sequence>
-<xs:element name="borrado" type="xs:boolean"/>
-<xs:element name="estado" type="xs:string" minOccurs="0"/>
-<xs:element name="id" type="xs:long" minOccurs="0"/>
-<xs:element name="idUsuario" type="tns:usuario" minOccurs="0"/>
-<xs:element name="texto" type="xs:string" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="EliminarMensajeTemporalResponse">
-<xs:sequence>
-<xs:element name="return" type="tns:wrResultado" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="EliminarBandeja">
-<xs:sequence>
-<xs:element name="bandejaActual" type="tns:bandeja" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="EliminarBandejaResponse">
-<xs:sequence>
-<xs:element name="return" type="tns:wrResultado" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="EnviarPost">
-<xs:sequence>
-<xs:element name="mensajeActual" type="tns:post" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="EnviarPostResponse">
-<xs:sequence>
-<xs:element name="return" type="tns:wrResultado" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="ConsultarMensaje">
-<xs:sequence>
-<xs:element name="mensajeActual" type="tns:post" minOccurs="0"/>
-<xs:element name="usuarioActual" type="tns:usuario" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="ConsultarMensajeResponse">
-<xs:sequence>
-<xs:element name="return" type="tns:wrPost" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="wrPost">
-<xs:sequence>
-<xs:element name="estatus" type="xs:string" minOccurs="0"/>
-<xs:element name="observacion" type="xs:string" minOccurs="0"/>
-<xs:element name="posts" type="tns:post" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="EliminarMensaje">
-<xs:sequence>
-<xs:element name="mensajeActual" type="tns:post" minOccurs="0"/>
-<xs:element name="usuarioActual" type="tns:usuario" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="EliminarMensajeResponse">
-<xs:sequence>
-<xs:element name="return" type="tns:wrResultado" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
 <xs:complexType name="ConsultarMensajesTemporalesEnviados">
 <xs:sequence>
 <xs:element name="usuarioActual" type="tns:usuario" minOccurs="0"/>
@@ -308,6 +207,16 @@
 <xs:element name="estatus" type="xs:string" minOccurs="0"/>
 <xs:element name="mensajes" type="tns:mensaje" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
 <xs:element name="observacion" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="mensaje">
+<xs:sequence>
+<xs:element name="borrado" type="xs:boolean"/>
+<xs:element name="estado" type="xs:string" minOccurs="0"/>
+<xs:element name="id" type="xs:long" minOccurs="0"/>
+<xs:element name="idUsuario" type="tns:usuario" minOccurs="0"/>
+<xs:element name="texto" type="xs:string" minOccurs="0"/>
 </xs:sequence>
 </xs:complexType>
 
@@ -396,6 +305,51 @@
 </xs:sequence>
 </xs:complexType>
 
+<xs:complexType name="ConsultarBandejas">
+<xs:sequence>
+<xs:element name="usuarioActual" type="tns:usuario" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="ConsultarBandejasResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:wrBandeja" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="wrBandeja">
+<xs:sequence>
+<xs:element name="bandejas" type="tns:bandeja" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="estatus" type="xs:string" minOccurs="0"/>
+<xs:element name="observacion" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="EliminarMensajeTemporal">
+<xs:sequence>
+<xs:element name="usuarioActual" type="tns:usuario" minOccurs="0"/>
+<xs:element name="mensajeActual" type="tns:mensaje" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="EliminarMensajeTemporalResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:wrResultado" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="EliminarBandeja">
+<xs:sequence>
+<xs:element name="bandejaActual" type="tns:bandeja" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="EliminarBandejaResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:wrResultado" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
 <xs:complexType name="CrearBandeja">
 <xs:sequence>
 <xs:element name="bandejaActual" type="tns:bandeja" minOccurs="0"/>
@@ -421,6 +375,26 @@
 </xs:sequence>
 </xs:complexType>
 
+<xs:complexType name="wrPost">
+<xs:sequence>
+<xs:element name="estatus" type="xs:string" minOccurs="0"/>
+<xs:element name="observacion" type="xs:string" minOccurs="0"/>
+<xs:element name="posts" type="tns:post" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="EnviarPost">
+<xs:sequence>
+<xs:element name="mensajeActual" type="tns:post" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="EnviarPostResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:wrResultado" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
 <xs:complexType name="ModificarBandeja">
 <xs:sequence>
 <xs:element name="carpetaActual" type="tns:bandeja" minOccurs="0"/>
@@ -443,6 +417,32 @@
 <xs:complexType name="ConsultarMensajeTemporalesResponse">
 <xs:sequence>
 <xs:element name="return" type="tns:wrMensaje" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="EliminarMensaje">
+<xs:sequence>
+<xs:element name="mensajeActual" type="tns:post" minOccurs="0"/>
+<xs:element name="usuarioActual" type="tns:usuario" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="EliminarMensajeResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:wrResultado" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="ConsultarMensaje">
+<xs:sequence>
+<xs:element name="mensajeActual" type="tns:post" minOccurs="0"/>
+<xs:element name="usuarioActual" type="tns:usuario" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="ConsultarMensajeResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:wrPost" minOccurs="0"/>
 </xs:sequence>
 </xs:complexType>
 </xs:schema>
