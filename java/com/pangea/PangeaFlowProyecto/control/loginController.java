@@ -60,12 +60,20 @@ public class loginController {
    
      private Actividad activi;
      private List<String> estados;
+     private TreeNode estadoSeleccionado;
      private WrActividad actividad;
      private List<Actividad> actividades;
      private Actividad act;
     
     private Bandeja idban;
   
+     public TreeNode getEstadoSeleccionado() {
+        return estadoSeleccionado;
+    }
+
+    public void setEstadoSeleccionado(TreeNode estadoSeleccionado) {
+        this.estadoSeleccionado = estadoSeleccionado;
+    }
 
     public void setMailboxes(TreeNode mailboxes) {
         this.mailboxes = mailboxes;
@@ -108,6 +116,8 @@ public class loginController {
        activi.setEstado(event.getTreeNode().toString());
       actividad=consultarActividades(idusu, activi);
       actividades=new ArrayList<Actividad>();
+      if(actividad.getActividads().isEmpty())
+          actividades=null;
       while (actividad.getActividads().size()>j){
           act= actividad.getActividads().get(j);
        actividades.add(act);
