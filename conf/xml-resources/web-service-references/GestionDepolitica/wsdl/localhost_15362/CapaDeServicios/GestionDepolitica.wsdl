@@ -4,17 +4,23 @@
 <xsd:import namespace="http://servicios.capadeservicios.pangea.com/" schemaLocation="http://localhost:15362/CapaDeServicios/GestionDepolitica?xsd=1"/>
 </xsd:schema>
 </types>
+<message name="buscarPolitica">
+<part name="parameters" element="tns:buscarPolitica"/>
+</message>
+<message name="buscarPoliticaResponse">
+<part name="parameters" element="tns:buscarPoliticaResponse"/>
+</message>
 <message name="hello">
 <part name="parameters" element="tns:hello"/>
 </message>
 <message name="helloResponse">
 <part name="parameters" element="tns:helloResponse"/>
 </message>
-<message name="contarPolitica">
-<part name="parameters" element="tns:contarPolitica"/>
+<message name="listarPolitica">
+<part name="parameters" element="tns:listarPolitica"/>
 </message>
-<message name="contarPoliticaResponse">
-<part name="parameters" element="tns:contarPoliticaResponse"/>
+<message name="listarPoliticaResponse">
+<part name="parameters" element="tns:listarPoliticaResponse"/>
 </message>
 <message name="insertarPolitica">
 <part name="parameters" element="tns:insertarPolitica"/>
@@ -34,20 +40,24 @@
 <message name="eliminarPoliticaResponse">
 <part name="parameters" element="tns:eliminarPoliticaResponse"/>
 </message>
-<message name="listarPolitica">
-<part name="parameters" element="tns:listarPolitica"/>
+<message name="contarPolitica">
+<part name="parameters" element="tns:contarPolitica"/>
 </message>
-<message name="listarPoliticaResponse">
-<part name="parameters" element="tns:listarPoliticaResponse"/>
+<message name="contarPoliticaResponse">
+<part name="parameters" element="tns:contarPoliticaResponse"/>
 </message>
 <portType name="GestionDepolitica">
+<operation name="buscarPolitica">
+<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDepolitica/buscarPoliticaRequest" message="tns:buscarPolitica"/>
+<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDepolitica/buscarPoliticaResponse" message="tns:buscarPoliticaResponse"/>
+</operation>
 <operation name="hello">
 <input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDepolitica/helloRequest" message="tns:hello"/>
 <output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDepolitica/helloResponse" message="tns:helloResponse"/>
 </operation>
-<operation name="contarPolitica">
-<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDepolitica/contarPoliticaRequest" message="tns:contarPolitica"/>
-<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDepolitica/contarPoliticaResponse" message="tns:contarPoliticaResponse"/>
+<operation name="listarPolitica">
+<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDepolitica/listarPoliticaRequest" message="tns:listarPolitica"/>
+<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDepolitica/listarPoliticaResponse" message="tns:listarPoliticaResponse"/>
 </operation>
 <operation name="insertarPolitica">
 <input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDepolitica/insertarPoliticaRequest" message="tns:insertarPolitica"/>
@@ -61,13 +71,22 @@
 <input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDepolitica/eliminarPoliticaRequest" message="tns:eliminarPolitica"/>
 <output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDepolitica/eliminarPoliticaResponse" message="tns:eliminarPoliticaResponse"/>
 </operation>
-<operation name="listarPolitica">
-<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDepolitica/listarPoliticaRequest" message="tns:listarPolitica"/>
-<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDepolitica/listarPoliticaResponse" message="tns:listarPoliticaResponse"/>
+<operation name="contarPolitica">
+<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDepolitica/contarPoliticaRequest" message="tns:contarPolitica"/>
+<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDepolitica/contarPoliticaResponse" message="tns:contarPoliticaResponse"/>
 </operation>
 </portType>
 <binding name="GestionDepoliticaPortBinding" type="tns:GestionDepolitica">
 <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+<operation name="buscarPolitica">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
 <operation name="hello">
 <soap:operation soapAction=""/>
 <input>
@@ -77,7 +96,7 @@
 <soap:body use="literal"/>
 </output>
 </operation>
-<operation name="contarPolitica">
+<operation name="listarPolitica">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>
@@ -113,7 +132,7 @@
 <soap:body use="literal"/>
 </output>
 </operation>
-<operation name="listarPolitica">
+<operation name="contarPolitica">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>
