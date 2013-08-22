@@ -21,6 +21,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.xml.ws.WebServiceRef;
+import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 
@@ -53,11 +54,14 @@ public class loginController {
     private WrBandeja bande;
     private WrPost bandej;
     
-    private Actividad activi;
+    
+     private TreeNode estact;
 
    
-    private WrActividad actividad;
-    private List<Actividad> actividades;
+     private Actividad activi;
+     private List<String> estados;
+     private WrActividad actividad;
+     private List<Actividad> actividades;
      private Actividad act;
     
     private Bandeja idban;
@@ -73,37 +77,53 @@ public class loginController {
 
     @PostConstruct
     public void init() {
-        mailboxes = new DefaultTreeNode("root", null);
+        estact = new DefaultTreeNode("root", null);
         idusu=new Usuario();
         idusu.setId("thunder");
          String icono;
-        bande=consultarBandejas(idusu);
+       // bande=consultarBandejas(idusu);
+         estados=buscarestados();
         int i=0;
-        while (bande.getBandejas().size()>i){
-            if("Enviados".equals(bande.getBandejas().get(i).getNombre())){
+        while (estados.size()>i){
+            if("abierta".equals(estados.get(i))){
              icono="s"; 
-            }else if("Papelera".equals(bande.getBandejas().get(i).getNombre())){
+            }else if("pendiente".equals(estados.get(i))){
              icono="t"; 
-            }else if("Recibidos".equals(bande.getBandejas().get(i).getNombre())){
+            }else if("cerrada".equals(estados.get(i))){
              icono="i"; 
             }else{
             icono="j";
             }
-        TreeNode inbox = new DefaultTreeNode(icono, bande.getBandejas().get(i).getNombre(), mailboxes);
+        TreeNode inbox = new DefaultTreeNode(icono,estados.get(i), estact);
        i++;
         }
-        int j=0;  
+       
+    }
+    
+  
+     public void onNodeSelect(NodeSelectEvent event) {  
+         int j=0;  
       
         activi= new Actividad(); 
-       activi.setEstado("abierta");
+       activi.setEstado(event.getTreeNode().toString());
       actividad=consultarActividades(idusu, activi);
       actividades=new ArrayList<Actividad>();
       while (actividad.getActividads().size()>j){
           act= actividad.getActividads().get(j);
        actividades.add(act);
          j++;
-        }
-    }
+        } 
+       
+    } 
+    
+     public TreeNode getSelectedNode() {  
+        return estact;  
+    }  
+  
+    public void setSelectedNode(TreeNode selectedNode) {  
+        this.estact = selectedNode;  
+    }  
+   
 
      public Usuario getIdusu() {
         return idusu;
@@ -147,6 +167,13 @@ public class loginController {
     public Post getMail() {
         return mail;
     }
+     public TreeNode getEstact() {
+        return estact;
+    }
+
+    public void setEstact(TreeNode estact) {
+        this.estact = estact;
+    }
 
     public void setMail(Post mail) {
         this.mail = mail;
@@ -159,7 +186,13 @@ public class loginController {
     public void setMailbox(TreeNode mailbox) {
         this.mailbox = mailbox;
     }
+ public List<String> getEstados() {
+        return estados;
+    }
 
+    public void setEstados(List<String> estados) {
+        this.estados = estados;
+    }
     public void send() {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Mail Sent!"));
     }
@@ -199,4 +232,11 @@ public class loginController {
         return port.consultarActividades(usuarioActual, actividadActual);
     }
 
+    private java.util.List<java.lang.String> buscarestados() {
+        com.pangea.capadeservicios.servicios.GestionDeActividades port = service_1.getGestionDeActividadesPort();
+        return port.buscarestados();
+    }
+
+    
+   
 }
