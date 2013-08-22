@@ -42,6 +42,10 @@
 
 <xs:element name="actividad" type="tns:actividad"/>
 
+<xs:element name="buscarestados" type="tns:buscarestados"/>
+
+<xs:element name="buscarestadosResponse" type="tns:buscarestadosResponse"/>
+
 <xs:element name="clasificacionProceso" type="tns:clasificacionProceso"/>
 
 <xs:element name="clasificacionTarea" type="tns:clasificacionTarea"/>
@@ -379,6 +383,16 @@
 <xs:element name="observacion" type="xs:string" minOccurs="0"/>
 <xs:element name="proposito" type="xs:string" minOccurs="0"/>
 <xs:element name="ruta" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="buscarestados">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="buscarestadosResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
 </xs:sequence>
 </xs:complexType>
 
