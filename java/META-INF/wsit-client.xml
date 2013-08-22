@@ -6,4 +6,5 @@
  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" name="mainclientconfig" 
  >
     <import location="GestionDeUsuarios.xml" namespace="http://servicios.capadeservicios.pangea.com/"/>
+    <import location="GestionarSkin.xml" namespace="http://servicios.capadeservicios.pangea.com/"/>
 </definitions>
