@@ -64,6 +64,8 @@ public class loginController {
      private WrActividad actividad;
      private List<Actividad> actividades;
      private Actividad act;
+     
+     private WrResultado resul;
     
     private Bandeja idban;
   
@@ -125,6 +127,12 @@ public class loginController {
         } 
        
     } 
+     
+ public void cambiarestado(Actividad act){
+     
+   resul=iniciarActividad(act);
+   FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(resul.getEstatus()));
+ }     
     
      public TreeNode getSelectedNode() {  
         return estact;  
@@ -245,6 +253,11 @@ public class loginController {
     private java.util.List<java.lang.String> buscarestados() {
         com.pangea.capadeservicios.servicios.GestionDeActividades port = service_1.getGestionDeActividadesPort();
         return port.buscarestados();
+    }
+
+    private WrResultado iniciarActividad(com.pangea.capadeservicios.servicios.Actividad actividadActual) {
+        com.pangea.capadeservicios.servicios.GestionDeActividades port = service_1.getGestionDeActividadesPort();
+        return port.iniciarActividad(actividadActual);
     }
 
     
