@@ -132,6 +132,18 @@ public class loginController {
      
    resul=iniciarActividad(act);
    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(resul.getEstatus()));
+    int j=0;  
+       activi= new Actividad(); 
+       activi.setEstado(estadoSeleccionado.toString());
+      actividad=consultarActividades(idusu, activi);
+      actividades=new ArrayList<Actividad>();
+      if(actividad.getActividads().isEmpty())
+          actividades=null;
+      while (actividad.getActividads().size()>j){
+          act= actividad.getActividads().get(j);
+       actividades.add(act);
+         j++;
+        } 
  }     
     
      public TreeNode getSelectedNode() {  
