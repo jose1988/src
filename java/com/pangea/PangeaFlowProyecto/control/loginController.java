@@ -7,8 +7,10 @@ import com.pangea.capadeservicios.servicios.Post;
 import com.pangea.capadeservicios.servicios.Usuario;
 import com.pangea.capadeservicios.servicios.Bandeja;
 import com.pangea.capadeservicios.servicios.Actividad;
+import com.pangea.capadeservicios.servicios.Condicion;
 import com.pangea.capadeservicios.servicios.GestionDeActividades_Service;
 import com.pangea.capadeservicios.servicios.Mensajeria_Service;
+import com.pangea.capadeservicios.servicios.Sesion;
 import com.pangea.capadeservicios.servicios.WrActividad;
 import com.pangea.capadeservicios.servicios.WrBandeja;
 import com.pangea.capadeservicios.servicios.WrPost;
@@ -64,8 +66,10 @@ public class loginController {
      private WrActividad actividad;
      private List<Actividad> actividades;
      private Actividad act;
-     
      private WrResultado resul;
+    
+     private Sesion ses;
+     private Condicion cond;
     
     private Bandeja idban;
   
@@ -89,7 +93,7 @@ public class loginController {
     public void init() {
         estact = new DefaultTreeNode("root", null);
         idusu=new Usuario();
-        idusu.setId("admin");
+        idusu.setId("thunder");
          String icono;
        // bande=consultarBandejas(idusu);
          estados=buscarestados();
@@ -107,6 +111,18 @@ public class loginController {
         TreeNode inbox = new DefaultTreeNode(icono,estados.get(i), estact);
        i++;
         }
+         int j=0;  
+       activi= new Actividad(); 
+       activi.setEstado(estados.get(j));
+      actividad=consultarActividades(idusu, activi);
+      actividades=new ArrayList<Actividad>();
+      if(actividad.getActividads().isEmpty())
+          actividades=null;
+      while (actividad.getActividads().size()>j){
+          act= actividad.getActividads().get(j);
+       actividades.add(act);
+         j++;
+        } 
        
     }
     
@@ -131,6 +147,29 @@ public class loginController {
  public void cambiarestado(Actividad act){
      
    resul=iniciarActividad(act);
+   FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(resul.getEstatus()));
+    int j=0;  
+       activi= new Actividad(); 
+       activi.setEstado(estadoSeleccionado.toString());
+      actividad=consultarActividades(idusu, activi);
+      actividades=new ArrayList<Actividad>();
+      if(actividad.getActividads().isEmpty())
+          actividades=null;
+      while (actividad.getActividads().size()>j){
+          act= actividad.getActividads().get(j);
+       actividades.add(act);
+         j++;
+        } 
+ }     
+ 
+ public void cerraractividad(Actividad act){
+     
+     ses=new Sesion();
+     ses.setIdUsuario(idusu);
+     cond=new Condicion();
+     cond.setEstado("activa");
+   resul=finalizarActividad(act,ses,cond);
+   
    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(resul.getEstatus()));
     int j=0;  
        activi= new Actividad(); 
@@ -270,6 +309,11 @@ public class loginController {
     private WrResultado iniciarActividad(com.pangea.capadeservicios.servicios.Actividad actividadActual) {
         com.pangea.capadeservicios.servicios.GestionDeActividades port = service_1.getGestionDeActividadesPort();
         return port.iniciarActividad(actividadActual);
+    }
+
+    private WrResultado finalizarActividad(com.pangea.capadeservicios.servicios.Actividad actividadActual, com.pangea.capadeservicios.servicios.Sesion sesionActual, com.pangea.capadeservicios.servicios.Condicion condicionActual) {
+        com.pangea.capadeservicios.servicios.GestionDeActividades port = service_1.getGestionDeActividadesPort();
+        return port.finalizarActividad(actividadActual, sesionActual, condicionActual);
     }
 
     
