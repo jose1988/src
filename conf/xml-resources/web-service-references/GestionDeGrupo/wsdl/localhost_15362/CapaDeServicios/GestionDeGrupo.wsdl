@@ -4,12 +4,6 @@
 <xsd:import namespace="http://servicios.capadeservicios.pangea.com/" schemaLocation="http://localhost:15362/CapaDeServicios/GestionDeGrupo?xsd=1"/>
 </xsd:schema>
 </types>
-<message name="hello">
-<part name="parameters" element="tns:hello"/>
-</message>
-<message name="helloResponse">
-<part name="parameters" element="tns:helloResponse"/>
-</message>
 <message name="listarGrupo">
 <part name="parameters" element="tns:listarGrupo"/>
 </message>
@@ -22,11 +16,11 @@
 <message name="editarGrupoResponse">
 <part name="parameters" element="tns:editarGrupoResponse"/>
 </message>
-<message name="eliminarGrupo">
-<part name="parameters" element="tns:eliminarGrupo"/>
+<message name="hello">
+<part name="parameters" element="tns:hello"/>
 </message>
-<message name="eliminarGrupoResponse">
-<part name="parameters" element="tns:eliminarGrupoResponse"/>
+<message name="helloResponse">
+<part name="parameters" element="tns:helloResponse"/>
 </message>
 <message name="contarGrupo">
 <part name="parameters" element="tns:contarGrupo"/>
@@ -40,11 +34,13 @@
 <message name="insertarGrupoResponse">
 <part name="parameters" element="tns:insertarGrupoResponse"/>
 </message>
+<message name="eliminarGrupo">
+<part name="parameters" element="tns:eliminarGrupo"/>
+</message>
+<message name="eliminarGrupoResponse">
+<part name="parameters" element="tns:eliminarGrupoResponse"/>
+</message>
 <portType name="GestionDeGrupo">
-<operation name="hello">
-<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeGrupo/helloRequest" message="tns:hello"/>
-<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeGrupo/helloResponse" message="tns:helloResponse"/>
-</operation>
 <operation name="listarGrupo">
 <input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeGrupo/listarGrupoRequest" message="tns:listarGrupo"/>
 <output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeGrupo/listarGrupoResponse" message="tns:listarGrupoResponse"/>
@@ -53,9 +49,9 @@
 <input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeGrupo/editarGrupoRequest" message="tns:editarGrupo"/>
 <output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeGrupo/editarGrupoResponse" message="tns:editarGrupoResponse"/>
 </operation>
-<operation name="eliminarGrupo">
-<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeGrupo/eliminarGrupoRequest" message="tns:eliminarGrupo"/>
-<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeGrupo/eliminarGrupoResponse" message="tns:eliminarGrupoResponse"/>
+<operation name="hello">
+<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeGrupo/helloRequest" message="tns:hello"/>
+<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeGrupo/helloResponse" message="tns:helloResponse"/>
 </operation>
 <operation name="contarGrupo">
 <input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeGrupo/contarGrupoRequest" message="tns:contarGrupo"/>
@@ -65,18 +61,13 @@
 <input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeGrupo/insertarGrupoRequest" message="tns:insertarGrupo"/>
 <output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeGrupo/insertarGrupoResponse" message="tns:insertarGrupoResponse"/>
 </operation>
+<operation name="eliminarGrupo">
+<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeGrupo/eliminarGrupoRequest" message="tns:eliminarGrupo"/>
+<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeGrupo/eliminarGrupoResponse" message="tns:eliminarGrupoResponse"/>
+</operation>
 </portType>
 <binding name="GestionDeGrupoPortBinding" type="tns:GestionDeGrupo">
 <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
-<operation name="hello">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
 <operation name="listarGrupo">
 <soap:operation soapAction=""/>
 <input>
@@ -95,7 +86,7 @@
 <soap:body use="literal"/>
 </output>
 </operation>
-<operation name="eliminarGrupo">
+<operation name="hello">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>
@@ -114,6 +105,15 @@
 </output>
 </operation>
 <operation name="insertarGrupo">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="eliminarGrupo">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>

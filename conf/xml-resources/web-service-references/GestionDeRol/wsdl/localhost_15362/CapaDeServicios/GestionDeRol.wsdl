@@ -4,24 +4,6 @@
 <xsd:import namespace="http://servicios.capadeservicios.pangea.com/" schemaLocation="http://localhost:15362/CapaDeServicios/GestionDeRol?xsd=1"/>
 </xsd:schema>
 </types>
-<message name="editarRol">
-<part name="parameters" element="tns:editarRol"/>
-</message>
-<message name="editarRolResponse">
-<part name="parameters" element="tns:editarRolResponse"/>
-</message>
-<message name="eliminarRol">
-<part name="parameters" element="tns:eliminarRol"/>
-</message>
-<message name="eliminarRolResponse">
-<part name="parameters" element="tns:eliminarRolResponse"/>
-</message>
-<message name="insertarRol">
-<part name="parameters" element="tns:insertarRol"/>
-</message>
-<message name="insertarRolResponse">
-<part name="parameters" element="tns:insertarRolResponse"/>
-</message>
 <message name="hello">
 <part name="parameters" element="tns:hello"/>
 </message>
@@ -34,6 +16,24 @@
 <message name="listarRolResponse">
 <part name="parameters" element="tns:listarRolResponse"/>
 </message>
+<message name="insertarRol">
+<part name="parameters" element="tns:insertarRol"/>
+</message>
+<message name="insertarRolResponse">
+<part name="parameters" element="tns:insertarRolResponse"/>
+</message>
+<message name="editarRol">
+<part name="parameters" element="tns:editarRol"/>
+</message>
+<message name="editarRolResponse">
+<part name="parameters" element="tns:editarRolResponse"/>
+</message>
+<message name="eliminarRol">
+<part name="parameters" element="tns:eliminarRol"/>
+</message>
+<message name="eliminarRolResponse">
+<part name="parameters" element="tns:eliminarRolResponse"/>
+</message>
 <message name="contarRol">
 <part name="parameters" element="tns:contarRol"/>
 </message>
@@ -41,18 +41,6 @@
 <part name="parameters" element="tns:contarRolResponse"/>
 </message>
 <portType name="GestionDeRol">
-<operation name="editarRol">
-<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeRol/editarRolRequest" message="tns:editarRol"/>
-<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeRol/editarRolResponse" message="tns:editarRolResponse"/>
-</operation>
-<operation name="eliminarRol">
-<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeRol/eliminarRolRequest" message="tns:eliminarRol"/>
-<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeRol/eliminarRolResponse" message="tns:eliminarRolResponse"/>
-</operation>
-<operation name="insertarRol">
-<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeRol/insertarRolRequest" message="tns:insertarRol"/>
-<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeRol/insertarRolResponse" message="tns:insertarRolResponse"/>
-</operation>
 <operation name="hello">
 <input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeRol/helloRequest" message="tns:hello"/>
 <output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeRol/helloResponse" message="tns:helloResponse"/>
@@ -61,6 +49,18 @@
 <input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeRol/listarRolRequest" message="tns:listarRol"/>
 <output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeRol/listarRolResponse" message="tns:listarRolResponse"/>
 </operation>
+<operation name="insertarRol">
+<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeRol/insertarRolRequest" message="tns:insertarRol"/>
+<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeRol/insertarRolResponse" message="tns:insertarRolResponse"/>
+</operation>
+<operation name="editarRol">
+<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeRol/editarRolRequest" message="tns:editarRol"/>
+<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeRol/editarRolResponse" message="tns:editarRolResponse"/>
+</operation>
+<operation name="eliminarRol">
+<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeRol/eliminarRolRequest" message="tns:eliminarRol"/>
+<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeRol/eliminarRolResponse" message="tns:eliminarRolResponse"/>
+</operation>
 <operation name="contarRol">
 <input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeRol/contarRolRequest" message="tns:contarRol"/>
 <output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeRol/contarRolResponse" message="tns:contarRolResponse"/>
@@ -68,7 +68,7 @@
 </portType>
 <binding name="GestionDeRolPortBinding" type="tns:GestionDeRol">
 <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
-<operation name="editarRol">
+<operation name="hello">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>
@@ -77,7 +77,7 @@
 <soap:body use="literal"/>
 </output>
 </operation>
-<operation name="eliminarRol">
+<operation name="listarRol">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>
@@ -95,7 +95,7 @@
 <soap:body use="literal"/>
 </output>
 </operation>
-<operation name="hello">
+<operation name="editarRol">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>
@@ -104,7 +104,7 @@
 <soap:body use="literal"/>
 </output>
 </operation>
-<operation name="listarRol">
+<operation name="eliminarRol">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>

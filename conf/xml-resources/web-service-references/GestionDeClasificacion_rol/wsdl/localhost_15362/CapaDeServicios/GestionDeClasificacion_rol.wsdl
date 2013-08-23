@@ -4,17 +4,17 @@
 <xsd:import namespace="http://servicios.capadeservicios.pangea.com/" schemaLocation="http://localhost:15362/CapaDeServicios/GestionDeClasificacion_rol?xsd=1"/>
 </xsd:schema>
 </types>
-<message name="listarclasificacion_rol">
-<part name="parameters" element="tns:listarclasificacion_rol"/>
-</message>
-<message name="listarclasificacion_rolResponse">
-<part name="parameters" element="tns:listarclasificacion_rolResponse"/>
-</message>
 <message name="hello">
 <part name="parameters" element="tns:hello"/>
 </message>
 <message name="helloResponse">
 <part name="parameters" element="tns:helloResponse"/>
+</message>
+<message name="listarclasificacion_rol">
+<part name="parameters" element="tns:listarclasificacion_rol"/>
+</message>
+<message name="listarclasificacion_rolResponse">
+<part name="parameters" element="tns:listarclasificacion_rolResponse"/>
 </message>
 <message name="insertarClasificacion_rol">
 <part name="parameters" element="tns:insertarClasificacion_rol"/>
@@ -41,13 +41,13 @@
 <part name="parameters" element="tns:contarClasificacionResponse"/>
 </message>
 <portType name="GestionDeClasificacion_rol">
-<operation name="listarclasificacion_rol">
-<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeClasificacion_rol/listarclasificacion_rolRequest" message="tns:listarclasificacion_rol"/>
-<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeClasificacion_rol/listarclasificacion_rolResponse" message="tns:listarclasificacion_rolResponse"/>
-</operation>
 <operation name="hello">
 <input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeClasificacion_rol/helloRequest" message="tns:hello"/>
 <output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeClasificacion_rol/helloResponse" message="tns:helloResponse"/>
+</operation>
+<operation name="listarclasificacion_rol">
+<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeClasificacion_rol/listarclasificacion_rolRequest" message="tns:listarclasificacion_rol"/>
+<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeClasificacion_rol/listarclasificacion_rolResponse" message="tns:listarclasificacion_rolResponse"/>
 </operation>
 <operation name="insertarClasificacion_rol">
 <input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeClasificacion_rol/insertarClasificacion_rolRequest" message="tns:insertarClasificacion_rol"/>
@@ -68,7 +68,7 @@
 </portType>
 <binding name="GestionDeClasificacion_rolPortBinding" type="tns:GestionDeClasificacion_rol">
 <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
-<operation name="listarclasificacion_rol">
+<operation name="hello">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>
@@ -77,7 +77,7 @@
 <soap:body use="literal"/>
 </output>
 </operation>
-<operation name="hello">
+<operation name="listarclasificacion_rol">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>

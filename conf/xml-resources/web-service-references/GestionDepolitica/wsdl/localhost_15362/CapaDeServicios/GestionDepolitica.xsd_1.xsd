@@ -1,0 +1,137 @@
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI at http://jax-ws.dev.java.net. RI's version is Metro/2.2.0-1 (tags/2.2.0u1-7139; 2012-06-02T10:55:19+0000) JAXWS-RI/2.2.6-2 JAXWS/2.2 svn-revision#unknown. --><xs:schema xmlns:tns="http://servicios.capadeservicios.pangea.com/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://servicios.capadeservicios.pangea.com/">
+
+<xs:element name="buscarPolitica" type="tns:buscarPolitica"/>
+
+<xs:element name="buscarPoliticaResponse" type="tns:buscarPoliticaResponse"/>
+
+<xs:element name="contarPolitica" type="tns:contarPolitica"/>
+
+<xs:element name="contarPoliticaResponse" type="tns:contarPoliticaResponse"/>
+
+<xs:element name="editarPolitica" type="tns:editarPolitica"/>
+
+<xs:element name="editarPoliticaResponse" type="tns:editarPoliticaResponse"/>
+
+<xs:element name="eliminarPolitica" type="tns:eliminarPolitica"/>
+
+<xs:element name="eliminarPoliticaResponse" type="tns:eliminarPoliticaResponse"/>
+
+<xs:element name="hello" type="tns:hello"/>
+
+<xs:element name="helloResponse" type="tns:helloResponse"/>
+
+<xs:element name="insertarPolitica" type="tns:insertarPolitica"/>
+
+<xs:element name="insertarPoliticaResponse" type="tns:insertarPoliticaResponse"/>
+
+<xs:element name="listarPolitica" type="tns:listarPolitica"/>
+
+<xs:element name="listarPoliticaResponse" type="tns:listarPoliticaResponse"/>
+
+<xs:element name="politica" type="tns:politica"/>
+
+<xs:complexType name="editarPolitica">
+<xs:sequence>
+<xs:element name="registroPolitica" type="tns:politica" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="politica">
+<xs:sequence>
+<xs:element name="borrado" type="xs:boolean"/>
+<xs:element name="descripcion" type="xs:string" minOccurs="0"/>
+<xs:element name="documentacion" type="xs:string" minOccurs="0"/>
+<xs:element name="estado" type="xs:string" minOccurs="0"/>
+<xs:element name="id" type="xs:long" minOccurs="0"/>
+<xs:element name="implementacion" type="xs:string" minOccurs="0"/>
+<xs:element name="nombre" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="editarPoliticaResponse">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="hello">
+<xs:sequence>
+<xs:element name="name" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="helloResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="contarPolitica">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="contarPoliticaResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:int"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="eliminarPolitica">
+<xs:sequence>
+<xs:element name="registroPolitica" type="xs:long" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="eliminarPoliticaResponse">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="insertarPolitica">
+<xs:sequence>
+<xs:element name="registroPolitica" type="tns:politica" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="insertarPoliticaResponse">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="buscarPolitica">
+<xs:sequence>
+<xs:element name="buscarPolitica" type="xs:long" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="buscarPoliticaResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:politica" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="listarPolitica">
+<xs:sequence>
+<xs:element name="sortF" type="xs:string" minOccurs="0"/>
+<xs:element name="sortB" type="xs:boolean"/>
+<xs:element name="range" type="xs:int" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="fil">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="entry" minOccurs="0" maxOccurs="unbounded">
+<xs:complexType>
+<xs:sequence>
+<xs:element name="key" minOccurs="0" type="xs:string"/>
+<xs:element name="value" minOccurs="0" type="xs:string"/>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="cad" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="listarPoliticaResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:politica" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+</xs:schema>

@@ -4,12 +4,6 @@
 <xsd:import namespace="http://servicios.capadeservicios.pangea.com/" schemaLocation="http://localhost:15362/CapaDeServicios/GestionarReporte?xsd=1"/>
 </xsd:schema>
 </types>
-<message name="contarReporte">
-<part name="parameters" element="tns:contarReporte"/>
-</message>
-<message name="contarReporteResponse">
-<part name="parameters" element="tns:contarReporteResponse"/>
-</message>
 <message name="hello">
 <part name="parameters" element="tns:hello"/>
 </message>
@@ -40,11 +34,13 @@
 <message name="eliminarReporteResponse">
 <part name="parameters" element="tns:eliminarReporteResponse"/>
 </message>
+<message name="contarReporte">
+<part name="parameters" element="tns:contarReporte"/>
+</message>
+<message name="contarReporteResponse">
+<part name="parameters" element="tns:contarReporteResponse"/>
+</message>
 <portType name="GestionarReporte">
-<operation name="contarReporte">
-<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionarReporte/contarReporteRequest" message="tns:contarReporte"/>
-<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionarReporte/contarReporteResponse" message="tns:contarReporteResponse"/>
-</operation>
 <operation name="hello">
 <input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionarReporte/helloRequest" message="tns:hello"/>
 <output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionarReporte/helloResponse" message="tns:helloResponse"/>
@@ -65,18 +61,13 @@
 <input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionarReporte/eliminarReporteRequest" message="tns:eliminarReporte"/>
 <output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionarReporte/eliminarReporteResponse" message="tns:eliminarReporteResponse"/>
 </operation>
+<operation name="contarReporte">
+<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionarReporte/contarReporteRequest" message="tns:contarReporte"/>
+<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionarReporte/contarReporteResponse" message="tns:contarReporteResponse"/>
+</operation>
 </portType>
 <binding name="GestionarReportePortBinding" type="tns:GestionarReporte">
 <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
-<operation name="contarReporte">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
 <operation name="hello">
 <soap:operation soapAction=""/>
 <input>
@@ -114,6 +105,15 @@
 </output>
 </operation>
 <operation name="eliminarReporte">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="contarReporte">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>
