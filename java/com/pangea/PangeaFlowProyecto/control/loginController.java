@@ -87,7 +87,7 @@ public class loginController {
     public void init() {
         estact = new DefaultTreeNode("root", null);
         idusu=new Usuario();
-        idusu.setId("thunder");
+        idusu.setId("admin");
          String icono;
        // bande=consultarBandejas(idusu);
          estados=buscarestados();
