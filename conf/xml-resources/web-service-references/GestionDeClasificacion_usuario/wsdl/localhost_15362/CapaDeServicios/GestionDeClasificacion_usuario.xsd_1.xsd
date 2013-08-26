@@ -1,61 +1,12 @@
 <?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI at http://jax-ws.dev.java.net. RI's version is Metro/2.2.0-1 (tags/2.2.0u1-7139; 2012-06-02T10:55:19+0000) JAXWS-RI/2.2.6-2 JAXWS/2.2 svn-revision#unknown. --><xs:schema xmlns:tns="http://servicios.capadeservicios.pangea.com/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://servicios.capadeservicios.pangea.com/">
 
-<xs:element name="clasificacionUsuario" type="tns:clasificacionUsuario"/>
-
 <xs:element name="contarClasificacion_usuario" type="tns:contarClasificacion_usuario"/>
 
 <xs:element name="contarClasificacion_usuarioResponse" type="tns:contarClasificacion_usuarioResponse"/>
 
-<xs:element name="editarClasificacion_usuario" type="tns:editarClasificacion_usuario"/>
-
-<xs:element name="editarClasificacion_usuarioResponse" type="tns:editarClasificacion_usuarioResponse"/>
-
-<xs:element name="eliminarClasificacion_usuario" type="tns:eliminarClasificacion_usuario"/>
-
-<xs:element name="eliminarClasificacion_usuarioResponse" type="tns:eliminarClasificacion_usuarioResponse"/>
-
 <xs:element name="hello" type="tns:hello"/>
 
 <xs:element name="helloResponse" type="tns:helloResponse"/>
-
-<xs:element name="insertarClasificacion_usuario" type="tns:insertarClasificacion_usuario"/>
-
-<xs:element name="insertarClasificacion_usuarioResponse" type="tns:insertarClasificacion_usuarioResponse"/>
-
-<xs:element name="listarclasificacion_usuario" type="tns:listarclasificacion_usuario"/>
-
-<xs:element name="listarclasificacion_usuarioResponse" type="tns:listarclasificacion_usuarioResponse"/>
-
-<xs:complexType name="eliminarClasificacion_usuario">
-<xs:sequence>
-<xs:element name="idClasificacion_usuario" type="xs:long" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="eliminarClasificacion_usuarioResponse">
-<xs:sequence/>
-</xs:complexType>
-
-<xs:complexType name="insertarClasificacion_usuario">
-<xs:sequence>
-<xs:element name="registroClasificacion_usuario" type="tns:clasificacionUsuario" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="clasificacionUsuario">
-<xs:sequence>
-<xs:element name="borrado" type="xs:boolean"/>
-<xs:element name="descripcion" type="xs:string" minOccurs="0"/>
-<xs:element name="fechaCreacion" type="xs:dateTime" minOccurs="0"/>
-<xs:element name="fechaModificacion" type="xs:dateTime" minOccurs="0"/>
-<xs:element name="id" type="xs:long" minOccurs="0"/>
-<xs:element name="nombre" type="xs:string" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="insertarClasificacion_usuarioResponse">
-<xs:sequence/>
-</xs:complexType>
 
 <xs:complexType name="hello">
 <xs:sequence>
@@ -76,45 +27,6 @@
 <xs:complexType name="contarClasificacion_usuarioResponse">
 <xs:sequence>
 <xs:element name="return" type="xs:int"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="editarClasificacion_usuario">
-<xs:sequence>
-<xs:element name="registroClasificacion_usuario" type="tns:clasificacionUsuario" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="editarClasificacion_usuarioResponse">
-<xs:sequence/>
-</xs:complexType>
-
-<xs:complexType name="listarclasificacion_usuario">
-<xs:sequence>
-<xs:element name="sortF" type="xs:string" minOccurs="0"/>
-<xs:element name="sortB" type="xs:boolean"/>
-<xs:element name="range" type="xs:int" minOccurs="0" maxOccurs="unbounded"/>
-<xs:element name="fil">
-<xs:complexType>
-<xs:sequence>
-<xs:element name="entry" minOccurs="0" maxOccurs="unbounded">
-<xs:complexType>
-<xs:sequence>
-<xs:element name="key" minOccurs="0" type="xs:string"/>
-<xs:element name="value" minOccurs="0" type="xs:string"/>
-</xs:sequence>
-</xs:complexType>
-</xs:element>
-</xs:sequence>
-</xs:complexType>
-</xs:element>
-<xs:element name="cad" type="xs:string" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="listarclasificacion_usuarioResponse">
-<xs:sequence>
-<xs:element name="return" type="tns:clasificacionUsuario" minOccurs="0" maxOccurs="unbounded"/>
 </xs:sequence>
 </xs:complexType>
 </xs:schema>

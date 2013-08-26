@@ -4,74 +4,9 @@
 
 <xs:element name="contarSkinResponse" type="tns:contarSkinResponse"/>
 
-<xs:element name="editarSkin" type="tns:editarSkin"/>
-
-<xs:element name="editarSkinResponse" type="tns:editarSkinResponse"/>
-
-<xs:element name="eliminarSkin" type="tns:eliminarSkin"/>
-
-<xs:element name="eliminarSkinResponse" type="tns:eliminarSkinResponse"/>
-
 <xs:element name="hello" type="tns:hello"/>
 
 <xs:element name="helloResponse" type="tns:helloResponse"/>
-
-<xs:element name="insertarSkin" type="tns:insertarSkin"/>
-
-<xs:element name="insertarSkinResponse" type="tns:insertarSkinResponse"/>
-
-<xs:element name="listarSkin" type="tns:listarSkin"/>
-
-<xs:element name="listarSkinResponse" type="tns:listarSkinResponse"/>
-
-<xs:element name="skin" type="tns:skin"/>
-
-<xs:complexType name="eliminarSkin">
-<xs:sequence>
-<xs:element name="idSkin" type="xs:long"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="eliminarSkinResponse">
-<xs:sequence/>
-</xs:complexType>
-
-<xs:complexType name="listarSkin">
-<xs:sequence>
-<xs:element name="sortF" type="xs:string" minOccurs="0"/>
-<xs:element name="sortB" type="xs:boolean"/>
-<xs:element name="range" type="xs:int" minOccurs="0" maxOccurs="unbounded"/>
-<xs:element name="fil">
-<xs:complexType>
-<xs:sequence>
-<xs:element name="entry" minOccurs="0" maxOccurs="unbounded">
-<xs:complexType>
-<xs:sequence>
-<xs:element name="key" minOccurs="0" type="xs:string"/>
-<xs:element name="value" minOccurs="0" type="xs:string"/>
-</xs:sequence>
-</xs:complexType>
-</xs:element>
-</xs:sequence>
-</xs:complexType>
-</xs:element>
-<xs:element name="cad" type="xs:string" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="listarSkinResponse">
-<xs:sequence>
-<xs:element name="return" type="tns:skin" minOccurs="0" maxOccurs="unbounded"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="skin">
-<xs:sequence>
-<xs:element name="borrado" type="xs:boolean"/>
-<xs:element name="id" type="xs:long" minOccurs="0"/>
-<xs:element name="nombre" type="xs:string" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
 
 <xs:complexType name="contarSkin">
 <xs:sequence/>
@@ -93,25 +28,5 @@
 <xs:sequence>
 <xs:element name="return" type="xs:string" minOccurs="0"/>
 </xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="editarSkin">
-<xs:sequence>
-<xs:element name="registroskin" type="tns:skin" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="editarSkinResponse">
-<xs:sequence/>
-</xs:complexType>
-
-<xs:complexType name="insertarSkin">
-<xs:sequence>
-<xs:element name="registroskin" type="tns:skin" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="insertarSkinResponse">
-<xs:sequence/>
 </xs:complexType>
 </xs:schema>

@@ -4,35 +4,11 @@
 <xsd:import namespace="http://servicios.capadeservicios.pangea.com/" schemaLocation="http://localhost:15362/CapaDeServicios/GestionDeClasificacion_rol?xsd=1"/>
 </xsd:schema>
 </types>
-<message name="hello">
-<part name="parameters" element="tns:hello"/>
-</message>
-<message name="helloResponse">
-<part name="parameters" element="tns:helloResponse"/>
-</message>
-<message name="listarclasificacion_rol">
-<part name="parameters" element="tns:listarclasificacion_rol"/>
-</message>
-<message name="listarclasificacion_rolResponse">
-<part name="parameters" element="tns:listarclasificacion_rolResponse"/>
-</message>
-<message name="insertarClasificacion_rol">
-<part name="parameters" element="tns:insertarClasificacion_rol"/>
-</message>
-<message name="insertarClasificacion_rolResponse">
-<part name="parameters" element="tns:insertarClasificacion_rolResponse"/>
-</message>
 <message name="editar_cla_Rol">
 <part name="parameters" element="tns:editar_cla_Rol"/>
 </message>
 <message name="editar_cla_RolResponse">
 <part name="parameters" element="tns:editar_cla_RolResponse"/>
-</message>
-<message name="eliminarCla_Rol">
-<part name="parameters" element="tns:eliminarCla_Rol"/>
-</message>
-<message name="eliminarCla_RolResponse">
-<part name="parameters" element="tns:eliminarCla_RolResponse"/>
 </message>
 <message name="contarClasificacion">
 <part name="parameters" element="tns:contarClasificacion"/>
@@ -40,61 +16,28 @@
 <message name="contarClasificacionResponse">
 <part name="parameters" element="tns:contarClasificacionResponse"/>
 </message>
+<message name="hello">
+<part name="parameters" element="tns:hello"/>
+</message>
+<message name="helloResponse">
+<part name="parameters" element="tns:helloResponse"/>
+</message>
 <portType name="GestionDeClasificacion_rol">
-<operation name="hello">
-<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeClasificacion_rol/helloRequest" message="tns:hello"/>
-<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeClasificacion_rol/helloResponse" message="tns:helloResponse"/>
-</operation>
-<operation name="listarclasificacion_rol">
-<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeClasificacion_rol/listarclasificacion_rolRequest" message="tns:listarclasificacion_rol"/>
-<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeClasificacion_rol/listarclasificacion_rolResponse" message="tns:listarclasificacion_rolResponse"/>
-</operation>
-<operation name="insertarClasificacion_rol">
-<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeClasificacion_rol/insertarClasificacion_rolRequest" message="tns:insertarClasificacion_rol"/>
-<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeClasificacion_rol/insertarClasificacion_rolResponse" message="tns:insertarClasificacion_rolResponse"/>
-</operation>
 <operation name="editar_cla_Rol">
 <input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeClasificacion_rol/editar_cla_RolRequest" message="tns:editar_cla_Rol"/>
 <output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeClasificacion_rol/editar_cla_RolResponse" message="tns:editar_cla_RolResponse"/>
-</operation>
-<operation name="eliminarCla_Rol">
-<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeClasificacion_rol/eliminarCla_RolRequest" message="tns:eliminarCla_Rol"/>
-<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeClasificacion_rol/eliminarCla_RolResponse" message="tns:eliminarCla_RolResponse"/>
 </operation>
 <operation name="contarClasificacion">
 <input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeClasificacion_rol/contarClasificacionRequest" message="tns:contarClasificacion"/>
 <output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeClasificacion_rol/contarClasificacionResponse" message="tns:contarClasificacionResponse"/>
 </operation>
+<operation name="hello">
+<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeClasificacion_rol/helloRequest" message="tns:hello"/>
+<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeClasificacion_rol/helloResponse" message="tns:helloResponse"/>
+</operation>
 </portType>
 <binding name="GestionDeClasificacion_rolPortBinding" type="tns:GestionDeClasificacion_rol">
 <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
-<operation name="hello">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="listarclasificacion_rol">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="insertarClasificacion_rol">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
 <operation name="editar_cla_Rol">
 <soap:operation soapAction=""/>
 <input>
@@ -104,7 +47,7 @@
 <soap:body use="literal"/>
 </output>
 </operation>
-<operation name="eliminarCla_Rol">
+<operation name="contarClasificacion">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>
@@ -113,7 +56,7 @@
 <soap:body use="literal"/>
 </output>
 </operation>
-<operation name="contarClasificacion">
+<operation name="hello">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>

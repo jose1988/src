@@ -4,116 +4,40 @@
 <xsd:import namespace="http://servicios.capadeservicios.pangea.com/" schemaLocation="http://localhost:15362/CapaDeServicios/GestionDeOrganizacion?xsd=1"/>
 </xsd:schema>
 </types>
-<message name="hello">
-<part name="parameters" element="tns:hello"/>
-</message>
-<message name="helloResponse">
-<part name="parameters" element="tns:helloResponse"/>
-</message>
-<message name="listarOrganizacion">
-<part name="parameters" element="tns:listarOrganizacion"/>
-</message>
-<message name="listarOrganizacionResponse">
-<part name="parameters" element="tns:listarOrganizacionResponse"/>
-</message>
-<message name="insertarOrganizacion">
-<part name="parameters" element="tns:insertarOrganizacion"/>
-</message>
-<message name="insertarOrganizacionResponse">
-<part name="parameters" element="tns:insertarOrganizacionResponse"/>
-</message>
-<message name="editarOrganizacion">
-<part name="parameters" element="tns:editarOrganizacion"/>
-</message>
-<message name="editarOrganizacionResponse">
-<part name="parameters" element="tns:editarOrganizacionResponse"/>
-</message>
-<message name="eliminarOrganizacion">
-<part name="parameters" element="tns:eliminarOrganizacion"/>
-</message>
-<message name="eliminarOrganizacionResponse">
-<part name="parameters" element="tns:eliminarOrganizacionResponse"/>
-</message>
 <message name="contarOrganizacion">
 <part name="parameters" element="tns:contarOrganizacion"/>
 </message>
 <message name="contarOrganizacionResponse">
 <part name="parameters" element="tns:contarOrganizacionResponse"/>
 </message>
+<message name="hello">
+<part name="parameters" element="tns:hello"/>
+</message>
+<message name="helloResponse">
+<part name="parameters" element="tns:helloResponse"/>
+</message>
 <portType name="GestionDeOrganizacion">
-<operation name="hello">
-<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeOrganizacion/helloRequest" message="tns:hello"/>
-<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeOrganizacion/helloResponse" message="tns:helloResponse"/>
-</operation>
-<operation name="listarOrganizacion">
-<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeOrganizacion/listarOrganizacionRequest" message="tns:listarOrganizacion"/>
-<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeOrganizacion/listarOrganizacionResponse" message="tns:listarOrganizacionResponse"/>
-</operation>
-<operation name="insertarOrganizacion">
-<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeOrganizacion/insertarOrganizacionRequest" message="tns:insertarOrganizacion"/>
-<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeOrganizacion/insertarOrganizacionResponse" message="tns:insertarOrganizacionResponse"/>
-</operation>
-<operation name="editarOrganizacion">
-<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeOrganizacion/editarOrganizacionRequest" message="tns:editarOrganizacion"/>
-<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeOrganizacion/editarOrganizacionResponse" message="tns:editarOrganizacionResponse"/>
-</operation>
-<operation name="eliminarOrganizacion">
-<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeOrganizacion/eliminarOrganizacionRequest" message="tns:eliminarOrganizacion"/>
-<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeOrganizacion/eliminarOrganizacionResponse" message="tns:eliminarOrganizacionResponse"/>
-</operation>
 <operation name="contarOrganizacion">
 <input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeOrganizacion/contarOrganizacionRequest" message="tns:contarOrganizacion"/>
 <output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeOrganizacion/contarOrganizacionResponse" message="tns:contarOrganizacionResponse"/>
 </operation>
+<operation name="hello">
+<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeOrganizacion/helloRequest" message="tns:hello"/>
+<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeOrganizacion/helloResponse" message="tns:helloResponse"/>
+</operation>
 </portType>
 <binding name="GestionDeOrganizacionPortBinding" type="tns:GestionDeOrganizacion">
 <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
-<operation name="hello">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="listarOrganizacion">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="insertarOrganizacion">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="editarOrganizacion">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="eliminarOrganizacion">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
 <operation name="contarOrganizacion">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="hello">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>

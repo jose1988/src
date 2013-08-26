@@ -4,31 +4,31 @@
 <xsd:import namespace="http://servicios.capadeservicios.pangea.com/" schemaLocation="http://localhost:15362/CapaDeServicios/GestionarInterfaz?xsd=1"/>
 </xsd:schema>
 </types>
-<message name="CambiarSkin">
-<part name="parameters" element="tns:CambiarSkin"/>
-</message>
-<message name="CambiarSkinResponse">
-<part name="parameters" element="tns:CambiarSkinResponse"/>
-</message>
 <message name="ConsultarSkins">
 <part name="parameters" element="tns:ConsultarSkins"/>
 </message>
 <message name="ConsultarSkinsResponse">
 <part name="parameters" element="tns:ConsultarSkinsResponse"/>
 </message>
+<message name="CambiarSkin">
+<part name="parameters" element="tns:CambiarSkin"/>
+</message>
+<message name="CambiarSkinResponse">
+<part name="parameters" element="tns:CambiarSkinResponse"/>
+</message>
 <portType name="GestionarInterfaz">
-<operation name="CambiarSkin">
-<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionarInterfaz/CambiarSkinRequest" message="tns:CambiarSkin"/>
-<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionarInterfaz/CambiarSkinResponse" message="tns:CambiarSkinResponse"/>
-</operation>
 <operation name="ConsultarSkins">
 <input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionarInterfaz/ConsultarSkinsRequest" message="tns:ConsultarSkins"/>
 <output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionarInterfaz/ConsultarSkinsResponse" message="tns:ConsultarSkinsResponse"/>
 </operation>
+<operation name="CambiarSkin">
+<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionarInterfaz/CambiarSkinRequest" message="tns:CambiarSkin"/>
+<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionarInterfaz/CambiarSkinResponse" message="tns:CambiarSkinResponse"/>
+</operation>
 </portType>
 <binding name="GestionarInterfazPortBinding" type="tns:GestionarInterfaz">
 <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
-<operation name="CambiarSkin">
+<operation name="ConsultarSkins">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>
@@ -37,7 +37,7 @@
 <soap:body use="literal"/>
 </output>
 </operation>
-<operation name="ConsultarSkins">
+<operation name="CambiarSkin">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>

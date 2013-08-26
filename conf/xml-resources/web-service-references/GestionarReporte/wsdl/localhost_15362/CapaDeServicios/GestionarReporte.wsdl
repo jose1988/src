@@ -4,116 +4,40 @@
 <xsd:import namespace="http://servicios.capadeservicios.pangea.com/" schemaLocation="http://localhost:15362/CapaDeServicios/GestionarReporte?xsd=1"/>
 </xsd:schema>
 </types>
-<message name="hello">
-<part name="parameters" element="tns:hello"/>
-</message>
-<message name="helloResponse">
-<part name="parameters" element="tns:helloResponse"/>
-</message>
-<message name="listarReporte">
-<part name="parameters" element="tns:listarReporte"/>
-</message>
-<message name="listarReporteResponse">
-<part name="parameters" element="tns:listarReporteResponse"/>
-</message>
-<message name="insertarReporte">
-<part name="parameters" element="tns:insertarReporte"/>
-</message>
-<message name="insertarReporteResponse">
-<part name="parameters" element="tns:insertarReporteResponse"/>
-</message>
-<message name="editarReporte">
-<part name="parameters" element="tns:editarReporte"/>
-</message>
-<message name="editarReporteResponse">
-<part name="parameters" element="tns:editarReporteResponse"/>
-</message>
-<message name="eliminarReporte">
-<part name="parameters" element="tns:eliminarReporte"/>
-</message>
-<message name="eliminarReporteResponse">
-<part name="parameters" element="tns:eliminarReporteResponse"/>
-</message>
 <message name="contarReporte">
 <part name="parameters" element="tns:contarReporte"/>
 </message>
 <message name="contarReporteResponse">
 <part name="parameters" element="tns:contarReporteResponse"/>
 </message>
+<message name="hello">
+<part name="parameters" element="tns:hello"/>
+</message>
+<message name="helloResponse">
+<part name="parameters" element="tns:helloResponse"/>
+</message>
 <portType name="GestionarReporte">
-<operation name="hello">
-<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionarReporte/helloRequest" message="tns:hello"/>
-<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionarReporte/helloResponse" message="tns:helloResponse"/>
-</operation>
-<operation name="listarReporte">
-<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionarReporte/listarReporteRequest" message="tns:listarReporte"/>
-<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionarReporte/listarReporteResponse" message="tns:listarReporteResponse"/>
-</operation>
-<operation name="insertarReporte">
-<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionarReporte/insertarReporteRequest" message="tns:insertarReporte"/>
-<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionarReporte/insertarReporteResponse" message="tns:insertarReporteResponse"/>
-</operation>
-<operation name="editarReporte">
-<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionarReporte/editarReporteRequest" message="tns:editarReporte"/>
-<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionarReporte/editarReporteResponse" message="tns:editarReporteResponse"/>
-</operation>
-<operation name="eliminarReporte">
-<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionarReporte/eliminarReporteRequest" message="tns:eliminarReporte"/>
-<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionarReporte/eliminarReporteResponse" message="tns:eliminarReporteResponse"/>
-</operation>
 <operation name="contarReporte">
 <input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionarReporte/contarReporteRequest" message="tns:contarReporte"/>
 <output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionarReporte/contarReporteResponse" message="tns:contarReporteResponse"/>
 </operation>
+<operation name="hello">
+<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionarReporte/helloRequest" message="tns:hello"/>
+<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionarReporte/helloResponse" message="tns:helloResponse"/>
+</operation>
 </portType>
 <binding name="GestionarReportePortBinding" type="tns:GestionarReporte">
 <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
-<operation name="hello">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="listarReporte">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="insertarReporte">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="editarReporte">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="eliminarReporte">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
 <operation name="contarReporte">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="hello">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>

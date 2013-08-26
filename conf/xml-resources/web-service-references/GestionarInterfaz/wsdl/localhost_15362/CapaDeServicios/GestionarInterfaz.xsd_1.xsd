@@ -45,6 +45,7 @@
 <xs:complexType name="CambiarSkin">
 <xs:sequence>
 <xs:element name="usuarioActual" type="tns:usuario" minOccurs="0"/>
+<xs:element name="skinActual" type="tns:skin" minOccurs="0"/>
 </xs:sequence>
 </xs:complexType>
 
