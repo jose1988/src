@@ -14,11 +14,11 @@
 
 <xs:element name="ConsultarActividades" type="tns:ConsultarActividades"/>
 
+<xs:element name="ConsultarActividadesCola" type="tns:ConsultarActividadesCola"/>
+
+<xs:element name="ConsultarActividadesColaResponse" type="tns:ConsultarActividadesColaResponse"/>
+
 <xs:element name="ConsultarActividadesResponse" type="tns:ConsultarActividadesResponse"/>
-
-<xs:element name="ConsultarCandidatos" type="tns:ConsultarCandidatos"/>
-
-<xs:element name="ConsultarCandidatosResponse" type="tns:ConsultarCandidatosResponse"/>
 
 <xs:element name="ConsultarDocumento" type="tns:ConsultarDocumento"/>
 
@@ -27,6 +27,10 @@
 <xs:element name="ConsultarDocumentos" type="tns:ConsultarDocumentos"/>
 
 <xs:element name="ConsultarDocumentosResponse" type="tns:ConsultarDocumentosResponse"/>
+
+<xs:element name="ConsumirCola" type="tns:ConsumirCola"/>
+
+<xs:element name="ConsumirColaResponse" type="tns:ConsumirColaResponse"/>
 
 <xs:element name="FinalizarActividad" type="tns:FinalizarActividad"/>
 
@@ -51,6 +55,8 @@
 <xs:element name="clasificacionTarea" type="tns:clasificacionTarea"/>
 
 <xs:element name="clasificacionUsuario" type="tns:clasificacionUsuario"/>
+
+<xs:element name="colaDeTarea" type="tns:colaDeTarea"/>
 
 <xs:element name="condicion" type="tns:condicion"/>
 
@@ -156,6 +162,7 @@
 <xs:complexType name="actividad">
 <xs:sequence>
 <xs:element name="borrado" type="xs:boolean"/>
+<xs:element ref="tns:colaDeTarea" minOccurs="0"/>
 <xs:element name="duracion" type="xs:int"/>
 <xs:element name="estado" type="xs:string" minOccurs="0"/>
 <xs:element name="fechaAlerta" type="xs:dateTime" minOccurs="0"/>
@@ -175,37 +182,13 @@
 </xs:sequence>
 </xs:complexType>
 
-<xs:complexType name="equivalenciaTiempo">
-<xs:sequence>
-<xs:element name="borrado" type="xs:boolean"/>
-<xs:element name="descripcion" type="xs:string" minOccurs="0"/>
-<xs:element name="id" type="xs:long" minOccurs="0"/>
-<xs:element name="minutos" type="xs:long"/>
-<xs:element name="nombre" type="xs:string" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="instancia">
-<xs:sequence>
-<xs:element name="borrado" type="xs:boolean"/>
-<xs:element name="descripcion" type="xs:string" minOccurs="0"/>
-<xs:element name="estado" type="xs:string" minOccurs="0"/>
-<xs:element name="fechaApertura" type="xs:dateTime" minOccurs="0"/>
-<xs:element name="fechaCierre" type="xs:dateTime" minOccurs="0"/>
-<xs:element name="id" type="xs:long" minOccurs="0"/>
-<xs:element name="idPeriodoGrupoProceso" type="tns:periodoGrupoProceso" minOccurs="0"/>
-<xs:element name="idUsuario" type="tns:usuario" minOccurs="0"/>
-<xs:element name="referencia" type="xs:string" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="periodoGrupoProceso">
+<xs:complexType name="colaDeTarea">
 <xs:sequence>
 <xs:element name="borrado" type="xs:boolean"/>
 <xs:element name="id" type="xs:long" minOccurs="0"/>
+<xs:element name="idActividad" type="tns:actividad" minOccurs="0"/>
 <xs:element name="idGrupo" type="tns:grupo" minOccurs="0"/>
-<xs:element name="idPeriodo" type="tns:periodo" minOccurs="0"/>
-<xs:element name="idProceso" type="tns:proceso" minOccurs="0"/>
+<xs:element name="idTarea" type="tns:tarea" minOccurs="0"/>
 </xs:sequence>
 </xs:complexType>
 
@@ -223,14 +206,67 @@
 </xs:sequence>
 </xs:complexType>
 
-<xs:complexType name="periodo">
+<xs:complexType name="tarea">
+<xs:sequence>
+<xs:element name="autor" type="xs:string" minOccurs="0"/>
+<xs:element name="borrado" type="xs:boolean"/>
+<xs:element name="costo" type="xs:double"/>
+<xs:element name="descripcion" type="xs:string" minOccurs="0"/>
+<xs:element name="documentacion" type="xs:string" minOccurs="0"/>
+<xs:element name="duracion" type="xs:int"/>
+<xs:element name="estado" type="xs:string" minOccurs="0"/>
+<xs:element name="id" type="xs:long" minOccurs="0"/>
+<xs:element name="idClasificacionTarea" type="tns:clasificacionTarea" minOccurs="0"/>
+<xs:element name="idEquivalenciaTiempo" type="tns:equivalenciaTiempo" minOccurs="0"/>
+<xs:element name="idPolitica" type="tns:politica" minOccurs="0"/>
+<xs:element name="idPrioridad" type="tns:prioridad" minOccurs="0"/>
+<xs:element name="idProceso" type="tns:proceso" minOccurs="0"/>
+<xs:element name="implementacion" type="xs:string" minOccurs="0"/>
+<xs:element name="nombre" type="xs:string" minOccurs="0"/>
+<xs:element name="tareaInformativa" type="xs:boolean"/>
+<xs:element name="tareaInicial" type="xs:boolean"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="clasificacionTarea">
 <xs:sequence>
 <xs:element name="borrado" type="xs:boolean"/>
 <xs:element name="descripcion" type="xs:string" minOccurs="0"/>
-<xs:element name="estado" type="xs:string" minOccurs="0"/>
-<xs:element name="fechaDesde" type="xs:dateTime" minOccurs="0"/>
-<xs:element name="fechaHasta" type="xs:dateTime" minOccurs="0"/>
+<xs:element name="fechaCreacion" type="xs:dateTime" minOccurs="0"/>
+<xs:element name="fechaModificacion" type="xs:dateTime" minOccurs="0"/>
 <xs:element name="id" type="xs:long" minOccurs="0"/>
+<xs:element name="nombre" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="equivalenciaTiempo">
+<xs:sequence>
+<xs:element name="borrado" type="xs:boolean"/>
+<xs:element name="descripcion" type="xs:string" minOccurs="0"/>
+<xs:element name="id" type="xs:long" minOccurs="0"/>
+<xs:element name="minutos" type="xs:long"/>
+<xs:element name="nombre" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="politica">
+<xs:sequence>
+<xs:element name="borrado" type="xs:boolean"/>
+<xs:element name="descripcion" type="xs:string" minOccurs="0"/>
+<xs:element name="documentacion" type="xs:string" minOccurs="0"/>
+<xs:element name="estado" type="xs:string" minOccurs="0"/>
+<xs:element name="id" type="xs:long" minOccurs="0"/>
+<xs:element name="implementacion" type="xs:string" minOccurs="0"/>
+<xs:element name="nombre" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="prioridad">
+<xs:sequence>
+<xs:element name="borrado" type="xs:boolean"/>
+<xs:element name="descripcion" type="xs:string" minOccurs="0"/>
+<xs:element name="id" type="xs:long" minOccurs="0"/>
+<xs:element name="nombre" type="xs:string" minOccurs="0"/>
 </xs:sequence>
 </xs:complexType>
 
@@ -266,56 +302,38 @@
 </xs:sequence>
 </xs:complexType>
 
-<xs:complexType name="prioridad">
+<xs:complexType name="instancia">
 <xs:sequence>
 <xs:element name="borrado" type="xs:boolean"/>
 <xs:element name="descripcion" type="xs:string" minOccurs="0"/>
+<xs:element name="estado" type="xs:string" minOccurs="0"/>
+<xs:element name="fechaApertura" type="xs:dateTime" minOccurs="0"/>
+<xs:element name="fechaCierre" type="xs:dateTime" minOccurs="0"/>
 <xs:element name="id" type="xs:long" minOccurs="0"/>
-<xs:element name="nombre" type="xs:string" minOccurs="0"/>
+<xs:element name="idPeriodoGrupoProceso" type="tns:periodoGrupoProceso" minOccurs="0"/>
+<xs:element name="idUsuario" type="tns:usuario" minOccurs="0"/>
+<xs:element name="referencia" type="xs:string" minOccurs="0"/>
 </xs:sequence>
 </xs:complexType>
 
-<xs:complexType name="tarea">
+<xs:complexType name="periodoGrupoProceso">
 <xs:sequence>
-<xs:element name="autor" type="xs:string" minOccurs="0"/>
 <xs:element name="borrado" type="xs:boolean"/>
-<xs:element name="costo" type="xs:double"/>
-<xs:element name="descripcion" type="xs:string" minOccurs="0"/>
-<xs:element name="documentacion" type="xs:string" minOccurs="0"/>
-<xs:element name="duracion" type="xs:int"/>
-<xs:element name="estado" type="xs:string" minOccurs="0"/>
 <xs:element name="id" type="xs:long" minOccurs="0"/>
-<xs:element name="idClasificacionTarea" type="tns:clasificacionTarea" minOccurs="0"/>
-<xs:element name="idEquivalenciaTiempo" type="tns:equivalenciaTiempo" minOccurs="0"/>
-<xs:element name="idPolitica" type="tns:politica" minOccurs="0"/>
-<xs:element name="idPrioridad" type="tns:prioridad" minOccurs="0"/>
+<xs:element name="idGrupo" type="tns:grupo" minOccurs="0"/>
+<xs:element name="idPeriodo" type="tns:periodo" minOccurs="0"/>
 <xs:element name="idProceso" type="tns:proceso" minOccurs="0"/>
-<xs:element name="implementacion" type="xs:string" minOccurs="0"/>
-<xs:element name="nombre" type="xs:string" minOccurs="0"/>
-<xs:element name="tareaInicial" type="xs:boolean"/>
 </xs:sequence>
 </xs:complexType>
 
-<xs:complexType name="clasificacionTarea">
+<xs:complexType name="periodo">
 <xs:sequence>
 <xs:element name="borrado" type="xs:boolean"/>
 <xs:element name="descripcion" type="xs:string" minOccurs="0"/>
-<xs:element name="fechaCreacion" type="xs:dateTime" minOccurs="0"/>
-<xs:element name="fechaModificacion" type="xs:dateTime" minOccurs="0"/>
-<xs:element name="id" type="xs:long" minOccurs="0"/>
-<xs:element name="nombre" type="xs:string" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="politica">
-<xs:sequence>
-<xs:element name="borrado" type="xs:boolean"/>
-<xs:element name="descripcion" type="xs:string" minOccurs="0"/>
-<xs:element name="documentacion" type="xs:string" minOccurs="0"/>
 <xs:element name="estado" type="xs:string" minOccurs="0"/>
+<xs:element name="fechaDesde" type="xs:dateTime" minOccurs="0"/>
+<xs:element name="fechaHasta" type="xs:dateTime" minOccurs="0"/>
 <xs:element name="id" type="xs:long" minOccurs="0"/>
-<xs:element name="implementacion" type="xs:string" minOccurs="0"/>
-<xs:element name="nombre" type="xs:string" minOccurs="0"/>
 </xs:sequence>
 </xs:complexType>
 
@@ -333,13 +351,26 @@
 </xs:sequence>
 </xs:complexType>
 
-<xs:complexType name="IniciarActividad">
+<xs:complexType name="ConsultarActividadesCola">
 <xs:sequence>
-<xs:element name="actividadActual" type="tns:actividad" minOccurs="0"/>
+<xs:element name="usuarioActual" type="tns:usuario" minOccurs="0"/>
 </xs:sequence>
 </xs:complexType>
 
-<xs:complexType name="IniciarActividadResponse">
+<xs:complexType name="ConsultarActividadesColaResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:wrActividad" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="ConsumirCola">
+<xs:sequence>
+<xs:element name="actividadActual" type="tns:actividad" minOccurs="0"/>
+<xs:element name="usuarioActual" type="tns:usuario" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="ConsumirColaResponse">
 <xs:sequence>
 <xs:element name="return" type="tns:wrResultado" minOccurs="0"/>
 </xs:sequence>
@@ -349,6 +380,31 @@
 <xs:sequence>
 <xs:element name="estatus" type="xs:string" minOccurs="0"/>
 <xs:element name="observacion" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="IniciarActividad">
+<xs:sequence>
+<xs:element name="actividadActual" type="tns:actividad" minOccurs="0"/>
+<xs:element name="sesionActual" type="tns:sesion" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="sesion">
+<xs:sequence>
+<xs:element name="borrado" type="xs:boolean"/>
+<xs:element name="estado" type="xs:string" minOccurs="0"/>
+<xs:element name="fechaCreacion" type="xs:dateTime" minOccurs="0"/>
+<xs:element name="fechaFinalizacion" type="xs:dateTime" minOccurs="0"/>
+<xs:element name="id" type="xs:long" minOccurs="0"/>
+<xs:element name="idUsuario" type="tns:usuario" minOccurs="0"/>
+<xs:element name="ip" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="IniciarActividadResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:wrResultado" minOccurs="0"/>
 </xs:sequence>
 </xs:complexType>
 
@@ -403,41 +459,9 @@
 </xs:sequence>
 </xs:complexType>
 
-<xs:complexType name="sesion">
-<xs:sequence>
-<xs:element name="borrado" type="xs:boolean"/>
-<xs:element name="estado" type="xs:string" minOccurs="0"/>
-<xs:element name="fechaCreacion" type="xs:dateTime" minOccurs="0"/>
-<xs:element name="fechaFinalizacion" type="xs:dateTime" minOccurs="0"/>
-<xs:element name="id" type="xs:long" minOccurs="0"/>
-<xs:element name="idUsuario" type="tns:usuario" minOccurs="0"/>
-<xs:element name="ip" type="xs:string" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
 <xs:complexType name="IngresarAuditoriaResponse">
 <xs:sequence>
 <xs:element name="return" type="tns:wrResultado" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="ConsultarCandidatos">
-<xs:sequence>
-<xs:element name="actividadActual" type="tns:actividad" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="ConsultarCandidatosResponse">
-<xs:sequence>
-<xs:element name="return" type="tns:wrUsuario" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="wrUsuario">
-<xs:sequence>
-<xs:element name="estatus" type="xs:string" minOccurs="0"/>
-<xs:element name="observacion" type="xs:string" minOccurs="0"/>
-<xs:element name="usuarios" type="tns:usuario" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
 </xs:sequence>
 </xs:complexType>
 
@@ -456,6 +480,7 @@
 <xs:complexType name="AgregarDocumento">
 <xs:sequence>
 <xs:element name="documentoActual" type="tns:documento" minOccurs="0"/>
+<xs:element name="actividadActual" type="tns:actividad" minOccurs="0"/>
 </xs:sequence>
 </xs:complexType>
 

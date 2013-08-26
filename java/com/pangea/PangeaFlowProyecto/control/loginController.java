@@ -145,8 +145,9 @@ public class loginController {
     } 
      
  public void cambiarestado(Actividad act){
-     
-   resul=iniciarActividad(act);
+      ses=new Sesion();
+     ses.setIdUsuario(idusu);
+   resul=iniciarActividad(act,ses);
    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(resul.getEstatus()));
     int j=0;  
        activi= new Actividad(); 
@@ -301,19 +302,21 @@ public class loginController {
         return port.consultarActividades(usuarioActual, actividadActual);
     }
 
-    private java.util.List<java.lang.String> buscarestados() {
-        com.pangea.capadeservicios.servicios.GestionDeActividades port = service_1.getGestionDeActividadesPort();
-        return port.buscarestados();
-    }
-
-    private WrResultado iniciarActividad(com.pangea.capadeservicios.servicios.Actividad actividadActual) {
-        com.pangea.capadeservicios.servicios.GestionDeActividades port = service_1.getGestionDeActividadesPort();
-        return port.iniciarActividad(actividadActual);
-    }
+    
 
     private WrResultado finalizarActividad(com.pangea.capadeservicios.servicios.Actividad actividadActual, com.pangea.capadeservicios.servicios.Sesion sesionActual, com.pangea.capadeservicios.servicios.Condicion condicionActual) {
         com.pangea.capadeservicios.servicios.GestionDeActividades port = service_1.getGestionDeActividadesPort();
         return port.finalizarActividad(actividadActual, sesionActual, condicionActual);
+    }
+
+    private WrResultado iniciarActividad(com.pangea.capadeservicios.servicios.Actividad actividadActual, com.pangea.capadeservicios.servicios.Sesion sesionActual) {
+        com.pangea.capadeservicios.servicios.GestionDeActividades port = service_1.getGestionDeActividadesPort();
+        return port.iniciarActividad(actividadActual, sesionActual);
+    }
+
+    private java.util.List<java.lang.String> buscarestados() {
+        com.pangea.capadeservicios.servicios.GestionDeActividades port = service_1.getGestionDeActividadesPort();
+        return port.buscarestados();
     }
 
     
