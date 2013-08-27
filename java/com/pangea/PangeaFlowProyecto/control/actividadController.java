@@ -28,15 +28,14 @@ import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 
 /**
- *
- * @author PANGEA
+ * @author Pangea
  */
 
 @ManagedBean(name = "actividadController")
+
 @SessionScoped
 
 public class actividadController {
-    
     @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_15362/CapaDeServicios/GestionDeActividades.wsdl")
     private GestionDeActividades_Service service_1;
     @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_15362/CapaDeServicios/Mensajeria.wsdl")
@@ -93,47 +92,46 @@ public class actividadController {
         idusu=new Usuario();
         idusu.setId("thunder");
         String icono;
-      //bande=consultarBandejas(idusu);
         estados=buscarestados();
         int i=0;
         while (estados.size()>i){
             if("pendiente".equals(estados.get(i))){
-                icono="s";
-                TreeNode inbox = new DefaultTreeNode(icono,estados.get(i), estact);
-                i++;
+                TreeNode inbox = new DefaultTreeNode(estados.get(i), estact);
             }
+            i++;
         }
         int j=0;  
         activi= new Actividad(); 
         activi.setEstado(estados.get(j));
         actividad=consultarActividades(idusu, activi);
         actividades=new ArrayList<Actividad>();
-        
         if(actividad.getActividads().isEmpty())
             actividades=null;
         while (actividad.getActividads().size()>j){
             act= actividad.getActividads().get(j);
             actividades.add(act);
             j++;
-        }
+        } 
+       
     }
     
   
-    public void onNodeSelect(NodeSelectEvent event) {  
-        int j=0;
+     public void onNodeSelect(NodeSelectEvent event) {  
+        int j=0;  
         activi= new Actividad(); 
         activi.setEstado(event.getTreeNode().toString());
         actividad=consultarActividades(idusu, activi);
         actividades=new ArrayList<Actividad>();
         if(actividad.getActividads().isEmpty())
-        actividades=null;
+            actividades=null;
         while (actividad.getActividads().size()>j){
             act= actividad.getActividads().get(j);
             actividades.add(act);
             j++;
-         }
+        } 
+       
     } 
-     
+    
     public TreeNode getSelectedNode() {  
         return estact;  
     }  
@@ -142,7 +140,6 @@ public class actividadController {
         this.estact = selectedNode;  
     }  
    
-
     public Usuario getIdusu() {
         return idusu;
     }
@@ -174,6 +171,7 @@ public class actividadController {
     public void setAct(Actividad act) {
         this.act = act;
     }
+    
     public TreeNode getMailboxes() {
         return mailboxes;
     }
@@ -218,10 +216,12 @@ public class actividadController {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Mail Sent!"));
     }
 
+
     private WrActividad consultarActividades(com.pangea.capadeservicios.servicios.Usuario usuarioActual, com.pangea.capadeservicios.servicios.Actividad actividadActual) {
         com.pangea.capadeservicios.servicios.GestionDeActividades port = service_1.getGestionDeActividadesPort();
         return port.consultarActividades(usuarioActual, actividadActual);
     }
+
 
     private java.util.List<java.lang.String> buscarestados() {
         com.pangea.capadeservicios.servicios.GestionDeActividades port = service_1.getGestionDeActividadesPort();
