@@ -51,6 +51,10 @@ public class logIntOutController {
      * cadena donde se guardara el nombre de usuario
      */
     private String Contrasena;
+    /**
+     * objeto de la clase de sesión
+     */
+    Sesion sesionUsuario;
 
     public String getUser() {
         return User;
@@ -75,7 +79,7 @@ public class logIntOutController {
      * se puede obtener se guardara 127.0.0.1
      */
     public void LogeoInt() {
-        Sesion sesionUsuario = new Sesion();
+        sesionUsuario = new Sesion();
         usuarioLogeo = new Usuario();
         usuarioLogeo.setId(User);
         usuarioLogeo.setClave(Contrasena);
@@ -111,7 +115,11 @@ public class logIntOutController {
             HttpSession httpSession = (HttpSession) session;
             httpSession.invalidate();
             httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-            httpSession.setAttribute("usuarioSesionn", usuarioSesion);         
+            httpSession.setAttribute("usuarioSesionn", usuarioSesion);
+            HttpSession httpSessionSesion = (HttpSession) session;
+            httpSessionSesion.invalidate();
+            httpSessionSesion = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+            httpSessionSesion.setAttribute("Sesion", sesionUsuario);
             try {
                 FacesContext contex = FacesContext.getCurrentInstance();
                 contex.getExternalContext().redirect("/PangeaFlowProyecto/faces/index.xhtml");
