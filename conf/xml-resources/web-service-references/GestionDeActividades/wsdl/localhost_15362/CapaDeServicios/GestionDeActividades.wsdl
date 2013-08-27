@@ -4,6 +4,12 @@
 <xsd:import namespace="http://servicios.capadeservicios.pangea.com/" schemaLocation="http://localhost:15362/CapaDeServicios/GestionDeActividades?xsd=1"/>
 </xsd:schema>
 </types>
+<message name="ConsultarActividadesCola">
+<part name="parameters" element="tns:ConsultarActividadesCola"/>
+</message>
+<message name="ConsultarActividadesColaResponse">
+<part name="parameters" element="tns:ConsultarActividadesColaResponse"/>
+</message>
 <message name="ConsumirCola">
 <part name="parameters" element="tns:ConsumirCola"/>
 </message>
@@ -70,13 +76,17 @@
 <message name="IngresarAuditoriaResponse">
 <part name="parameters" element="tns:IngresarAuditoriaResponse"/>
 </message>
-<message name="ConsultarActividadesCola">
-<part name="parameters" element="tns:ConsultarActividadesCola"/>
+<message name="listarActividades">
+<part name="parameters" element="tns:listarActividades"/>
 </message>
-<message name="ConsultarActividadesColaResponse">
-<part name="parameters" element="tns:ConsultarActividadesColaResponse"/>
+<message name="listarActividadesResponse">
+<part name="parameters" element="tns:listarActividadesResponse"/>
 </message>
 <portType name="GestionDeActividades">
+<operation name="ConsultarActividadesCola">
+<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeActividades/ConsultarActividadesColaRequest" message="tns:ConsultarActividadesCola"/>
+<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeActividades/ConsultarActividadesColaResponse" message="tns:ConsultarActividadesColaResponse"/>
+</operation>
 <operation name="ConsumirCola">
 <input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeActividades/ConsumirColaRequest" message="tns:ConsumirCola"/>
 <output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeActividades/ConsumirColaResponse" message="tns:ConsumirColaResponse"/>
@@ -121,13 +131,22 @@
 <input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeActividades/IngresarAuditoriaRequest" message="tns:IngresarAuditoria"/>
 <output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeActividades/IngresarAuditoriaResponse" message="tns:IngresarAuditoriaResponse"/>
 </operation>
-<operation name="ConsultarActividadesCola">
-<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeActividades/ConsultarActividadesColaRequest" message="tns:ConsultarActividadesCola"/>
-<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeActividades/ConsultarActividadesColaResponse" message="tns:ConsultarActividadesColaResponse"/>
+<operation name="listarActividades">
+<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeActividades/listarActividadesRequest" message="tns:listarActividades"/>
+<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeActividades/listarActividadesResponse" message="tns:listarActividadesResponse"/>
 </operation>
 </portType>
 <binding name="GestionDeActividadesPortBinding" type="tns:GestionDeActividades">
 <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+<operation name="ConsultarActividadesCola">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
 <operation name="ConsumirCola">
 <soap:operation soapAction=""/>
 <input>
@@ -227,7 +246,7 @@
 <soap:body use="literal"/>
 </output>
 </operation>
-<operation name="ConsultarActividadesCola">
+<operation name="listarActividades">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>

@@ -60,8 +60,8 @@ public class actividadController {
     private Actividad activi;
     private List<String> estados;
     private TreeNode estadoSeleccionado;
-    private WrActividad actividad;
     private List<Actividad> actividades;
+    private List<Actividad> actividad;
     private Actividad act;
     private WrResultado resul;
     
@@ -103,13 +103,13 @@ public class actividadController {
         int j=0;  
         activi= new Actividad(); 
         activi.setEstado(estados.get(j));
-        actividad=consultarActividades(idusu, activi);
-        actividades=new ArrayList<Actividad>();
-        if(actividad.getActividads().isEmpty())
-            actividades=null;
-        while (actividad.getActividads().size()>j){
-            act= actividad.getActividads().get(j);
-            actividades.add(act);
+        actividades=listarActividades("pendiente");
+        actividad=new ArrayList<Actividad>();
+        if(actividades.isEmpty())
+            actividad=null;
+        while (actividades.size()>j){
+            act= actividades.get(j);
+            actividad.add(act);
             j++;
         } 
        
@@ -120,13 +120,13 @@ public class actividadController {
         int j=0;  
         activi= new Actividad(); 
         activi.setEstado(event.getTreeNode().toString());
-        actividad=consultarActividades(idusu, activi);
-        actividades=new ArrayList<Actividad>();
-        if(actividad.getActividads().isEmpty())
-            actividades=null;
-        while (actividad.getActividads().size()>j){
-            act= actividad.getActividads().get(j);
-            actividades.add(act);
+        actividades=listarActividades("pendiente");
+        actividad=new ArrayList<Actividad>();
+        if(actividades.isEmpty())
+            actividad=null;
+        while (actividades.size()>j){
+            act= actividades.get(j);
+            actividad.add(act);
             j++;
         } 
        
@@ -227,5 +227,12 @@ public class actividadController {
         com.pangea.capadeservicios.servicios.GestionDeActividades port = service_1.getGestionDeActividadesPort();
         return port.buscarestados();
     }
+
+    private java.util.List<com.pangea.capadeservicios.servicios.Actividad> listarActividades(java.lang.String estado) {
+        com.pangea.capadeservicios.servicios.GestionDeActividades port = service_1.getGestionDeActividadesPort();
+        return port.listarActividades(estado);
+    }
+    
+    
 
 }

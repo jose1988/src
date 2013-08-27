@@ -68,6 +68,10 @@
 
 <xs:element name="instancia" type="tns:instancia"/>
 
+<xs:element name="listarActividades" type="tns:listarActividades"/>
+
+<xs:element name="listarActividadesResponse" type="tns:listarActividadesResponse"/>
+
 <xs:element name="organizacion" type="tns:organizacion"/>
 
 <xs:element name="periodo" type="tns:periodo"/>
@@ -363,6 +367,30 @@
 </xs:sequence>
 </xs:complexType>
 
+<xs:complexType name="listarActividades">
+<xs:sequence>
+<xs:element name="estado" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="listarActividadesResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:actividad" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="ConsultarActividad">
+<xs:sequence>
+<xs:element name="actividadActual" type="tns:actividad" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="ConsultarActividadResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:wrActividad" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
 <xs:complexType name="ConsumirCola">
 <xs:sequence>
 <xs:element name="actividadActual" type="tns:actividad" minOccurs="0"/>
@@ -380,31 +408,6 @@
 <xs:sequence>
 <xs:element name="estatus" type="xs:string" minOccurs="0"/>
 <xs:element name="observacion" type="xs:string" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="IniciarActividad">
-<xs:sequence>
-<xs:element name="actividadActual" type="tns:actividad" minOccurs="0"/>
-<xs:element name="sesionActual" type="tns:sesion" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="sesion">
-<xs:sequence>
-<xs:element name="borrado" type="xs:boolean"/>
-<xs:element name="estado" type="xs:string" minOccurs="0"/>
-<xs:element name="fechaCreacion" type="xs:dateTime" minOccurs="0"/>
-<xs:element name="fechaFinalizacion" type="xs:dateTime" minOccurs="0"/>
-<xs:element name="id" type="xs:long" minOccurs="0"/>
-<xs:element name="idUsuario" type="tns:usuario" minOccurs="0"/>
-<xs:element name="ip" type="xs:string" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="IniciarActividadResponse">
-<xs:sequence>
-<xs:element name="return" type="tns:wrResultado" minOccurs="0"/>
 </xs:sequence>
 </xs:complexType>
 
@@ -442,6 +445,31 @@
 </xs:sequence>
 </xs:complexType>
 
+<xs:complexType name="IniciarActividad">
+<xs:sequence>
+<xs:element name="actividadActual" type="tns:actividad" minOccurs="0"/>
+<xs:element name="sesionActual" type="tns:sesion" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="sesion">
+<xs:sequence>
+<xs:element name="borrado" type="xs:boolean"/>
+<xs:element name="estado" type="xs:string" minOccurs="0"/>
+<xs:element name="fechaCreacion" type="xs:dateTime" minOccurs="0"/>
+<xs:element name="fechaFinalizacion" type="xs:dateTime" minOccurs="0"/>
+<xs:element name="id" type="xs:long" minOccurs="0"/>
+<xs:element name="idUsuario" type="tns:usuario" minOccurs="0"/>
+<xs:element name="ip" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="IniciarActividadResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:wrResultado" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
 <xs:complexType name="buscarestados">
 <xs:sequence/>
 </xs:complexType>
@@ -465,18 +493,6 @@
 </xs:sequence>
 </xs:complexType>
 
-<xs:complexType name="ConsultarDocumento">
-<xs:sequence>
-<xs:element name="documentoActual" type="tns:documento" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="ConsultarDocumentoResponse">
-<xs:sequence>
-<xs:element name="return" type="tns:wrDocumento" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
 <xs:complexType name="AgregarDocumento">
 <xs:sequence>
 <xs:element name="documentoActual" type="tns:documento" minOccurs="0"/>
@@ -490,15 +506,15 @@
 </xs:sequence>
 </xs:complexType>
 
-<xs:complexType name="ConsultarActividad">
+<xs:complexType name="ConsultarDocumento">
 <xs:sequence>
-<xs:element name="actividadActual" type="tns:actividad" minOccurs="0"/>
+<xs:element name="documentoActual" type="tns:documento" minOccurs="0"/>
 </xs:sequence>
 </xs:complexType>
 
-<xs:complexType name="ConsultarActividadResponse">
+<xs:complexType name="ConsultarDocumentoResponse">
 <xs:sequence>
-<xs:element name="return" type="tns:wrActividad" minOccurs="0"/>
+<xs:element name="return" type="tns:wrDocumento" minOccurs="0"/>
 </xs:sequence>
 </xs:complexType>
 
