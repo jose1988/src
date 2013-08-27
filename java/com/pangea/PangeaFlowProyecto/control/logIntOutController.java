@@ -5,6 +5,7 @@
 package com.pangea.PangeaFlowProyecto.control;
 
 import com.pangea.capadeservicios.servicios.GestionDeControlDeUsuarios_Service;
+import com.pangea.capadeservicios.servicios.GestionDeUsuarios_Service;
 import com.pangea.capadeservicios.servicios.Sesion;
 import com.pangea.capadeservicios.servicios.Usuario;
 import com.pangea.capadeservicios.servicios.WrResultado;
@@ -30,6 +31,8 @@ import javax.xml.ws.WebServiceRef;
 @SessionScoped
 public class logIntOutController {
 
+    @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_15362/CapaDeServicios/GestionDeUsuarios.wsdl")
+    private GestionDeUsuarios_Service service_1;
     @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_15362/CapaDeServicios/GestionDeControlDeUsuarios.wsdl")
     private GestionDeControlDeUsuarios_Service service;
     /**
@@ -39,7 +42,7 @@ public class logIntOutController {
      * objeto con el cual se haran las validaciones en cuanto al inicio y el
      * cerrar sesión de usuario
      */
-    private Usuario usuarioLogeo;
+    private Usuario usuarioLogeo, usuarioSesion;
     /**
      * cadena donde se guardara el nombre de usuario
      */
@@ -66,10 +69,10 @@ public class logIntOutController {
     }
 
     /**
-     * Método para hacer el Inicio de Sesión
-     * Nota: De acuerdo a la dirección MAC del equipo, si por alguna circunstancia no se puede obtener
-     * esa dirección, se busca el nombre junto con la ip del equipo , y si tampoco se puede obtener
-     * se guardara 127.0.0.1
+     * Método para hacer el Inicio de Sesión Nota: De acuerdo a la dirección MAC
+     * del equipo, si por alguna circunstancia no se puede obtener esa
+     * dirección, se busca el nombre junto con la ip del equipo , y si tampoco
+     * se puede obtener se guardara 127.0.0.1
      */
     public void LogeoInt() {
         Sesion sesionUsuario = new Sesion();
@@ -100,6 +103,7 @@ public class logIntOutController {
         WrSesion envoltorio;
         envoltorio = logIn(sesionUsuario);
         if (envoltorio.getEstatus().compareTo("OK") == 0) {
+            usuarioSesion = buscarUsuario(usuarioLogeo);
             //Se Crea la sesión llamada usuarioSesion junto con el objeto usuario
             FacesContext context = FacesContext.getCurrentInstance();
             ExternalContext externalContext = context.getExternalContext();
@@ -107,8 +111,7 @@ public class logIntOutController {
             HttpSession httpSession = (HttpSession) session;
             httpSession.invalidate();
             httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-            httpSession.setAttribute("usuarioSesion", usuarioLogeo);
-            // mostrarMensaje(1, "Bienvenid@", "okiiiiiiiiiiii");
+            httpSession.setAttribute("usuarioSesionn", usuarioSesion);         
             try {
                 FacesContext contex = FacesContext.getCurrentInstance();
                 contex.getExternalContext().redirect("/PangeaFlowProyecto/faces/index.xhtml");
@@ -177,5 +180,10 @@ public class logIntOutController {
                 break;
             }
         }
+    }
+
+    private Usuario buscarUsuario(com.pangea.capadeservicios.servicios.Usuario usuarioActual) {
+        com.pangea.capadeservicios.servicios.GestionDeUsuarios port = service_1.getGestionDeUsuariosPort();
+        return port.buscarUsuario(usuarioActual);
     }
 }
