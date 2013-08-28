@@ -45,43 +45,44 @@ public class asignarActividadController {
 
     @PostConstruct
     public void init() {
-        try {
-            //codigo para guardar sesion y usuario logueado, sino existe redireccionamos a index.xhtml
-
-            usuarioLogueo = (Usuario) (SesionAbierta.getAttribute("Usuario"));
-            sesionLogueo = (Sesion) (SesionAbierta.getAttribute("Sesion"));
-            if (usuarioLogueo == null || sesionLogueo == null) {
-                try {
-                    FacesContext contex = FacesContext.getCurrentInstance();
-                    contex.getExternalContext().redirect("/PangeaFlowProyecto/faces/index_1.xhtml");
-                } catch (Exception error) {
-                    System.out.println("----------------------------Error---------------------------------" + error);
-                }
-            } else {
-                //codigo para guardar la lista de usuarios
-                int j = 0;
-                lista = listarUsuarios();
-                usuarios = new ArrayList<Usuario>();
-                if (lista.isEmpty()) {
-                    usuarios = null;
-                }
-                while (lista.size() > j) {
-                    usu = lista.get(j);
-                    usuarios.add(usu);
-                    j++;
-                }
-            }
-        } catch (Exception e) {
-            try {
-                FacesContext contex = FacesContext.getCurrentInstance();
-                contex.getExternalContext().redirect("/PangeaFlowProyecto/faces/index_1.xhtml");
-            } catch (Exception ee) {
-                System.out.println("----------------------------Error---------------------------------" + ee);
-            }
+        //codigo para guardar la lista de usuarios
+        int j = 0;
+        lista = listarUsuarios();
+        usuarios = new ArrayList<Usuario>();
+        if (lista.isEmpty()) {
+            usuarios = null;
         }
+        while (lista.size() > j) {
+            usu = lista.get(j);
+            usuarios.add(usu);
+            j++;
+        }
+    }
 
+    /**
+     * Método para verificar si el usuario esta logueado
+     */
+    public boolean verificarLogueo() {
+        boolean bandera = false;
+        //codigo para guardar sesion y usuario logueado, sino existe redireccionamos a index.xhtml
+        usuarioLogueo = (Usuario) (SesionAbierta.getAttribute("Usuario"));
+        sesionLogueo = (Sesion) (SesionAbierta.getAttribute("Sesion"));
+        if (usuarioLogueo == null || sesionLogueo == null) {
+            bandera = true;
+        }
+        return bandera;
+    }
 
-
+    /**
+     * Método para redireccionar a index.xhtml si el usuario no esta logueado
+     */
+    public void Redireccionar() {
+        try {
+            FacesContext contex = FacesContext.getCurrentInstance();
+            contex.getExternalContext().redirect("/PangeaFlowProyecto/faces/index_1.xhtml");
+        } catch (Exception error) {
+            System.out.println("----------------------------Error---------------------------------" + error);
+        }
     }
 
     private java.util.List<com.pangea.capadeservicios.servicios.Usuario> listarUsuarios() {
