@@ -165,16 +165,13 @@ public class loginController {
         } 
  }     
  
- public void finalizaract(Actividad actact, Usuario usuact){
-      actualactividad= new Actividad(); 
-      actualactividad=actact;
-      actualusuario= new Usuario(); 
-      actualusuario=usuact;
+ public void finalizaract(){
+     
+     System.out.println(act.getId());
 
             try {
                 FacesContext contex = FacesContext.getCurrentInstance();
-                contex.getExternalContext().redirect("/PangeaFlowProyecto/faces/condicion.xhtml");
-            } catch (Exception e) {
+                   } catch (Exception e) {
                 System.out.println("----------------------------Error---------------------------------" + e);
             }  
 }
