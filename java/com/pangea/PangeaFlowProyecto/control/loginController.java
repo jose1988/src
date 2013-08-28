@@ -173,7 +173,7 @@ public class loginController {
 
             try {
                 FacesContext contex = FacesContext.getCurrentInstance();
-                contex.getExternalContext().redirect("/PangeaFlowProyecto/condicion.xhtml");
+                contex.getExternalContext().redirect("/PangeaFlowProyecto/faces/condicion.xhtml");
             } catch (Exception e) {
                 System.out.println("----------------------------Error---------------------------------" + e);
             }  
