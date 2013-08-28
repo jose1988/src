@@ -30,6 +30,10 @@ public class asignarActividadController {
     private Usuario usu;
     Usuario usuarioLogueo;
     Sesion sesionLogueo;
+    FacesContext context = FacesContext.getCurrentInstance();
+    ExternalContext externalContext = context.getExternalContext();
+    Object session = externalContext.getSession(true);
+    HttpSession SesionAbierta = (HttpSession) session;
 
     public List<Usuario> getUsuarios() {
         return usuarios;
@@ -43,25 +47,30 @@ public class asignarActividadController {
     public void init() {
         try {
             //codigo para guardar sesion y usuario logueado, sino existe redireccionamos a index.xhtml
-            FacesContext context = FacesContext.getCurrentInstance();
-            ExternalContext externalContext = context.getExternalContext();
-            Object session = externalContext.getSession(false);
-            HttpSession SesionAbierta = (HttpSession) session;
+
             usuarioLogueo = (Usuario) (SesionAbierta.getAttribute("Usuario"));
             sesionLogueo = (Sesion) (SesionAbierta.getAttribute("Sesion"));
-            //codigo para guardar la lista de usuarios
-            int j = 0;
-            lista = listarUsuarios();
-            usuarios = new ArrayList<Usuario>();
-            if (lista.isEmpty()) {
-                usuarios = null;
+            if (usuarioLogueo == null || sesionLogueo == null) {
+                try {
+                    FacesContext contex = FacesContext.getCurrentInstance();
+                    contex.getExternalContext().redirect("/PangeaFlowProyecto/faces/index_1.xhtml");
+                } catch (Exception error) {
+                    System.out.println("----------------------------Error---------------------------------" + error);
+                }
+            } else {
+                //codigo para guardar la lista de usuarios
+                int j = 0;
+                lista = listarUsuarios();
+                usuarios = new ArrayList<Usuario>();
+                if (lista.isEmpty()) {
+                    usuarios = null;
+                }
+                while (lista.size() > j) {
+                    usu = lista.get(j);
+                    usuarios.add(usu);
+                    j++;
+                }
             }
-            while (lista.size() > j) {
-                usu = lista.get(j);
-                usuarios.add(usu);
-                j++;
-            }
-
         } catch (Exception e) {
             try {
                 FacesContext contex = FacesContext.getCurrentInstance();
