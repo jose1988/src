@@ -79,7 +79,7 @@ public class asignarActividadController {
     public void Redireccionar() {
         try {
             FacesContext contex = FacesContext.getCurrentInstance();
-            contex.getExternalContext().redirect("/PangeaFlowProyecto/faces/index_1.xhtml");
+            contex.getExternalContext().redirect("/PangeaFlowProyecto/faces/index.xhtml");
         } catch (Exception error) {
             System.out.println("----------------------------Error---------------------------------" + error);
         }
