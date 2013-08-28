@@ -30,7 +30,7 @@ import javax.xml.ws.WebServiceRef;
 @ManagedBean(name = "logIntOutController")
 @SessionScoped
 public class logIntOutController {
-    
+
     @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_15362/CapaDeServicios/GestionDeUsuarios.wsdl")
     private GestionDeUsuarios_Service service_1;
     @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_15362/CapaDeServicios/GestionDeControlDeUsuarios.wsdl")
@@ -55,19 +55,19 @@ public class logIntOutController {
      * objeto de la clase de sesión
      */
     Sesion sesionUsuario;
-    
+
     public String getUser() {
         return User;
     }
-    
+
     public void setUser(String User) {
         this.User = User;
     }
-    
+
     public String getContrasena() {
         return Contrasena;
     }
-    
+
     public void setContrasena(String Contrasena) {
         this.Contrasena = Contrasena;
     }
@@ -144,7 +144,12 @@ public class logIntOutController {
         System.out.println("ESTADO     " + envoltorioResult.getEstatus());
         System.out.println("Observación     " + envoltorioResult.getObservacion());
         if (envoltorioResult.getEstatus().compareTo("OK") == 0) {
-            System.out.println("Todo CORECTO__-------------------------------");
+            try {
+                FacesContext contex = FacesContext.getCurrentInstance();
+                contex.getExternalContext().redirect("/PangeaFlowProyecto/faces/index.xhtml");
+            } catch (Exception e) {
+                System.out.println("----------------------------Error---------------------------------" + e);
+            }
         } else {
             System.out.println("FALLO-------------------------------");
         }
@@ -165,7 +170,7 @@ public class logIntOutController {
         com.pangea.capadeservicios.servicios.GestionDeControlDeUsuarios port = service.getGestionDeControlDeUsuariosPort();
         return port.logOut(usuarioActual);
     }
-    
+
     public void mostrarMensaje(int opcMensaje, String cabeceraMensaje, String cuerpoMensaje) {
         //0 informacón 1 advertenciA 2 error 3 fatal
         FacesContext context = FacesContext.getCurrentInstance();
@@ -188,7 +193,7 @@ public class logIntOutController {
             }
         }
     }
-    
+
     private Usuario buscarUsuario(com.pangea.capadeservicios.servicios.Usuario usuarioActual) {
         com.pangea.capadeservicios.servicios.GestionDeUsuarios port = service_1.getGestionDeUsuariosPort();
         return port.buscarUsuario(usuarioActual);
