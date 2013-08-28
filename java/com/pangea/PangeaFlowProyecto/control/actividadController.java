@@ -7,6 +7,7 @@ import com.pangea.capadeservicios.servicios.Post;
 import com.pangea.capadeservicios.servicios.Usuario;
 import com.pangea.capadeservicios.servicios.Bandeja;
 import com.pangea.capadeservicios.servicios.Actividad;
+import com.pangea.capadeservicios.servicios.ClasificacionUsuario;
 import com.pangea.capadeservicios.servicios.Condicion;
 import com.pangea.capadeservicios.servicios.GestionDeActividades_Service;
 import com.pangea.capadeservicios.servicios.Mensajeria_Service;
@@ -21,7 +22,9 @@ import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import javax.xml.ws.WebServiceRef;
 import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.model.DefaultTreeNode;
@@ -57,12 +60,12 @@ public class actividadController {
     private WrPost bandej;
     
     private TreeNode estact;
-    private Actividad activi;
+    private Actividad activi, act, id;
+    
     private List<String> estados;
     private TreeNode estadoSeleccionado;
-    private List<Actividad> actividades;
-    private List<Actividad> actividad;
-    private Actividad act;
+    private List<Actividad> actividades, actividad;
+    
     private WrResultado resul;
     
     private Sesion ses;
@@ -70,9 +73,36 @@ public class actividadController {
     
     private Bandeja idban;
     
-    private Actividad id;
+    private ClasificacionUsuario idclasi, idcla;
     
     private Long ide;
+    
+    Usuario usuarioLogueo;
+    Sesion sesionLogueo;
+    
+    public ClasificacionUsuario getIdcla() {
+        return idcla;
+    }
+
+    public void setIdcla(ClasificacionUsuario idcla) {
+        this.idcla = idcla;
+    }
+
+    public ClasificacionUsuario getIdclasi() {
+        return idclasi;
+    }
+
+    public void setIdclasi(ClasificacionUsuario idclasi) {
+        this.idclasi = idclasi;
+    }
+    
+    public Actividad getId() {
+        return id;
+    }
+
+    public void setId(Actividad id) {
+        this.id = id;
+    }
 
     public Long getIde() {
         return ide;
@@ -81,8 +111,6 @@ public class actividadController {
     public void setIde(Long ide) {
         this.ide = ide;
     }
-
-   
   
     public TreeNode getEstadoSeleccionado() {
         return estadoSeleccionado;
@@ -102,31 +130,32 @@ public class actividadController {
 
     @PostConstruct
     public void init() {
-        estact = new DefaultTreeNode("root", null);
-        idusu=new Usuario();
-        idusu.setId("thunder");
-        String icono;
-        estados=buscarestados();
-        int i=0;
-        while (estados.size()>i){
-            if("pendiente".equals(estados.get(i))){
-                TreeNode inbox = new DefaultTreeNode(estados.get(i), estact);
+        
+            estact = new DefaultTreeNode("root", null);
+            String icono;
+            estados=buscarestados();
+            int i=0;
+            while (estados.size()>i){
+                if("pendiente".equals(estados.get(i))){
+                    TreeNode inbox = new DefaultTreeNode(estados.get(i), estact);
+                }
+                i++;
             }
-            i++;
-        }
-        int j=0;  
-        activi= new Actividad(); 
-        activi.setEstado(estados.get(j));
-        actividades=listarActividades("pendiente");
-        actividad=new ArrayList<Actividad>();
-        if(actividades.isEmpty())
-            actividad=null;
-        while (actividades.size()>j){
-            act= actividades.get(j);
-            actividad.add(act);
-            j++;
-        } 
+            int j=0;  
+            activi= new Actividad(); 
+            activi.setEstado(estados.get(j));
+            actividad=listarActividades("pendiente");
+            actividades=new ArrayList<Actividad>();
+            if(actividad.isEmpty())
+                actividades=null;
+            while (actividad.size()>j){
+                act= actividad.get(j);
+                actividades.add(act);
+                j++;
+            } 
        
+        
+            
     }
     
   
@@ -134,21 +163,29 @@ public class actividadController {
         int j=0;  
         activi= new Actividad(); 
         activi.setEstado(event.getTreeNode().toString());
-        actividades=listarActividades("pendiente");
-        actividad=new ArrayList<Actividad>();
-        if(actividades.isEmpty())
-            actividad=null;
-        while (actividades.size()>j){
-            act= actividades.get(j);
-            actividad.add(act);
+        actividad=listarActividades("pendiente");
+        actividades=new ArrayList<Actividad>();
+        if(actividad.isEmpty())
+            actividades=null;
+        while (actividad.size()>j){
+            act= actividad.get(j);
+            actividades.add(act);
             j++;
         } 
        
     } 
     
-    public void actividades(Long ide){
+    public void verActividades(Long ide){
         id=new Actividad();
         id.setId(ide);
+        System.out.println("----------El ide es:      "+id.getId());
+        
+        try {
+            FacesContext contex = FacesContext.getCurrentInstance();
+            contex.getExternalContext().redirect("/PangeaFlowProyecto/faces/asignarActividad.xhtml");
+        } catch (Exception e) {
+            System.out.println("----------------------------Error---------------------------------" + e);
+        }
     }
      
      

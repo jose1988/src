@@ -78,7 +78,7 @@ public class logIntOutController {
      * dirección, se busca el nombre junto con la ip del equipo , y si tampoco
      * se puede obtener se guardara 127.0.0.1
      */
-    public void LogeoInt() {
+    public void logeoInt() {
         sesionUsuario = new Sesion();
         usuarioLogeo = new Usuario();
         usuarioLogeo.setId(User);
@@ -115,14 +115,11 @@ public class logIntOutController {
             HttpSession httpSession = (HttpSession) session;
             httpSession.invalidate();
             httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-            httpSession.setAttribute("usuarioSesionn", usuarioSesion);
-            HttpSession httpSessionSesion = (HttpSession) session;
-            httpSessionSesion.invalidate();
-            httpSessionSesion = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-            httpSessionSesion.setAttribute("Sesion", sesionUsuario);
+            httpSession.setAttribute("Usuario", usuarioSesion);
+            httpSession.setAttribute("Sesion", envoltorio.getSesions().get(0));
             try {
                 FacesContext contex = FacesContext.getCurrentInstance();
-                contex.getExternalContext().redirect("/PangeaFlowProyecto/faces/index.xhtml");
+                contex.getExternalContext().redirect("/PangeaFlowProyecto/faces/actividadusuario.xhtml");
             } catch (Exception e) {
                 System.out.println("----------------------------Error---------------------------------" + e);
             }
@@ -134,20 +131,27 @@ public class logIntOutController {
     /**
      * metodo para hacer el Cerrar Sesión
      */
-    public String LogeoOut() {
+    public void logeoOut() {
         /**
          * objeto envoltorio que obtiene si el usuario puede acceser o
          * no.........
          */
         WrResultado envoltorioResult;
+        usuarioLogeo = new Usuario();
+        usuarioLogeo.setId(User);
         envoltorioResult = logOut(usuarioLogeo);
         System.out.println("nombre de usuario " + User);
         System.out.println("ESTADO     " + envoltorioResult.getEstatus());
         System.out.println("Observación     " + envoltorioResult.getObservacion());
         if (envoltorioResult.getEstatus().compareTo("OK") == 0) {
-            return "index.xhtml";
+            try {
+                FacesContext contex = FacesContext.getCurrentInstance();
+                contex.getExternalContext().redirect("/PangeaFlowProyecto/faces/index.xhtml");
+            } catch (Exception e) {
+                System.out.println("----------------------------Error---------------------------------" + e);
+            }
         } else {
-            return "index_1.xhtml";
+            System.out.println("FALLO-------------------------------");
         }
     }
 
