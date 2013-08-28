@@ -32,7 +32,6 @@ import org.primefaces.model.TreeNode;
  */
 
 @ManagedBean(name = "loginController")
-
 @SessionScoped
 
 public class loginController {
@@ -59,10 +58,13 @@ public class loginController {
     
      private TreeNode estact;
 
-   
+     private Actividad actualactividad;
+     private Usuario actualusuario;
      private Actividad activi;
      private List<String> estados;
      private TreeNode estadoSeleccionado;
+
+    
      private WrActividad actividad;
      private List<Actividad> actividades;
      private Actividad act;
@@ -162,6 +164,22 @@ public class loginController {
          j++;
         } 
  }     
+ 
+ public void finalizaract(Actividad actact, Usuario usuact){
+      actualactividad= new Actividad(); 
+      actualactividad=actact;
+      actualusuario= new Usuario(); 
+      actualusuario=usuact;
+
+            try {
+                FacesContext contex = FacesContext.getCurrentInstance();
+                contex.getExternalContext().redirect("/PangeaFlowProyecto/condicion.xhtml");
+            } catch (Exception e) {
+                System.out.println("----------------------------Error---------------------------------" + e);
+            }  
+}
+ 
+
  
  public void cerraractividad(Actividad act){
      
@@ -266,6 +284,21 @@ public class loginController {
     public void send() {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Mail Sent!"));
     }
+    public Actividad getActualactividad() {
+        return actualactividad;
+    }
+
+    public void setActualactividad(Actividad actualactividad) {
+        this.actualactividad = actualactividad;
+    }
+
+    public Usuario getActualusuario() {
+        return actualusuario;
+    }
+
+    public void setActualusuario(Usuario actualusuario) {
+        this.actualusuario = actualusuario;
+    }
 
     private static WrPost consultarMensajes(com.pangea.capadeservicios.servicios.Usuario usuarioActual, com.pangea.capadeservicios.servicios.Bandeja bandejaActual) {
         com.pangea.capadeservicios.servicios.Mensajeria_Service service = new com.pangea.capadeservicios.servicios.Mensajeria_Service();
@@ -319,9 +352,8 @@ public class loginController {
         return port.buscarestados();
     }
 
-    
+  
+ 
     
 
-    
-   
 }
