@@ -71,6 +71,14 @@ public class actividadController {
     private Bandeja idban;
     
     private Actividad id;
+
+    public Actividad getId() {
+        return id;
+    }
+
+    public void setId(Actividad id) {
+        this.id = id;
+    }
     
     private Long ide;
 
@@ -117,13 +125,13 @@ public class actividadController {
         int j=0;  
         activi= new Actividad(); 
         activi.setEstado(estados.get(j));
-        actividades=listarActividades("pendiente");
-        actividad=new ArrayList<Actividad>();
-        if(actividades.isEmpty())
-            actividad=null;
-        while (actividades.size()>j){
-            act= actividades.get(j);
-            actividad.add(act);
+        actividad=listarActividades("pendiente");
+        actividades=new ArrayList<Actividad>();
+        if(actividad.isEmpty())
+            actividades=null;
+        while (actividad.size()>j){
+            act= actividad.get(j);
+            actividades.add(act);
             j++;
         } 
        
@@ -134,21 +142,29 @@ public class actividadController {
         int j=0;  
         activi= new Actividad(); 
         activi.setEstado(event.getTreeNode().toString());
-        actividades=listarActividades("pendiente");
-        actividad=new ArrayList<Actividad>();
-        if(actividades.isEmpty())
-            actividad=null;
-        while (actividades.size()>j){
-            act= actividades.get(j);
-            actividad.add(act);
+        actividad=listarActividades("pendiente");
+        actividades=new ArrayList<Actividad>();
+        if(actividad.isEmpty())
+            actividades=null;
+        while (actividad.size()>j){
+            act= actividad.get(j);
+            actividades.add(act);
             j++;
         } 
        
     } 
     
-    public void actividades(Long ide){
+    public void verActividades(Long ide){
         id=new Actividad();
         id.setId(ide);
+        System.out.println("----------El ide es:      "+id.getId());
+        
+        try {
+            FacesContext contex = FacesContext.getCurrentInstance();
+            contex.getExternalContext().redirect("/PangeaFlowProyecto/faces/asignarActividad.xhtml");
+        } catch (Exception e) {
+            System.out.println("----------------------------Error---------------------------------" + e);
+        }
     }
      
      
