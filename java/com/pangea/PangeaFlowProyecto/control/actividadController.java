@@ -69,6 +69,20 @@ public class actividadController {
     private Condicion cond;
     
     private Bandeja idban;
+    
+    private Actividad id;
+    
+    private Long ide;
+
+    public Long getIde() {
+        return ide;
+    }
+
+    public void setIde(Long ide) {
+        this.ide = ide;
+    }
+
+   
   
     public TreeNode getEstadoSeleccionado() {
         return estadoSeleccionado;
@@ -131,6 +145,13 @@ public class actividadController {
         } 
        
     } 
+    
+    public void actividades(Long ide){
+        id=new Actividad();
+        id.setId(ide);
+    }
+     
+     
     
     public TreeNode getSelectedNode() {  
         return estact;  
