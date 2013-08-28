@@ -30,7 +30,7 @@ import javax.xml.ws.WebServiceRef;
 @ManagedBean(name = "logIntOutController")
 @SessionScoped
 public class logIntOutController {
-
+    
     @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_15362/CapaDeServicios/GestionDeUsuarios.wsdl")
     private GestionDeUsuarios_Service service_1;
     @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_15362/CapaDeServicios/GestionDeControlDeUsuarios.wsdl")
@@ -55,19 +55,19 @@ public class logIntOutController {
      * objeto de la clase de sesión
      */
     Sesion sesionUsuario;
-
+    
     public String getUser() {
         return User;
     }
-
+    
     public void setUser(String User) {
         this.User = User;
     }
-
+    
     public String getContrasena() {
         return Contrasena;
     }
-
+    
     public void setContrasena(String Contrasena) {
         this.Contrasena = Contrasena;
     }
@@ -78,7 +78,7 @@ public class logIntOutController {
      * dirección, se busca el nombre junto con la ip del equipo , y si tampoco
      * se puede obtener se guardara 127.0.0.1
      */
-    public void LogeoInt() {
+    public void logeoInt() {
         sesionUsuario = new Sesion();
         usuarioLogeo = new Usuario();
         usuarioLogeo.setId(User);
@@ -115,14 +115,11 @@ public class logIntOutController {
             HttpSession httpSession = (HttpSession) session;
             httpSession.invalidate();
             httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-            httpSession.setAttribute("usuarioSesionn", usuarioSesion);
-            HttpSession httpSessionSesion = (HttpSession) session;
-            httpSessionSesion.invalidate();
-            httpSessionSesion = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-            httpSessionSesion.setAttribute("Sesion", sesionUsuario);
+            httpSession.setAttribute("Usuario", usuarioSesion);
+            httpSession.setAttribute("Sesion", envoltorio.getSesions().get(0));
             try {
                 FacesContext contex = FacesContext.getCurrentInstance();
-                contex.getExternalContext().redirect("/PangeaFlowProyecto/faces/index.xhtml");
+                contex.getExternalContext().redirect("/PangeaFlowProyecto/faces/asignarActividad.xhtml");
             } catch (Exception e) {
                 System.out.println("----------------------------Error---------------------------------" + e);
             }
@@ -134,20 +131,22 @@ public class logIntOutController {
     /**
      * metodo para hacer el Cerrar Sesión
      */
-    public String LogeoOut() {
+    public void logeoOut() {
         /**
          * objeto envoltorio que obtiene si el usuario puede acceser o
          * no.........
          */
         WrResultado envoltorioResult;
+        usuarioLogeo = new Usuario();
+        usuarioLogeo.setId(User);
         envoltorioResult = logOut(usuarioLogeo);
         System.out.println("nombre de usuario " + User);
         System.out.println("ESTADO     " + envoltorioResult.getEstatus());
         System.out.println("Observación     " + envoltorioResult.getObservacion());
         if (envoltorioResult.getEstatus().compareTo("OK") == 0) {
-            return "index.xhtml";
+            System.out.println("Todo CORECTO__-------------------------------");
         } else {
-            return "index_1.xhtml";
+            System.out.println("FALLO-------------------------------");
         }
     }
 
@@ -166,7 +165,7 @@ public class logIntOutController {
         com.pangea.capadeservicios.servicios.GestionDeControlDeUsuarios port = service.getGestionDeControlDeUsuariosPort();
         return port.logOut(usuarioActual);
     }
-
+    
     public void mostrarMensaje(int opcMensaje, String cabeceraMensaje, String cuerpoMensaje) {
         //0 informacón 1 advertenciA 2 error 3 fatal
         FacesContext context = FacesContext.getCurrentInstance();
@@ -189,7 +188,7 @@ public class logIntOutController {
             }
         }
     }
-
+    
     private Usuario buscarUsuario(com.pangea.capadeservicios.servicios.Usuario usuarioActual) {
         com.pangea.capadeservicios.servicios.GestionDeUsuarios port = service_1.getGestionDeUsuariosPort();
         return port.buscarUsuario(usuarioActual);
