@@ -7,6 +7,7 @@ import com.pangea.capadeservicios.servicios.Post;
 import com.pangea.capadeservicios.servicios.Usuario;
 import com.pangea.capadeservicios.servicios.Bandeja;
 import com.pangea.capadeservicios.servicios.Actividad;
+import com.pangea.capadeservicios.servicios.ClasificacionUsuario;
 import com.pangea.capadeservicios.servicios.Condicion;
 import com.pangea.capadeservicios.servicios.GestionDeActividades_Service;
 import com.pangea.capadeservicios.servicios.Mensajeria_Service;
@@ -21,7 +22,9 @@ import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import javax.xml.ws.WebServiceRef;
 import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.model.DefaultTreeNode;
@@ -57,12 +60,12 @@ public class actividadController {
     private WrPost bandej;
     
     private TreeNode estact;
-    private Actividad activi;
+    private Actividad activi, act, id;
+    
     private List<String> estados;
     private TreeNode estadoSeleccionado;
-    private List<Actividad> actividades;
-    private List<Actividad> actividad;
-    private Actividad act;
+    private List<Actividad> actividades, actividad;
+    
     private WrResultado resul;
     
     private Sesion ses;
@@ -70,8 +73,29 @@ public class actividadController {
     
     private Bandeja idban;
     
-    private Actividad id;
+    private ClasificacionUsuario idclasi, idcla;
+    
+    private Long ide;
+    
+    Usuario usuarioLogueo;
+    Sesion sesionLogueo;
+    
+    public ClasificacionUsuario getIdcla() {
+        return idcla;
+    }
 
+    public void setIdcla(ClasificacionUsuario idcla) {
+        this.idcla = idcla;
+    }
+
+    public ClasificacionUsuario getIdclasi() {
+        return idclasi;
+    }
+
+    public void setIdclasi(ClasificacionUsuario idclasi) {
+        this.idclasi = idclasi;
+    }
+    
     public Actividad getId() {
         return id;
     }
@@ -79,8 +103,6 @@ public class actividadController {
     public void setId(Actividad id) {
         this.id = id;
     }
-    
-    private Long ide;
 
     public Long getIde() {
         return ide;
@@ -89,8 +111,6 @@ public class actividadController {
     public void setIde(Long ide) {
         this.ide = ide;
     }
-
-   
   
     public TreeNode getEstadoSeleccionado() {
         return estadoSeleccionado;
@@ -110,31 +130,56 @@ public class actividadController {
 
     @PostConstruct
     public void init() {
-        estact = new DefaultTreeNode("root", null);
-        idusu=new Usuario();
-        idusu.setId("thunder");
-        String icono;
-        estados=buscarestados();
-        int i=0;
-        while (estados.size()>i){
-            if("pendiente".equals(estados.get(i))){
-                TreeNode inbox = new DefaultTreeNode(estados.get(i), estact);
+        try{
+            
+            //codigo para guardar sesion y usuario logueado, sino existe redireccionamos a index.xhtml
+            FacesContext context = FacesContext.getCurrentInstance();
+            ExternalContext externalContext = context.getExternalContext();
+            Object session = externalContext.getSession(false);
+            HttpSession SesionAbierta = (HttpSession) session;
+            usuarioLogueo = (Usuario) (SesionAbierta.getAttribute("Usuario"));
+            sesionLogueo = (Sesion) (SesionAbierta.getAttribute("Sesion"));
+            
+            idclasi=usuarioLogueo.getIdClasificacionUsuario();
+            
+            idcla.setId(Long.parseLong("1"));
+            
+            if(idclasi==idcla){
+                System.out.println(idclasi);
             }
-            i++;
-        }
-        int j=0;  
-        activi= new Actividad(); 
-        activi.setEstado(estados.get(j));
-        actividad=listarActividades("pendiente");
-        actividades=new ArrayList<Actividad>();
-        if(actividad.isEmpty())
-            actividades=null;
-        while (actividad.size()>j){
-            act= actividad.get(j);
-            actividades.add(act);
-            j++;
-        } 
+        
+            estact = new DefaultTreeNode("root", null);
+            String icono;
+            estados=buscarestados();
+            int i=0;
+            while (estados.size()>i){
+                if("pendiente".equals(estados.get(i))){
+                    TreeNode inbox = new DefaultTreeNode(estados.get(i), estact);
+                }
+                i++;
+            }
+            int j=0;  
+            activi= new Actividad(); 
+            activi.setEstado(estados.get(j));
+            actividad=listarActividades("pendiente");
+            actividades=new ArrayList<Actividad>();
+            if(actividad.isEmpty())
+                actividades=null;
+            while (actividad.size()>j){
+                act= actividad.get(j);
+                actividades.add(act);
+                j++;
+            } 
        
+            }catch (Exception e) {
+            try {
+                FacesContext contex = FacesContext.getCurrentInstance();
+                contex.getExternalContext().redirect("/PangeaFlowProyecto/faces/index_1.xhtml");
+            }catch (Exception ee) {
+                System.out.println("----------------------------Error---------------------------------" + ee);
+            }
+        }
+            
     }
     
   
