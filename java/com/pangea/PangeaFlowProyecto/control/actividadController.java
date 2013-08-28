@@ -130,23 +130,6 @@ public class actividadController {
 
     @PostConstruct
     public void init() {
-        try{
-            
-            //codigo para guardar sesion y usuario logueado, sino existe redireccionamos a index.xhtml
-            FacesContext context = FacesContext.getCurrentInstance();
-            ExternalContext externalContext = context.getExternalContext();
-            Object session = externalContext.getSession(false);
-            HttpSession SesionAbierta = (HttpSession) session;
-            usuarioLogueo = (Usuario) (SesionAbierta.getAttribute("Usuario"));
-            sesionLogueo = (Sesion) (SesionAbierta.getAttribute("Sesion"));
-            
-            idclasi=usuarioLogueo.getIdClasificacionUsuario();
-            
-            idcla.setId(Long.parseLong("1"));
-            
-            if(idclasi==idcla){
-                System.out.println(idclasi);
-            }
         
             estact = new DefaultTreeNode("root", null);
             String icono;
@@ -171,14 +154,7 @@ public class actividadController {
                 j++;
             } 
        
-            }catch (Exception e) {
-            try {
-                FacesContext contex = FacesContext.getCurrentInstance();
-                contex.getExternalContext().redirect("/PangeaFlowProyecto/faces/index_1.xhtml");
-            }catch (Exception ee) {
-                System.out.println("----------------------------Error---------------------------------" + ee);
-            }
-        }
+        
             
     }
     
