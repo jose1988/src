@@ -4,7 +4,6 @@
  */
 package com.pangea.PangeaFlowProyecto.control;
 
-
 import com.pangea.capadeservicios.servicios.Actividad;
 import com.pangea.capadeservicios.servicios.Condicion;
 import com.pangea.capadeservicios.servicios.GestionDeActividades_Service;
@@ -17,6 +16,7 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 import javax.xml.ws.WebServiceRef;
+
 /**
  * @author Pangea
  */
@@ -30,22 +30,18 @@ public class finalizarActividadController {
     private List<Condicion> cond;
     private Condicion condactual;
     private Actividad actividad_actual;
-    
-    
 
-
-    FacesContext context = FacesContext.getCurrentInstance();
-    ExternalContext externalContext = context.getExternalContext();
-    Object session = externalContext.getSession(true);
-    HttpSession actividadact = (HttpSession) session;
-    
     @PostConstruct
     public void init() {
-        
 
-        actividad_actual = (Actividad) (actividadact.getAttribute("actividadactual"));
+        FacesContext fc = FacesContext.getCurrentInstance();
+        ExternalContext ec = fc.getExternalContext();
+
+        HttpSession sesion = (HttpSession) ec.getSession(true);
+
+        actividad_actual = (Actividad) (sesion.getAttribute("actividadactual"));
         cond = condicionesTransiciones(actividad_actual);
-    
+
     }
 
     public List<Condicion> getCond() {
@@ -77,7 +73,5 @@ public class finalizarActividadController {
         return port.condicionesTransiciones(actividad);
     }
 
-   
- 
-
+    
 }
