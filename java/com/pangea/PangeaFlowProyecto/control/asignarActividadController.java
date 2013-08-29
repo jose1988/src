@@ -4,12 +4,15 @@
  */
 package com.pangea.PangeaFlowProyecto.control;
 
+import com.pangea.capadeservicios.servicios.GestionDeControlDeUsuarios_Service;
 import com.pangea.capadeservicios.servicios.GestionDeUsuarios_Service;
 import com.pangea.capadeservicios.servicios.Sesion;
 import com.pangea.capadeservicios.servicios.Usuario;
+import com.pangea.capadeservicios.servicios.WrResultado;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
@@ -24,6 +27,8 @@ import javax.xml.ws.WebServiceRef;
 @SessionScoped
 public class asignarActividadController {
 
+    @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_15362/CapaDeServicios/GestionDeControlDeUsuarios.wsdl")
+    private GestionDeControlDeUsuarios_Service service_1;
     @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_15362/CapaDeServicios/GestionDeUsuarios.wsdl")
     private GestionDeUsuarios_Service service;
     private List<Usuario> usuarios, lista;
@@ -90,8 +95,11 @@ public class asignarActividadController {
         }
     }
 
+    
+
     private java.util.List<com.pangea.capadeservicios.servicios.Usuario> listarUsuarios(boolean borrado) {
         com.pangea.capadeservicios.servicios.GestionDeUsuarios port = service.getGestionDeUsuariosPort();
         return port.listarUsuarios(borrado);
     }
+
 }
