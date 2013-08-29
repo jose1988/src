@@ -6,7 +6,9 @@ package com.pangea.PangeaFlowProyecto.control;
 
 import com.pangea.capadeservicios.servicios.Actividad;
 import com.pangea.capadeservicios.servicios.Condicion;
+import com.pangea.capadeservicios.servicios.Sesion;
 import com.pangea.capadeservicios.servicios.GestionDeActividades_Service;
+import com.pangea.capadeservicios.servicios.WrResultado;
 
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -30,18 +32,38 @@ public class finalizarActividadController {
     private List<Condicion> cond;
     private Condicion condactual;
     private Actividad actividad_actual;
+    private Sesion sesionactual;
+    private WrResultado resultado;
 
     @PostConstruct
     public void init() {
 
         FacesContext fc = FacesContext.getCurrentInstance();
         ExternalContext ec = fc.getExternalContext();
-
         HttpSession sesion = (HttpSession) ec.getSession(true);
-
         actividad_actual = (Actividad) (sesion.getAttribute("actividadactual"));
+
         cond = condicionesTransiciones(actividad_actual);
 
+    }
+    
+     public void finalizar() {
+
+        System.out.println(condactual.getId());
+
+        FacesContext fc = FacesContext.getCurrentInstance();
+        ExternalContext ec = fc.getExternalContext();
+        HttpSession sesion = (HttpSession) ec.getSession(true);
+        actividad_actual = (Actividad) (sesion.getAttribute("actividadactual"));
+        sesionactual = (Sesion) (sesion.getAttribute("Sesion"));
+        
+        resultado=finalizarActividad(actividad_actual, sesionactual, condactual);
+        
+        try {
+             ec.redirect("/PangeaFlowProyecto/faces/actividadusuario.xhtml");
+        } catch (Exception e) {
+            System.out.println("----------------------------Error---------------------------------" + e);
+        }
     }
 
     public List<Condicion> getCond() {
@@ -71,6 +93,11 @@ public class finalizarActividadController {
     private java.util.List<com.pangea.capadeservicios.servicios.Condicion> condicionesTransiciones(com.pangea.capadeservicios.servicios.Actividad actividad) {
         com.pangea.capadeservicios.servicios.GestionDeActividades port = service.getGestionDeActividadesPort();
         return port.condicionesTransiciones(actividad);
+    }
+
+    private WrResultado finalizarActividad(com.pangea.capadeservicios.servicios.Actividad actividadActual, com.pangea.capadeservicios.servicios.Sesion sesionActual, com.pangea.capadeservicios.servicios.Condicion condicionActual) {
+        com.pangea.capadeservicios.servicios.GestionDeActividades port = service.getGestionDeActividadesPort();
+        return port.finalizarActividad(actividadActual, sesionActual, condicionActual);
     }
 
     
