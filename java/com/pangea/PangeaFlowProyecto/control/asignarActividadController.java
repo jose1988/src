@@ -64,7 +64,7 @@ public class asignarActividadController {
      * Método para verificar si el usuario esta logueado
      */
     public boolean verificarLogueo() {
-        boolean bandera = false;
+        boolean bandera = false, sesionBd = false;
         try {
             //codigo para guardar sesion y usuario logueado, sino existe redireccionamos a index.xhtml
             FacesContext context = FacesContext.getCurrentInstance();
@@ -73,7 +73,8 @@ public class asignarActividadController {
             HttpSession SesionAbierta = (HttpSession) session;
             usuarioLogueo = (Usuario) (SesionAbierta.getAttribute("Usuario"));
             sesionLogueo = (Sesion) (SesionAbierta.getAttribute("Sesion"));
-            if (usuarioLogueo == null || sesionLogueo == null) {
+            sesionBd = logSesion(sesionLogueo);
+            if (usuarioLogueo == null || sesionLogueo == null || !sesionBd) {
                 bandera = true;
             }
         } catch (Exception e) {
@@ -98,5 +99,10 @@ public class asignarActividadController {
     private java.util.List<com.pangea.capadeservicios.servicios.Usuario> listarUsuarios(boolean borrado) {
         com.pangea.capadeservicios.servicios.GestionDeUsuarios port = service.getGestionDeUsuariosPort();
         return port.listarUsuarios(borrado);
+    }
+
+    private boolean logSesion(com.pangea.capadeservicios.servicios.Sesion sesionActual) {
+        com.pangea.capadeservicios.servicios.GestionDeControlDeUsuarios port = service_1.getGestionDeControlDeUsuariosPort();
+        return port.logSesion(sesionActual);
     }
 }
