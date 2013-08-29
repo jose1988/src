@@ -111,7 +111,7 @@ public class logIntOutController {
             //Se Crea la sesión llamada usuarioSesion junto con el objeto usuario
             FacesContext context = FacesContext.getCurrentInstance();
             ExternalContext externalContext = context.getExternalContext();
-            Object session = externalContext.getSession(false);
+            Object session = externalContext.getSession(true);
             HttpSession httpSession = (HttpSession) session;
             httpSession.invalidate();
             httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
