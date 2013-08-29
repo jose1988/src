@@ -100,6 +100,7 @@ public class loginController {
             i++;
         }
         estadoSeleccionado = estact.getChildren().get(0);
+        estact.getChildren().get(0).setSelected(true);
         int j = 0;
         activi = new Actividad();
         activi.setEstado(estados.get(j));
