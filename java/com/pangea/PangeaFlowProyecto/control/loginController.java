@@ -3,6 +3,7 @@
  * and open the template in the editor.
  */
 package com.pangea.PangeaFlowProyecto.control;
+
 import com.pangea.capadeservicios.servicios.Post;
 import com.pangea.capadeservicios.servicios.Usuario;
 import com.pangea.capadeservicios.servicios.Bandeja;
@@ -32,56 +33,35 @@ import org.primefaces.model.TreeNode;
 /**
  * @author Pangea
  */
-
 @ManagedBean(name = "loginController")
 @SessionScoped
-
 public class loginController {
+
     @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_15362/CapaDeServicios/GestionDeActividades.wsdl")
     private GestionDeActividades_Service service_1;
     @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_15362/CapaDeServicios/Mensajeria.wsdl")
     private Mensajeria_Service service;
-   
     private TreeNode mailboxes;
-
     private List<Post> mails;
-    
     private List<WrBandeja> ban;
-
     private Post mail;
-
     private TreeNode mailbox;
-    
     private Usuario idusu;
-    
     private WrBandeja bande;
     private WrPost bandej;
-    
-    
-     private TreeNode estact;
-
-    
-     private Actividad activi;
-     private List<String> estados;
-     private TreeNode estadoSeleccionado;
-
-    
-     private WrActividad actividad;
-     private List<Actividad> actividades;
-     private Actividad act;
-     private WrResultado resul;
-    
-     private Sesion ses;
-     private Condicion cond;
-    
+    private TreeNode estact;
+    private Actividad activi;
+    private List<String> estados;
+    private TreeNode estadoSeleccionado;
+    private WrActividad actividad;
+    private List<Actividad> actividades;
+    private Actividad act;
+    private WrResultado resul;
+    private Sesion ses;
+    private Condicion cond;
     private Bandeja idban;
-    
-            FacesContext context = FacesContext.getCurrentInstance();
-            ExternalContext externalContext = context.getExternalContext();
-            Object session = externalContext.getSession(false);
-            HttpSession httpSession = (HttpSession) session;
-  
-     public TreeNode getEstadoSeleccionado() {
+
+    public TreeNode getEstadoSeleccionado() {
         return estadoSeleccionado;
     }
 
@@ -100,128 +80,130 @@ public class loginController {
     @PostConstruct
     public void init() {
         estact = new DefaultTreeNode("root", null);
-        idusu=new Usuario();
+        idusu = new Usuario();
         idusu.setId("thunder");
-         String icono;
-       // bande=consultarBandejas(idusu);
-         estados=buscarestados();
-        int i=0;
-        while (estados.size()>i){
-            if("abierta".equals(estados.get(i))){
-             icono="s"; 
-            }else if("pendiente".equals(estados.get(i))){
-             icono="t"; 
-            }else if("cerrada".equals(estados.get(i))){
-             icono="i"; 
-            }else{
-            icono="j";
+        String icono;
+        // bande=consultarBandejas(idusu);
+        estados = buscarestados();
+        int i = 0;
+        while (estados.size() > i) {
+            if ("abierta".equals(estados.get(i))) {
+                icono = "s";
+            } else if ("pendiente".equals(estados.get(i))) {
+                icono = "t";
+            } else if ("cerrada".equals(estados.get(i))) {
+                icono = "i";
+            } else {
+                icono = "j";
             }
-        TreeNode inbox = new DefaultTreeNode(icono,estados.get(i), estact);
-       i++;
+            TreeNode inbox = new DefaultTreeNode(icono, estados.get(i), estact);
+            i++;
         }
-        estadoSeleccionado=estact.getChildren().get(0);
-          int j=0;  
-       activi= new Actividad(); 
-       activi.setEstado(estados.get(j));
-      actividad=consultarActividades(idusu, activi);
-      actividades=new ArrayList<Actividad>();
-      if(actividad.getActividads().isEmpty())
-          actividades=null;
-      while (actividad.getActividads().size()>j){
-          act= actividad.getActividads().get(j);
-       actividades.add(act);
-         j++;
-        } 
-       
+        estadoSeleccionado = estact.getChildren().get(0);
+        int j = 0;
+        activi = new Actividad();
+        activi.setEstado(estados.get(j));
+        actividad = consultarActividades(idusu, activi);
+        actividades = new ArrayList<Actividad>();
+        if (actividad.getActividads().isEmpty()) {
+            actividades = null;
+        }
+        while (actividad.getActividads().size() > j) {
+            act = actividad.getActividads().get(j);
+            actividades.add(act);
+            j++;
+        }
+
     }
-    
-  
-     public void onNodeSelect(NodeSelectEvent event) {  
-         int j=0;  
-      
-        activi= new Actividad(); 
-       activi.setEstado(event.getTreeNode().toString());
-      actividad=consultarActividades(idusu, activi);
-      actividades=new ArrayList<Actividad>();
-      if(actividad.getActividads().isEmpty())
-          actividades=null;
-      while (actividad.getActividads().size()>j){
-          act= actividad.getActividads().get(j);
-       actividades.add(act);
-         j++;
-        } 
-       
-    } 
-     
- public void cambiarestado(Actividad act){
-      ses=new Sesion();
-     ses.setIdUsuario(idusu);
-   resul=iniciarActividad(act,ses);
-   FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(resul.getEstatus()));
-    int j=0;  
-       activi= new Actividad(); 
-       activi.setEstado(estadoSeleccionado.toString());
-      actividad=consultarActividades(idusu, activi);
-      actividades=new ArrayList<Actividad>();
-      if(actividad.getActividads().isEmpty())
-          actividades=null;
-      while (actividad.getActividads().size()>j){
-          act= actividad.getActividads().get(j);
-       actividades.add(act);
-         j++;
-        } 
- }     
- 
- public void finalizaract(){
-     
-     System.out.println(act.getId());
-              httpSession.invalidate();
-            httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-            httpSession.setAttribute("actividadactual", act);
 
-            try {
-                FacesContext contex = FacesContext.getCurrentInstance();
-                  contex.getExternalContext().redirect("/PangeaFlowProyecto/faces/finalizarActividad.xhtml");
-                   } catch (Exception e) {
-                System.out.println("----------------------------Error---------------------------------" + e);
-            }  
-}
- 
+    public void onNodeSelect(NodeSelectEvent event) {
+        int j = 0;
 
- 
- public void cerraractividad(Actividad act){
-     
-     ses=new Sesion();
-     ses.setIdUsuario(idusu);
-     cond=new Condicion();
-     cond.setEstado("activa");
-   resul=finalizarActividad(act,ses,cond);
-   
-   FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(resul.getEstatus()));
-    int j=0;  
-       activi= new Actividad(); 
-       activi.setEstado(estadoSeleccionado.toString());
-      actividad=consultarActividades(idusu, activi);
-      actividades=new ArrayList<Actividad>();
-      if(actividad.getActividads().isEmpty())
-          actividades=null;
-      while (actividad.getActividads().size()>j){
-          act= actividad.getActividads().get(j);
-       actividades.add(act);
-         j++;
-        } 
- }     
-    
-     public TreeNode getSelectedNode() {  
-        return estact;  
-    }  
-  
-    public void setSelectedNode(TreeNode selectedNode) {  
-        this.estact = selectedNode;  
-    }  
-   
+        activi = new Actividad();
+        activi.setEstado(event.getTreeNode().toString());
+        actividad = consultarActividades(idusu, activi);
+        actividades = new ArrayList<Actividad>();
+        if (actividad.getActividads().isEmpty()) {
+            actividades = null;
+        }
+        while (actividad.getActividads().size() > j) {
+            act = actividad.getActividads().get(j);
+            actividades.add(act);
+            j++;
+        }
 
-     public Usuario getIdusu() {
+    }
+
+    public void cambiarestado(Actividad act) {
+        ses = new Sesion();
+        ses.setIdUsuario(idusu);
+        resul = iniciarActividad(act, ses);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(resul.getEstatus()));
+        int j = 0;
+        activi = new Actividad();
+        activi.setEstado(estadoSeleccionado.toString());
+        actividad = consultarActividades(idusu, activi);
+        actividades = new ArrayList<Actividad>();
+        if (actividad.getActividads().isEmpty()) {
+            actividades = null;
+        }
+        while (actividad.getActividads().size() > j) {
+            act = actividad.getActividads().get(j);
+            actividades.add(act);
+            j++;
+        }
+    }
+
+    public void finalizaract() {
+
+        System.out.println(act.getId());
+
+        FacesContext fc = FacesContext.getCurrentInstance();
+        ExternalContext ec = fc.getExternalContext();
+
+        HttpSession sesion = (HttpSession) ec.getSession(true);
+        sesion.setAttribute("actividadactual", act);
+
+        try {
+             ec.redirect("/PangeaFlowProyecto/faces/finalizarActividad.xhtml");
+        } catch (Exception e) {
+            System.out.println("----------------------------Error---------------------------------" + e);
+        }
+    }
+
+    public void cerraractividad(Actividad act) {
+
+        ses = new Sesion();
+        ses.setIdUsuario(idusu);
+        cond = new Condicion();
+        cond.setEstado("activa");
+        resul = finalizarActividad(act, ses, cond);
+
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(resul.getEstatus()));
+        int j = 0;
+        activi = new Actividad();
+        activi.setEstado(estadoSeleccionado.toString());
+        actividad = consultarActividades(idusu, activi);
+        actividades = new ArrayList<Actividad>();
+        if (actividad.getActividads().isEmpty()) {
+            actividades = null;
+        }
+        while (actividad.getActividads().size() > j) {
+            act = actividad.getActividads().get(j);
+            actividades.add(act);
+            j++;
+        }
+    }
+
+    public TreeNode getSelectedNode() {
+        return estact;
+    }
+
+    public void setSelectedNode(TreeNode selectedNode) {
+        this.estact = selectedNode;
+    }
+
+    public Usuario getIdusu() {
         return idusu;
     }
 
@@ -252,6 +234,7 @@ public class loginController {
     public void setAct(Actividad act) {
         this.act = act;
     }
+
     public TreeNode getMailboxes() {
         return mailboxes;
     }
@@ -263,7 +246,8 @@ public class loginController {
     public Post getMail() {
         return mail;
     }
-     public TreeNode getEstact() {
+
+    public TreeNode getEstact() {
         return estact;
     }
 
@@ -282,17 +266,18 @@ public class loginController {
     public void setMailbox(TreeNode mailbox) {
         this.mailbox = mailbox;
     }
- public List<String> getEstados() {
+
+    public List<String> getEstados() {
         return estados;
     }
 
     public void setEstados(List<String> estados) {
         this.estados = estados;
     }
+
     public void send() {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Mail Sent!"));
     }
- 
 
     private static WrPost consultarMensajes(com.pangea.capadeservicios.servicios.Usuario usuarioActual, com.pangea.capadeservicios.servicios.Bandeja bandejaActual) {
         com.pangea.capadeservicios.servicios.Mensajeria_Service service = new com.pangea.capadeservicios.servicios.Mensajeria_Service();
@@ -329,8 +314,6 @@ public class loginController {
         return port.consultarActividades(usuarioActual, actividadActual);
     }
 
-    
-
     private WrResultado finalizarActividad(com.pangea.capadeservicios.servicios.Actividad actividadActual, com.pangea.capadeservicios.servicios.Sesion sesionActual, com.pangea.capadeservicios.servicios.Condicion condicionActual) {
         com.pangea.capadeservicios.servicios.GestionDeActividades port = service_1.getGestionDeActividadesPort();
         return port.finalizarActividad(actividadActual, sesionActual, condicionActual);
@@ -345,9 +328,4 @@ public class loginController {
         com.pangea.capadeservicios.servicios.GestionDeActividades port = service_1.getGestionDeActividadesPort();
         return port.buscarestados();
     }
-
-  
- 
-    
-
 }
