@@ -4,12 +4,15 @@
  */
 package com.pangea.PangeaFlowProyecto.control;
 
+import com.pangea.capadeservicios.servicios.GestionDeControlDeUsuarios_Service;
 import com.pangea.capadeservicios.servicios.GestionDeUsuarios_Service;
 import com.pangea.capadeservicios.servicios.Sesion;
 import com.pangea.capadeservicios.servicios.Usuario;
+import com.pangea.capadeservicios.servicios.WrResultado;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
@@ -24,16 +27,14 @@ import javax.xml.ws.WebServiceRef;
 @SessionScoped
 public class asignarActividadController {
 
+    @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_15362/CapaDeServicios/GestionDeControlDeUsuarios.wsdl")
+    private GestionDeControlDeUsuarios_Service service_1;
     @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_15362/CapaDeServicios/GestionDeUsuarios.wsdl")
     private GestionDeUsuarios_Service service;
     private List<Usuario> usuarios, lista;
     private Usuario usu;
     Usuario usuarioLogueo;
     Sesion sesionLogueo;
-    FacesContext context = FacesContext.getCurrentInstance();
-    ExternalContext externalContext = context.getExternalContext();
-    Object session = externalContext.getSession(true);
-    HttpSession SesionAbierta = (HttpSession) session;
 
     public List<Usuario> getUsuarios() {
         return usuarios;
@@ -66,6 +67,10 @@ public class asignarActividadController {
         boolean bandera = false;
         try {
             //codigo para guardar sesion y usuario logueado, sino existe redireccionamos a index.xhtml
+            FacesContext context = FacesContext.getCurrentInstance();
+            ExternalContext externalContext = context.getExternalContext();
+            Object session = externalContext.getSession(true);
+            HttpSession SesionAbierta = (HttpSession) session;
             usuarioLogueo = (Usuario) (SesionAbierta.getAttribute("Usuario"));
             sesionLogueo = (Sesion) (SesionAbierta.getAttribute("Sesion"));
             if (usuarioLogueo == null || sesionLogueo == null) {
