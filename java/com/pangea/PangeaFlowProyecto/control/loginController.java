@@ -21,7 +21,9 @@ import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import javax.xml.ws.WebServiceRef;
 import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.model.DefaultTreeNode;
@@ -58,8 +60,7 @@ public class loginController {
     
      private TreeNode estact;
 
-     private Actividad actualactividad;
-     private Usuario actualusuario;
+    
      private Actividad activi;
      private List<String> estados;
      private TreeNode estadoSeleccionado;
@@ -74,6 +75,11 @@ public class loginController {
      private Condicion cond;
     
     private Bandeja idban;
+    
+            FacesContext context = FacesContext.getCurrentInstance();
+            ExternalContext externalContext = context.getExternalContext();
+            Object session = externalContext.getSession(false);
+            HttpSession httpSession = (HttpSession) session;
   
      public TreeNode getEstadoSeleccionado() {
         return estadoSeleccionado;
@@ -169,9 +175,13 @@ public class loginController {
  public void finalizaract(){
      
      System.out.println(act.getId());
+              httpSession.invalidate();
+            httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+            httpSession.setAttribute("actividadactual", act);
 
             try {
                 FacesContext contex = FacesContext.getCurrentInstance();
+                  contex.getExternalContext().redirect("/PangeaFlowProyecto/faces/finalizarActividad.xhtml");
                    } catch (Exception e) {
                 System.out.println("----------------------------Error---------------------------------" + e);
             }  
@@ -282,21 +292,7 @@ public class loginController {
     public void send() {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Mail Sent!"));
     }
-    public Actividad getActualactividad() {
-        return actualactividad;
-    }
-
-    public void setActualactividad(Actividad actualactividad) {
-        this.actualactividad = actualactividad;
-    }
-
-    public Usuario getActualusuario() {
-        return actualusuario;
-    }
-
-    public void setActualusuario(Usuario actualusuario) {
-        this.actualusuario = actualusuario;
-    }
+ 
 
     private static WrPost consultarMensajes(com.pangea.capadeservicios.servicios.Usuario usuarioActual, com.pangea.capadeservicios.servicios.Bandeja bandejaActual) {
         com.pangea.capadeservicios.servicios.Mensajeria_Service service = new com.pangea.capadeservicios.servicios.Mensajeria_Service();

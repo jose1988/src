@@ -60,6 +60,10 @@
 
 <xs:element name="condicion" type="tns:condicion"/>
 
+<xs:element name="condiciones_transiciones" type="tns:condiciones_transiciones"/>
+
+<xs:element name="condiciones_transicionesResponse" type="tns:condiciones_transicionesResponse"/>
+
 <xs:element name="documento" type="tns:documento"/>
 
 <xs:element name="equivalenciaTiempo" type="tns:equivalenciaTiempo"/>
@@ -367,6 +371,29 @@
 </xs:sequence>
 </xs:complexType>
 
+<xs:complexType name="condiciones_transiciones">
+<xs:sequence>
+<xs:element ref="tns:actividad" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="condiciones_transicionesResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:condicion" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="condicion">
+<xs:sequence>
+<xs:element name="borrado" type="xs:boolean"/>
+<xs:element name="descripcion" type="xs:string" minOccurs="0"/>
+<xs:element name="documentacion" type="xs:string" minOccurs="0"/>
+<xs:element name="estado" type="xs:string" minOccurs="0"/>
+<xs:element name="id" type="xs:long" minOccurs="0"/>
+<xs:element name="nombre" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
 <xs:complexType name="ConsumirCola">
 <xs:sequence>
 <xs:element name="actividadActual" type="tns:actividad" minOccurs="0"/>
@@ -536,17 +563,6 @@
 <xs:element name="actividadActual" type="tns:actividad" minOccurs="0"/>
 <xs:element name="sesionActual" type="tns:sesion" minOccurs="0"/>
 <xs:element name="condicionActual" type="tns:condicion" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="condicion">
-<xs:sequence>
-<xs:element name="borrado" type="xs:boolean"/>
-<xs:element name="descripcion" type="xs:string" minOccurs="0"/>
-<xs:element name="documentacion" type="xs:string" minOccurs="0"/>
-<xs:element name="estado" type="xs:string" minOccurs="0"/>
-<xs:element name="id" type="xs:long" minOccurs="0"/>
-<xs:element name="nombre" type="xs:string" minOccurs="0"/>
 </xs:sequence>
 </xs:complexType>
 
