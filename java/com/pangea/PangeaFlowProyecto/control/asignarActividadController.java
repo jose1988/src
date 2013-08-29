@@ -47,7 +47,7 @@ public class asignarActividadController {
     public void init() {
         //codigo para guardar la lista de usuarios
         int j = 0;
-        lista = listarUsuarios();
+        lista = listarUsuarios(false);
         usuarios = new ArrayList<Usuario>();
         if (lista.isEmpty()) {
             usuarios = null;
@@ -64,12 +64,17 @@ public class asignarActividadController {
      */
     public boolean verificarLogueo() {
         boolean bandera = false;
-        //codigo para guardar sesion y usuario logueado, sino existe redireccionamos a index.xhtml
-        usuarioLogueo = (Usuario) (SesionAbierta.getAttribute("Usuario"));
-        sesionLogueo = (Sesion) (SesionAbierta.getAttribute("Sesion"));
-        if (usuarioLogueo == null || sesionLogueo == null) {
+        try {
+            //codigo para guardar sesion y usuario logueado, sino existe redireccionamos a index.xhtml
+            usuarioLogueo = (Usuario) (SesionAbierta.getAttribute("Usuario"));
+            sesionLogueo = (Sesion) (SesionAbierta.getAttribute("Sesion"));
+            if (usuarioLogueo == null || sesionLogueo == null) {
+                bandera = true;
+            }
+        } catch (Exception e) {
             bandera = true;
         }
+
         return bandera;
     }
 
@@ -85,8 +90,8 @@ public class asignarActividadController {
         }
     }
 
-    private java.util.List<com.pangea.capadeservicios.servicios.Usuario> listarUsuarios() {
+    private java.util.List<com.pangea.capadeservicios.servicios.Usuario> listarUsuarios(boolean borrado) {
         com.pangea.capadeservicios.servicios.GestionDeUsuarios port = service.getGestionDeUsuariosPort();
-        return port.listarUsuarios();
+        return port.listarUsuarios(borrado);
     }
 }

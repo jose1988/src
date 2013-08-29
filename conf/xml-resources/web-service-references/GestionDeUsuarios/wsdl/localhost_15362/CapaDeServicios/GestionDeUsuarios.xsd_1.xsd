@@ -123,7 +123,9 @@
 </xs:complexType>
 
 <xs:complexType name="listarUsuarios">
-<xs:sequence/>
+<xs:sequence>
+<xs:element name="borrado" type="xs:boolean"/>
+</xs:sequence>
 </xs:complexType>
 
 <xs:complexType name="listarUsuariosResponse">
