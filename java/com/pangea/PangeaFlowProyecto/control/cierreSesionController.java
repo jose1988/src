@@ -28,12 +28,12 @@ public class cierreSesionController {
     private GestionDeControlDeUsuarios_Service service;
     Usuario usuarioLogueo;
     Sesion sesionLogueo;
-    FacesContext context = FacesContext.getCurrentInstance();
-    ExternalContext externalContext = context.getExternalContext();
-    Object session = externalContext.getSession(true);
-    HttpSession sesionAbierta = (HttpSession) session;
 
     public void Cerrar() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        ExternalContext externalContext = context.getExternalContext();
+        Object session = externalContext.getSession(true);
+        HttpSession sesionAbierta = (HttpSession) session;
         usuarioLogueo = (Usuario) (sesionAbierta.getAttribute("Usuario"));
         WrResultado envoltorio = logOut(usuarioLogueo);
         if (envoltorio.getEstatus().compareTo("OK") == 0) {
