@@ -188,12 +188,14 @@ public class actividadController {
             i++;
         }
         
-        /**Lista de Actividades con estado pendiente*/
+        /**
+         * Lista de Actividades con estado pendientey que no han sido borradas
+         */
         estadoSeleccionado = estact.getChildren().get(0);
         int j=0;  
         activi= new Actividad(); 
         activi.setEstado(estados.get(j));
-        actividad=listarActividades("pendiente");
+        actividad=listarActividades("pendiente", false);
         actividades=new ArrayList<Actividad>();
         if(actividad.isEmpty())
             actividades=null;
@@ -204,11 +206,14 @@ public class actividadController {
         } 
     }
   
-     public void onNodeSelect(NodeSelectEvent event) {  
+     public void onNodeSelect(NodeSelectEvent event) {
+        /**
+         * Lista de Actividades con estado pendientey que no han sido borradas
+         */
         int j=0;  
         activi= new Actividad(); 
         activi.setEstado(event.getTreeNode().toString());
-        actividad=listarActividades("pendiente");
+        actividad=listarActividades("pendiente", false);
         actividades=new ArrayList<Actividad>();
         if(actividad.isEmpty())
             actividades=null;
@@ -225,7 +230,9 @@ public class actividadController {
     public boolean verificarLogueo() {
         boolean bandera = false;
         try {
-            //codigo para guardar sesion y usuario logueado, sino existe redireccionamos a index.xhtml
+            /**
+             * Codigo para guardar sesion y usuario logueado, sino existe redireccionamos a index.xhtml
+             */
             
             FacesContext context = FacesContext.getCurrentInstance();
             ExternalContext externalContext = context.getExternalContext();
@@ -291,11 +298,9 @@ public class actividadController {
         return port.buscarestados();
     }
 
-    private java.util.List<com.pangea.capadeservicios.servicios.Actividad> listarActividades(java.lang.String estado) {
+    private java.util.List<com.pangea.capadeservicios.servicios.Actividad> listarActividades(java.lang.String estado, boolean borrado) {
         com.pangea.capadeservicios.servicios.GestionDeActividades port = service_1.getGestionDeActividadesPort();
-        return port.listarActividades(estado);
+        return port.listarActividades(estado, borrado);
     }
-    
-    
 
 }
