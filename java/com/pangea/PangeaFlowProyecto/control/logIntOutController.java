@@ -56,18 +56,34 @@ public class logIntOutController {
      */
     Sesion sesionUsuario;
 
+    /**
+     *
+     * @return
+     */
     public String getUser() {
         return User;
     }
 
+    /**
+     *
+     * @param User
+     */
     public void setUser(String User) {
         this.User = User;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getContrasena() {
         return Contrasena;
     }
 
+    /**
+     *
+     * @param Contrasena
+     */
     public void setContrasena(String Contrasena) {
         this.Contrasena = Contrasena;
     }
@@ -83,6 +99,7 @@ public class logIntOutController {
         usuarioLogeo = new Usuario();
         usuarioLogeo.setId(User);
         usuarioLogeo.setClave(Contrasena);
+
         NetworkInterface Address;
         StringBuilder direccionMac = new StringBuilder();
         try {
@@ -117,12 +134,22 @@ public class logIntOutController {
             httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
             httpSession.setAttribute("Usuario", usuarioSesion);
             httpSession.setAttribute("Sesion", envoltorio.getSesions().get(0));
-            try {
-                FacesContext contex = FacesContext.getCurrentInstance();
-                contex.getExternalContext().redirect("/PangeaFlowProyecto/faces/actividadusuario.xhtml");
-            } catch (Exception e) {
-                System.out.println("----------------------------Error---------------------------------" + e);
+            if (usuarioSesion.getIdClasificacionUsuario().getId() == 1) {
+                try {
+                    FacesContext contex = FacesContext.getCurrentInstance();
+                    contex.getExternalContext().redirect("/PangeaFlowProyecto/faces/actividad.xhtml");
+                } catch (Exception e) {
+                    System.out.println("----------------------------Error---------------------------------" + e);
+                }
+            } else {
+                try {
+                    FacesContext contex = FacesContext.getCurrentInstance();
+                    contex.getExternalContext().redirect("/PangeaFlowProyecto/faces/actividadusuario.xhtml");
+                } catch (Exception e) {
+                    System.out.println("----------------------------Error---------------------------------" + e);
+                }
             }
+
         } else {
             mostrarMensaje(1, "Advertencia", envoltorio.getObservacion());
         }
@@ -171,6 +198,12 @@ public class logIntOutController {
         return port.logOut(usuarioActual);
     }
 
+    /**
+     *
+     * @param opcMensaje
+     * @param cabeceraMensaje
+     * @param cuerpoMensaje
+     */
     public void mostrarMensaje(int opcMensaje, String cabeceraMensaje, String cuerpoMensaje) {
         //0 informacón 1 advertenciA 2 error 3 fatal
         FacesContext context = FacesContext.getCurrentInstance();
