@@ -8,6 +8,10 @@
 
 <xs:element name="LogOutResponse" type="tns:LogOutResponse"/>
 
+<xs:element name="LogSesion" type="tns:LogSesion"/>
+
+<xs:element name="LogSesionResponse" type="tns:LogSesionResponse"/>
+
 <xs:element name="clasificacionUsuario" type="tns:clasificacionUsuario"/>
 
 <xs:element name="organizacion" type="tns:organizacion"/>
@@ -101,7 +105,7 @@
 </xs:sequence>
 </xs:complexType>
 
-<xs:complexType name="LogIn">
+<xs:complexType name="LogSesion">
 <xs:sequence>
 <xs:element name="sesionActual" type="tns:sesion" minOccurs="0"/>
 </xs:sequence>
@@ -116,6 +120,18 @@
 <xs:element name="id" type="xs:long" minOccurs="0"/>
 <xs:element name="idUsuario" type="tns:usuario" minOccurs="0"/>
 <xs:element name="ip" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="LogSesionResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:boolean"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="LogIn">
+<xs:sequence>
+<xs:element name="sesionActual" type="tns:sesion" minOccurs="0"/>
 </xs:sequence>
 </xs:complexType>
 
