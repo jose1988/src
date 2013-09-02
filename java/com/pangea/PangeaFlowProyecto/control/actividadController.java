@@ -55,126 +55,249 @@ public class actividadController {
     
     
     
+    /**
+     *
+     * @return
+     */
     public ClasificacionUsuario getIdcla() {
         return idcla;
     }
 
+    /**
+     *
+     * @param idcla
+     */
     public void setIdcla(ClasificacionUsuario idcla) {
         this.idcla = idcla;
     }
 
+    /**
+     *
+     * @return
+     */
     public ClasificacionUsuario getIdclasi() {
         return idclasi;
     }
 
+    /**
+     *
+     * @param idclasi
+     */
     public void setIdclasi(ClasificacionUsuario idclasi) {
         this.idclasi = idclasi;
     }
     
+    /**
+     *
+     * @return
+     */
     public Actividad getId() {
         return id;
     }
 
+    /**
+     *
+     * @param id
+     */
     public void setId(Actividad id) {
         this.id = id;
     }
   
+    /**
+     *
+     * @return
+     */
     public TreeNode getEstadoSeleccionado() {
         return estadoSeleccionado;
     }
 
+    /**
+     *
+     * @param estadoSeleccionado
+     */
     public void setEstadoSeleccionado(TreeNode estadoSeleccionado) {
         this.estadoSeleccionado = estadoSeleccionado;
     }
 
+    /**
+     *
+     * @param mailboxes
+     */
     public void setMailboxes(TreeNode mailboxes) {
         this.mailboxes = mailboxes;
     }
 
+    /**
+     *
+     * @param mails
+     */
     public void setMails(List<Post> mails) {
         this.mails = mails;
     }
 
+    /**
+     *
+     * @return
+     */
     public TreeNode getSelectedNode() {  
         return estact;  
     }  
   
+    /**
+     *
+     * @param selectedNode
+     */
     public void setSelectedNode(TreeNode selectedNode) {  
         this.estact = selectedNode;  
     }  
    
+    /**
+     *
+     * @return
+     */
     public Usuario getIdusu() {
         return idusu;
     }
 
+    /**
+     *
+     * @param idusu
+     */
     public void setIdusu(Usuario idusu) {
         this.idusu = idusu;
     }
 
+    /**
+     *
+     * @return
+     */
     public Actividad getActivi() {
         return activi;
     }
 
+    /**
+     *
+     * @param activi
+     */
     public void setActivi(Actividad activi) {
         this.activi = activi;
     }
 
+    /**
+     *
+     * @return
+     */
     public List<Actividad> getActividades() {
         return actividades;
     }
 
+    /**
+     *
+     * @param actividades
+     */
     public void setActividades(List<Actividad> actividades) {
         this.actividades = actividades;
     }
 
+    /**
+     *
+     * @return
+     */
     public Actividad getAct() {
         return act;
     }
 
+    /**
+     *
+     * @param act
+     */
     public void setAct(Actividad act) {
         this.act = act;
     }
     
+    /**
+     *
+     * @return
+     */
     public TreeNode getMailboxes() {
         return mailboxes;
     }
 
+    /**
+     *
+     * @return
+     */
     public List<Post> getMails() {
         return mails;
     }
 
+    /**
+     *
+     * @return
+     */
     public Post getMail() {
         return mail;
     }
     
+    /**
+     *
+     * @return
+     */
     public TreeNode getEstact() {
         return estact;
     }
 
+    /**
+     *
+     * @param estact
+     */
     public void setEstact(TreeNode estact) {
         this.estact = estact;
     }
 
+    /**
+     *
+     * @param mail
+     */
     public void setMail(Post mail) {
         this.mail = mail;
     }
 
+    /**
+     *
+     * @return
+     */
     public TreeNode getMailbox() {
         return mailbox;
     }
 
+    /**
+     *
+     * @param mailbox
+     */
     public void setMailbox(TreeNode mailbox) {
         this.mailbox = mailbox;
     }
     
+    /**
+     *
+     * @return
+     */
     public List<String> getEstados() {
         return estados;
     }
 
+    /**
+     *
+     * @param estados
+     */
     public void setEstados(List<String> estados) {
         this.estados = estados;
     }
     
+    /**
+     *
+     */
     @PostConstruct
     public void init() {
         
@@ -188,12 +311,14 @@ public class actividadController {
             i++;
         }
         
-        /**Lista de Actividades con estado pendiente*/
+        /**
+         * Lista de Actividades con estado pendientey que no han sido borradas
+         */
         estadoSeleccionado = estact.getChildren().get(0);
         int j=0;  
         activi= new Actividad(); 
         activi.setEstado(estados.get(j));
-        actividad=listarActividades("pendiente");
+        actividad=listarActividades("pendiente", false);
         actividades=new ArrayList<Actividad>();
         if(actividad.isEmpty())
             actividades=null;
@@ -204,11 +329,18 @@ public class actividadController {
         } 
     }
   
-     public void onNodeSelect(NodeSelectEvent event) {  
+     /**
+     *
+     * @param event
+     */
+    public void onNodeSelect(NodeSelectEvent event) {
+        /**
+         * Lista de Actividades con estado pendientey que no han sido borradas
+         */
         int j=0;  
         activi= new Actividad(); 
         activi.setEstado(event.getTreeNode().toString());
-        actividad=listarActividades("pendiente");
+        actividad=listarActividades("pendiente", false);
         actividades=new ArrayList<Actividad>();
         if(actividad.isEmpty())
             actividades=null;
@@ -221,11 +353,14 @@ public class actividadController {
      
      /**
      * Método para verificar si el usuario esta logueado
+     * @return 
      */
     public boolean verificarLogueo() {
         boolean bandera = false;
         try {
-            //codigo para guardar sesion y usuario logueado, sino existe redireccionamos a index.xhtml
+            /**
+             * Codigo para guardar sesion y usuario logueado, sino existe redireccionamos a index.xhtml
+             */
             
             FacesContext context = FacesContext.getCurrentInstance();
             ExternalContext externalContext = context.getExternalContext();
@@ -291,11 +426,9 @@ public class actividadController {
         return port.buscarestados();
     }
 
-    private java.util.List<com.pangea.capadeservicios.servicios.Actividad> listarActividades(java.lang.String estado) {
+    private java.util.List<com.pangea.capadeservicios.servicios.Actividad> listarActividades(java.lang.String estado, boolean borrado) {
         com.pangea.capadeservicios.servicios.GestionDeActividades port = service_1.getGestionDeActividadesPort();
-        return port.listarActividades(estado);
+        return port.listarActividades(estado, borrado);
     }
-    
-    
 
 }
