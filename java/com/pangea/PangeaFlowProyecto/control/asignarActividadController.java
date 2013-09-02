@@ -4,6 +4,8 @@
  */
 package com.pangea.PangeaFlowProyecto.control;
 
+import com.pangea.capadeservicios.servicios.Actividad;
+import com.pangea.capadeservicios.servicios.GestionDeActividades_Service;
 import com.pangea.capadeservicios.servicios.GestionDeControlDeUsuarios_Service;
 import com.pangea.capadeservicios.servicios.GestionDeUsuarios_Service;
 import com.pangea.capadeservicios.servicios.Sesion;
@@ -27,6 +29,8 @@ import javax.xml.ws.WebServiceRef;
 @SessionScoped
 public class asignarActividadController {
 
+    @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_15362/CapaDeServicios/GestionDeActividades.wsdl")
+    private GestionDeActividades_Service service_2;
     @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_15362/CapaDeServicios/GestionDeControlDeUsuarios.wsdl")
     private GestionDeControlDeUsuarios_Service service_1;
     @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_15362/CapaDeServicios/GestionDeUsuarios.wsdl")
@@ -58,6 +62,22 @@ public class asignarActividadController {
             usuarios.add(usu);
             j++;
         }
+    }
+
+    public void asignacionActividad() {
+
+        Actividad actividadAsignada = new Actividad();
+        actividadAsignada.setId((long) 14);
+        WrResultado envoltorio = asignarActividad(actividadAsignada, usuarioLogueo);
+        if (envoltorio.getEstatus().compareTo("OK") == 0) {
+            try {
+                FacesContext contex = FacesContext.getCurrentInstance();
+                contex.getExternalContext().redirect("/PangeaFlowProyecto/faces/actividad.xhtml");
+            } catch (Exception error) {
+                System.out.println("----------------------------Error---------------------------------" + error);
+            }
+        }
+
     }
 
     /**
@@ -96,6 +116,29 @@ public class asignarActividadController {
         }
     }
 
+    public void Desactivado() {
+
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
+                "Su sesión se cerrara", "Ud ha estado inactivo mas de 3 minutos"));
+
+
+
+    }
+
+    public void Cerrar() {
+        WrResultado result;
+        result = logOut(sesionLogueo);
+
+        FacesContext context = FacesContext.getCurrentInstance();
+        ExternalContext externalContext = context.getExternalContext();
+        Object session = externalContext.getSession(true);
+        HttpSession SesionAbierta = (HttpSession) session;
+        SesionAbierta.invalidate();
+       System.out.println("----------------------------oyeeeeee---------------------------------");
+  
+     //    Redireccionar();
+    }
+
     private java.util.List<com.pangea.capadeservicios.servicios.Usuario> listarUsuarios(boolean borrado) {
         com.pangea.capadeservicios.servicios.GestionDeUsuarios port = service.getGestionDeUsuariosPort();
         return port.listarUsuarios(borrado);
@@ -104,5 +147,15 @@ public class asignarActividadController {
     private boolean logSesion(com.pangea.capadeservicios.servicios.Sesion sesionActual) {
         com.pangea.capadeservicios.servicios.GestionDeControlDeUsuarios port = service_1.getGestionDeControlDeUsuariosPort();
         return port.logSesion(sesionActual);
+    }
+
+    private WrResultado asignarActividad(com.pangea.capadeservicios.servicios.Actividad actividadActual, com.pangea.capadeservicios.servicios.Usuario usuarioActual) {
+        com.pangea.capadeservicios.servicios.GestionDeActividades port = service_2.getGestionDeActividadesPort();
+        return port.asignarActividad(actividadActual, usuarioActual);
+    }
+
+    private WrResultado logOut(com.pangea.capadeservicios.servicios.Sesion sesionActual) {
+        com.pangea.capadeservicios.servicios.GestionDeControlDeUsuarios port = service_1.getGestionDeControlDeUsuariosPort();
+        return port.logOut(sesionActual);
     }
 }
