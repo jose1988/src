@@ -29,16 +29,21 @@ public class cierreSesionController {
     Usuario usuarioLogueo;
     Sesion sesionLogueo;
 
+    /**
+     *Metodo creado para el cierre de sesión del usuario en cuanto a las variables de sesión 
+     * y en cuanto a la base de datos
+     */
     public void Cerrar() {
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext externalContext = context.getExternalContext();
         Object session = externalContext.getSession(true);
         HttpSession sesionAbierta = (HttpSession) session;
-        usuarioLogueo = (Usuario) (sesionAbierta.getAttribute("Usuario"));
-        WrResultado envoltorio = logOut(usuarioLogueo);
+        sesionLogueo = (Sesion) (sesionAbierta.getAttribute("Sesion"));
+        WrResultado envoltorio = logOut(sesionLogueo);
         if (envoltorio.getEstatus().compareTo("OK") == 0) {
-            sesionAbierta.removeAttribute("Usuario");
-            sesionAbierta.removeAttribute("Sesion");
+//            sesionAbierta.removeAttribute("Usuario");
+//            sesionAbierta.removeAttribute("Sesion");
+            sesionAbierta.invalidate();
             try {
                 FacesContext contex = FacesContext.getCurrentInstance();
                 contex.getExternalContext().redirect("/PangeaFlowProyecto/faces/index.xhtml");
@@ -48,8 +53,10 @@ public class cierreSesionController {
         }
     }
 
-    private WrResultado logOut(com.pangea.capadeservicios.servicios.Usuario usuarioActual) {
+    private WrResultado logOut(com.pangea.capadeservicios.servicios.Sesion sesionActual) {
         com.pangea.capadeservicios.servicios.GestionDeControlDeUsuarios port = service.getGestionDeControlDeUsuariosPort();
-        return port.logOut(usuarioActual);
+        return port.logOut(sesionActual);
     }
+
+    
 }

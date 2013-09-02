@@ -67,7 +67,7 @@ public class asignarActividadController {
     public void asignacionActividad() {
 
         Actividad actividadAsignada = new Actividad();
-        actividadAsignada.setId((long)14);
+        actividadAsignada.setId((long) 14);
         WrResultado envoltorio = asignarActividad(actividadAsignada, usuarioLogueo);
         if (envoltorio.getEstatus().compareTo("OK") == 0) {
             try {
@@ -116,6 +116,29 @@ public class asignarActividadController {
         }
     }
 
+    public void Desactivado() {
+
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
+                "Su sesión se cerrara", "Ud ha estado inactivo mas de 3 minutos"));
+
+
+
+    }
+
+    public void Cerrar() {
+        WrResultado result;
+        result = logOut(sesionLogueo);
+
+        FacesContext context = FacesContext.getCurrentInstance();
+        ExternalContext externalContext = context.getExternalContext();
+        Object session = externalContext.getSession(true);
+        HttpSession SesionAbierta = (HttpSession) session;
+        SesionAbierta.invalidate();
+       System.out.println("----------------------------oyeeeeee---------------------------------");
+  
+     //    Redireccionar();
+    }
+
     private java.util.List<com.pangea.capadeservicios.servicios.Usuario> listarUsuarios(boolean borrado) {
         com.pangea.capadeservicios.servicios.GestionDeUsuarios port = service.getGestionDeUsuariosPort();
         return port.listarUsuarios(borrado);
@@ -129,5 +152,10 @@ public class asignarActividadController {
     private WrResultado asignarActividad(com.pangea.capadeservicios.servicios.Actividad actividadActual, com.pangea.capadeservicios.servicios.Usuario usuarioActual) {
         com.pangea.capadeservicios.servicios.GestionDeActividades port = service_2.getGestionDeActividadesPort();
         return port.asignarActividad(actividadActual, usuarioActual);
+    }
+
+    private WrResultado logOut(com.pangea.capadeservicios.servicios.Sesion sesionActual) {
+        com.pangea.capadeservicios.servicios.GestionDeControlDeUsuarios port = service_1.getGestionDeControlDeUsuariosPort();
+        return port.logOut(sesionActual);
     }
 }
