@@ -10,6 +10,7 @@ import com.pangea.capadeservicios.servicios.Bandeja;
 import com.pangea.capadeservicios.servicios.Actividad;
 import com.pangea.capadeservicios.servicios.Condicion;
 import com.pangea.capadeservicios.servicios.GestionDeActividades_Service;
+import com.pangea.capadeservicios.servicios.GestionDeGrupo_Service;
 import com.pangea.capadeservicios.servicios.Grupo;
 import com.pangea.capadeservicios.servicios.Mensajeria_Service;
 import com.pangea.capadeservicios.servicios.Sesion;
@@ -28,6 +29,7 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 import javax.xml.ws.WebServiceRef;
 import org.primefaces.event.NodeSelectEvent;
+import org.primefaces.event.TabChangeEvent;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 
@@ -37,6 +39,8 @@ import org.primefaces.model.TreeNode;
 @ManagedBean(name = "loginController")
 @SessionScoped
 public class loginController {
+    @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_15362/CapaDeServicios/GestionDeGrupo.wsdl")
+    private GestionDeGrupo_Service service_2;
 
     @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_15362/CapaDeServicios/GestionDeActividades.wsdl")
     private GestionDeActividades_Service service_1;
@@ -105,7 +109,7 @@ public class loginController {
         }
         
         TreeNode inbox = new DefaultTreeNode("s","Cola de Actividades", estact);
-        
+          grupos=this.gruposUsuario(idusu);
         estadoSeleccionado = estact.getChildren().get(0);
         estact.getChildren().get(0).setSelected(true);
         int j = 0;
@@ -118,13 +122,44 @@ public class loginController {
         }
         while (actividad.getActividads().size() > j) {
             act = actividad.getActividads().get(j);
+         if(act.getIdInstancia().getIdPeriodoGrupoProceso().getIdGrupo().getId().compareTo(grupos.get(0).getId())!=0) {
+            } else {
+                actividades.add(act);
+            }
+           
+            j++;
+        }
+        
+
+    }
+    public void recargarActividades(TabChangeEvent event)
+    {
+        activi = new Actividad();
+        activi.setEstado(estadoSeleccionado.getData().toString());
+         actividad = consultarActividades(idusu, activi);
+        actividades = new ArrayList<Actividad>();
+        if (actividad.getActividads().isEmpty()) {
+            actividades = null;
+        }
+        Grupo g=null;
+        for (int i = 0; i < grupos.size(); i++) {
+            if(grupos.get(i).getNombre().compareTo(event.getTab().getTitle())==0)
+                g=grupos.get(i);
+            
+        }
+        
+        int j = 0;
+        
+        while (actividad.getActividads().size() > j) {
+            act = actividad.getActividads().get(j);
+         if(act.getIdInstancia().getIdPeriodoGrupoProceso().getIdGrupo().getId().compareTo(g.getId())==0)
             actividades.add(act);
            
             j++;
         }
-
+        
+        
     }
-
     public void onNodeSelect(NodeSelectEvent event) {
         int j = 0;
         if("Cola de Actividades".equals(event.getTreeNode().toString())){
@@ -178,6 +213,7 @@ public class loginController {
             actividades.add(act);
             j++;
         }
+      
     }
 
     public void finalizaract() {
@@ -219,6 +255,7 @@ public class loginController {
             actividades.add(act);
             j++;
         }
+        
     }
 
     public TreeNode getSelectedNode() {
@@ -364,5 +401,10 @@ public class loginController {
     private WrActividad consultarActividadesCola(com.pangea.capadeservicios.servicios.Usuario usuarioActual) {
         com.pangea.capadeservicios.servicios.GestionDeActividades port = service_1.getGestionDeActividadesPort();
         return port.consultarActividadesCola(usuarioActual);
+    }
+
+    private java.util.List<com.pangea.capadeservicios.servicios.Grupo> gruposUsuario(com.pangea.capadeservicios.servicios.Usuario user) {
+        com.pangea.capadeservicios.servicios.GestionDeGrupo port = service_2.getGestionDeGrupoPort();
+        return port.gruposUsuario(user);
     }
 }

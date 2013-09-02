@@ -55,6 +55,7 @@ public class logIntOutController {
      * objeto de la clase de sesión
      */
     Sesion sesionUsuario;
+    Sesion sesionLogueo;
 
     /**
      *
@@ -158,28 +159,47 @@ public class logIntOutController {
     /**
      * metodo para hacer el Cerrar Sesión
      */
-    public void logeoOut() {
-        /**
-         * objeto envoltorio que obtiene si el usuario puede acceser o
-         * no.........
-         */
-        WrResultado envoltorioResult;
-        usuarioLogeo = new Usuario();
-        usuarioLogeo.setId(User);
-        envoltorioResult = logOut(usuarioLogeo);
-        System.out.println("nombre de usuario " + User);
-        System.out.println("ESTADO     " + envoltorioResult.getEstatus());
-        System.out.println("Observación     " + envoltorioResult.getObservacion());
-        if (envoltorioResult.getEstatus().compareTo("OK") == 0) {
-            try {
-                FacesContext contex = FacesContext.getCurrentInstance();
-                contex.getExternalContext().redirect("/PangeaFlowProyecto/faces/index.xhtml");
-            } catch (Exception e) {
-                System.out.println("----------------------------Error---------------------------------" + e);
-            }
-        } else {
-            System.out.println("FALLO-------------------------------");
+//    public void logeoOut() {
+//        /**
+//         * objeto envoltorio que obtiene si el usuario puede acceser o
+//         * no.........
+//         */
+//        WrResultado envoltorioResult;
+//        usuarioLogeo = new Usuario();
+//        usuarioLogeo.setId(User);
+//        envoltorioResult = logOut(usuarioLogeo);
+//        System.out.println("nombre de usuario " + User);
+//        System.out.println("ESTADO     " + envoltorioResult.getEstatus());
+//        System.out.println("Observación     " + envoltorioResult.getObservacion());
+//        if (envoltorioResult.getEstatus().compareTo("OK") == 0) {
+//            try {
+//                FacesContext contex = FacesContext.getCurrentInstance();
+//                contex.getExternalContext().redirect("/PangeaFlowProyecto/faces/index.xhtml");
+//            } catch (Exception e) {
+//                System.out.println("----------------------------Error---------------------------------" + e);
+//            }
+//        } else {
+//            System.out.println("FALLO-------------------------------");
+//        }
+//    }
+    public void Cerrar() {
+        try {
+            FacesContext context = FacesContext.getCurrentInstance();
+            ExternalContext externalContext = context.getExternalContext();
+            Object session = externalContext.getSession(true);
+            HttpSession SesionAbierta = (HttpSession) session;
+            sesionLogueo = (Sesion) (SesionAbierta.getAttribute("Sesion"));
+            WrResultado result;
+            result = logOut(sesionLogueo);
+            SesionAbierta.invalidate();
+            System.out.println("----------------------------oyeeeeee---------------------------------");
+        } catch (Exception e) {
         }
+
+
+
+
+        //    Redireccionar();
     }
 
     /**
@@ -188,14 +208,6 @@ public class logIntOutController {
     private WrSesion logIn(com.pangea.capadeservicios.servicios.Sesion sesionActual) {
         com.pangea.capadeservicios.servicios.GestionDeControlDeUsuarios port = service.getGestionDeControlDeUsuariosPort();
         return port.logIn(sesionActual);
-    }
-
-    /**
-     * Servicio consumido de la capa de servicios para cerrar sesión
-     */
-    private WrResultado logOut(com.pangea.capadeservicios.servicios.Usuario usuarioActual) {
-        com.pangea.capadeservicios.servicios.GestionDeControlDeUsuarios port = service.getGestionDeControlDeUsuariosPort();
-        return port.logOut(usuarioActual);
     }
 
     /**
@@ -230,5 +242,10 @@ public class logIntOutController {
     private Usuario buscarUsuario(com.pangea.capadeservicios.servicios.Usuario usuarioActual) {
         com.pangea.capadeservicios.servicios.GestionDeUsuarios port = service_1.getGestionDeUsuariosPort();
         return port.buscarUsuario(usuarioActual);
+    }
+
+    private WrResultado logOut(com.pangea.capadeservicios.servicios.Sesion sesionActual) {
+        com.pangea.capadeservicios.servicios.GestionDeControlDeUsuarios port = service.getGestionDeControlDeUsuariosPort();
+        return port.logOut(sesionActual);
     }
 }
