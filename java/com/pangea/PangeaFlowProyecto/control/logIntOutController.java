@@ -135,22 +135,12 @@ public class logIntOutController {
             httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
             httpSession.setAttribute("Usuario", usuarioSesion);
             httpSession.setAttribute("Sesion", envoltorio.getSesions().get(0));
-            if (usuarioSesion.getIdClasificacionUsuario().getId() == 1) {
-                try {
-                    FacesContext contex = FacesContext.getCurrentInstance();
-                    contex.getExternalContext().redirect("/PangeaFlowProyecto/faces/actividad.xhtml");
-                } catch (Exception e) {
-                    System.out.println("----------------------------Error---------------------------------" + e);
-                }
-            } else {
-                try {
-                    FacesContext contex = FacesContext.getCurrentInstance();
-                    contex.getExternalContext().redirect("/PangeaFlowProyecto/faces/actividadusuario.xhtml");
-                } catch (Exception e) {
-                    System.out.println("----------------------------Error---------------------------------" + e);
-                }
+            try {
+                FacesContext contex = FacesContext.getCurrentInstance();
+                contex.getExternalContext().redirect("/PangeaFlowProyecto/faces/actividadusuario.xhtml");
+            } catch (Exception e) {
+                System.out.println("----------------------------Error---------------------------------" + e);
             }
-
         } else {
             mostrarMensaje(1, "Advertencia", envoltorio.getObservacion());
         }
@@ -182,8 +172,6 @@ public class logIntOutController {
 //            System.out.println("FALLO-------------------------------");
 //        }
 //    }
-
-
     /**
      * Servicio consumido de la capa de servicios para inicio de sesión
      */
