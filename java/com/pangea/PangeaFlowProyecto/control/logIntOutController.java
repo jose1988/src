@@ -182,25 +182,7 @@ public class logIntOutController {
 //            System.out.println("FALLO-------------------------------");
 //        }
 //    }
-    public void Cerrar() {
-        try {
-            FacesContext context = FacesContext.getCurrentInstance();
-            ExternalContext externalContext = context.getExternalContext();
-            Object session = externalContext.getSession(true);
-            HttpSession SesionAbierta = (HttpSession) session;
-            sesionLogueo = (Sesion) (SesionAbierta.getAttribute("Sesion"));
-            WrResultado result;
-            result = logOut(sesionLogueo);
-            SesionAbierta.invalidate();
-            System.out.println("----------------------------oyeeeeee---------------------------------");
-        } catch (Exception e) {
-        }
 
-
-
-
-        //    Redireccionar();
-    }
 
     /**
      * Servicio consumido de la capa de servicios para inicio de sesión
