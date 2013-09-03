@@ -318,7 +318,7 @@ public class actividadController {
         int j=0;  
         activi= new Actividad(); 
         activi.setEstado(estados.get(j));
-        actividad=listarActividades("pendiente");
+        actividad=listarActividades("pendiente",false);
         actividades=new ArrayList<Actividad>();
         if(actividad.isEmpty())
             actividades=null;
@@ -340,7 +340,7 @@ public class actividadController {
         int j=0;  
         activi= new Actividad(); 
         activi.setEstado(event.getTreeNode().toString());
-        actividad=listarActividades("pendiente");
+        actividad=listarActividades("pendiente",false);
         actividades=new ArrayList<Actividad>();
         if(actividad.isEmpty())
             actividades=null;
@@ -426,15 +426,9 @@ public class actividadController {
         return port.buscarestados();
     }
 
-    private java.util.List<com.pangea.capadeservicios.servicios.Actividad> listarActividades(java.lang.String estado) {
+    private java.util.List<com.pangea.capadeservicios.servicios.Actividad> listarActividades(java.lang.String estado, boolean borrado) {
         com.pangea.capadeservicios.servicios.GestionDeActividades port = service_1.getGestionDeActividadesPort();
-        return port.listarActividades(estado);
+        return port.listarActividades(estado, borrado);
     }
-
-    private java.util.List<com.pangea.capadeservicios.servicios.Actividad> listarActividades_1(java.lang.String estado) {
-        com.pangea.capadeservicios.servicios.GestionDeActividades port = service_1.getGestionDeActividadesPort();
-        return port.listarActividades(estado);
-    }
-
    
 }
