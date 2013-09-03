@@ -120,23 +120,19 @@ public class asignarActividadController {
 
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
                 "Su sesión se cerrara", "Ud ha estado inactivo mas de 3 minutos"));
-
-
-
     }
 
     public void Cerrar() {
         WrResultado result;
         result = logOut(sesionLogueo);
-
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext externalContext = context.getExternalContext();
         Object session = externalContext.getSession(true);
         HttpSession SesionAbierta = (HttpSession) session;
         SesionAbierta.invalidate();
-       System.out.println("----------------------------oyeeeeee---------------------------------");
-  
-     //    Redireccionar();
+        //   System.out.println("----------------------------oyeeeeee---------------------------------");
+
+        Redireccionar();
     }
 
     private java.util.List<com.pangea.capadeservicios.servicios.Usuario> listarUsuarios(boolean borrado) {
