@@ -194,9 +194,10 @@ public class loginController {
       }
     }
 
-    public void cambiarestado(Actividad act) {
+    public void cambiarestado() {
         ses = new Sesion();
         ses.setIdUsuario(idusu);
+        ses.setId(Long.valueOf(159));
         resul = iniciarActividad(act, ses);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(resul.getEstatus()));
         int j = 0;
