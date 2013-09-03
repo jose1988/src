@@ -39,9 +39,9 @@ import org.primefaces.model.TreeNode;
 @ManagedBean(name = "loginController")
 @SessionScoped
 public class loginController {
+
     @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_15362/CapaDeServicios/GestionDeGrupo.wsdl")
     private GestionDeGrupo_Service service_2;
-
     @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_15362/CapaDeServicios/GestionDeActividades.wsdl")
     private GestionDeActividades_Service service_1;
     @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_15362/CapaDeServicios/Mensajeria.wsdl")
@@ -65,9 +65,9 @@ public class loginController {
     private Sesion ses;
     private Condicion cond;
     private Bandeja idban;
-    private List<Grupo> grupos; 
+    private List<Grupo> grupos;
+    private Grupo grupoSeleccionado;
     WrActividad ActividadesCola;
-   
 
     public TreeNode getEstadoSeleccionado() {
         return estadoSeleccionado;
@@ -107,9 +107,9 @@ public class loginController {
             TreeNode inbox = new DefaultTreeNode(icono, estados.get(i), estact);
             i++;
         }
-        
-        TreeNode inbox = new DefaultTreeNode("s","Cola de Actividades", estact);
-          grupos=this.gruposUsuario(idusu);
+
+        TreeNode inbox = new DefaultTreeNode("s", "Cola de Actividades", estact);
+        grupos = this.gruposUsuario(idusu);
         estadoSeleccionado = estact.getChildren().get(0);
         estact.getChildren().get(0).setSelected(true);
         int j = 0;
@@ -117,81 +117,91 @@ public class loginController {
         activi.setEstado(estados.get(j));
         actividad = consultarActividades(idusu, activi);
         actividades = new ArrayList<Actividad>();
+        grupoSeleccionado = grupos.get(0);
         if (actividad.getActividads().isEmpty()) {
             actividades = null;
         }
         while (actividad.getActividads().size() > j) {
             act = actividad.getActividads().get(j);
-         if(act.getIdInstancia().getIdPeriodoGrupoProceso().getIdGrupo().getId().compareTo(grupos.get(0).getId())!=0) {
+            if (act.getIdInstancia().getIdPeriodoGrupoProceso().getIdGrupo().getId().compareTo(grupoSeleccionado.getId()) != 0) {
             } else {
                 actividades.add(act);
             }
-           
+
             j++;
         }
-        
+
 
     }
-    public void recargarActividades(TabChangeEvent event)
-    {
+
+    public void onTabChange(TabChangeEvent event) {
         activi = new Actividad();
+        Grupo gSeleccionado = (Grupo) event.getData();
+        grupoSeleccionado = gSeleccionado;
         activi.setEstado(estadoSeleccionado.getData().toString());
-         actividad = consultarActividades(idusu, activi);
-        actividades = new ArrayList<Actividad>();
-        if (actividad.getActividads().isEmpty()) {
-            actividades = null;
-        }
-        Grupo g=null;
-        for (int i = 0; i < grupos.size(); i++) {
-            if(grupos.get(i).getNombre().compareTo(event.getTab().getTitle())==0)
-                g=grupos.get(i);
-            
-        }
-        
-        int j = 0;
-        
-        while (actividad.getActividads().size() > j) {
-            act = actividad.getActividads().get(j);
-         if(act.getIdInstancia().getIdPeriodoGrupoProceso().getIdGrupo().getId().compareTo(g.getId())==0)
-            actividades.add(act);
-           
-            j++;
-        }
-        
-        
-    }
-    public void onNodeSelect(NodeSelectEvent event) {
-        int j = 0;
-        if("Cola de Actividades".equals(event.getTreeNode().toString())){
-              
-        ActividadesCola = consultarActividadesCola(idusu);
-        actividades = new ArrayList<Actividad>();
-          if (actividad.getActividads().isEmpty()) {
-              actividades = null;
-          }
-         
-          while (ActividadesCola.getActividads().size()> j) {
-              act = ActividadesCola.getActividads().get(j);
-              actividades.add(act);
-              j++;
-          }
-
-              
-          }else{
-        activi = new Actividad();
-        activi.setEstado(event.getTreeNode().toString());
         actividad = consultarActividades(idusu, activi);
         actividades = new ArrayList<Actividad>();
         if (actividad.getActividads().isEmpty()) {
             actividades = null;
         }
-       
+        Grupo g = null;
+        for (int i = 0; i < grupos.size(); i++) {
+            if (grupos.get(i).getNombre().compareTo(gSeleccionado.getNombre()) == 0) {
+                g = grupos.get(i);
+            }
+
+        }
+
+        int j = 0;
+
         while (actividad.getActividads().size() > j) {
             act = actividad.getActividads().get(j);
-            actividades.add(act);
+            if (act.getIdInstancia().getIdPeriodoGrupoProceso().getIdGrupo().getId().compareTo(g.getId()) == 0) {
+                actividades.add(act);
+            }
+
             j++;
         }
-      }
+
+
+    }
+
+    public void onNodeSelect(NodeSelectEvent event) {
+        int j = 0;
+        if ("Cola de Actividades".equals(event.getTreeNode().toString())) {
+
+            ActividadesCola = consultarActividadesCola(idusu);
+            actividades = new ArrayList<Actividad>();
+            if (actividad.getActividads().isEmpty()) {
+                actividades = null;
+            }
+
+            while (ActividadesCola.getActividads().size() > j) {
+                act = ActividadesCola.getActividads().get(j);
+                actividades.add(act);
+                j++;
+            }
+
+
+        } else {
+            activi = new Actividad();
+            activi.setEstado(event.getTreeNode().toString());
+            actividad = consultarActividades(idusu, activi);
+            actividades = new ArrayList<Actividad>();
+            if (actividad.getActividads().isEmpty()) {
+                actividades = null;
+            }
+
+            while (actividad.getActividads().size() > j) {
+                act = actividad.getActividads().get(j);
+                if (act.getIdInstancia().getIdPeriodoGrupoProceso().getIdGrupo().getId().compareTo(grupoSeleccionado.getId()) != 0) {
+                } else {
+                    actividades.add(act);
+                }
+
+                j++;
+            }
+        }
     }
 
     public void cambiarestado(Actividad act) {
@@ -209,11 +219,11 @@ public class loginController {
         }
         while (actividad.getActividads().size() > j) {
             act = actividad.getActividads().get(j);
-            
+
             actividades.add(act);
             j++;
         }
-      
+
     }
 
     public void finalizaract() {
@@ -227,7 +237,7 @@ public class loginController {
         sesion.setAttribute("actividadactual", act);
 
         try {
-             ec.redirect("/PangeaFlowProyecto/faces/finalizarActividad.xhtml");
+            ec.redirect("/PangeaFlowProyecto/faces/finalizarActividad.xhtml");
         } catch (Exception e) {
             System.out.println("----------------------------Error---------------------------------" + e);
         }
@@ -255,7 +265,7 @@ public class loginController {
             actividades.add(act);
             j++;
         }
-        
+
     }
 
     public TreeNode getSelectedNode() {
@@ -285,6 +295,7 @@ public class loginController {
     public List<Actividad> getActividades() {
         return actividades;
     }
+
     public List<Grupo> getGrupos() {
         return grupos;
     }
@@ -292,6 +303,7 @@ public class loginController {
     public void setGrupos(List<Grupo> grupos) {
         this.grupos = grupos;
     }
+
     public void setActividades(List<Actividad> actividades) {
         this.actividades = actividades;
     }
@@ -397,7 +409,7 @@ public class loginController {
         com.pangea.capadeservicios.servicios.GestionDeActividades port = service_1.getGestionDeActividadesPort();
         return port.buscarestados();
     }
-    
+
     private WrActividad consultarActividadesCola(com.pangea.capadeservicios.servicios.Usuario usuarioActual) {
         com.pangea.capadeservicios.servicios.GestionDeActividades port = service_1.getGestionDeActividadesPort();
         return port.consultarActividadesCola(usuarioActual);
