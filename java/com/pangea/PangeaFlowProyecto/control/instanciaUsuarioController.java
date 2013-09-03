@@ -19,6 +19,9 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import javax.xml.ws.WebServiceRef;
 import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.model.DefaultTreeNode;
@@ -184,6 +187,21 @@ public class instanciaUsuarioController {
         instActividad= new Instancia();
         instActividad.setId(idInsta);
         
+        FacesContext context = FacesContext.getCurrentInstance();
+        ExternalContext externalContext = context.getExternalContext();
+        Object session = externalContext.getSession(true);
+        HttpSession httpSession = (HttpSession) session;
+        httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+        httpSession.setAttribute("IdInstancia", instActividad);
+        
+        try {
+            FacesContext contex = FacesContext.getCurrentInstance();
+            contex.getExternalContext().redirect("/PangeaFlowProyecto/faces/actividadesPorInstancia.xhtml");
+        } catch (Exception e) {
+            System.out.println("----------------------------Error---------------------------------" + e);
+        }
+        
+        
         listaActivi=consultarActividadesPorInstancia(instActividad);
         actividades=new ArrayList<Actividad>();
         
@@ -196,8 +214,6 @@ public class instanciaUsuarioController {
             actividades.add(activi);
             k++;
         }
-        
-        System.out.println("Las Actividades son: "+actividades);
         
     }
 
