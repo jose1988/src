@@ -51,14 +51,6 @@ public class instanciaUsuarioController {
     private Post mail;
     private TreeNode mailbox;
     private Usuario idusu, idusuario;
-
-    public Usuario getIdusuario() {
-        return idusuario;
-    }
-
-    public void setIdusuario(Usuario idusuario) {
-        this.idusuario = idusuario;
-    }
     private TreeNode estact;
 
     private List<String> estados;
@@ -73,11 +65,34 @@ public class instanciaUsuarioController {
     private Long idInsta;
     private String usuario;
 
+     /**
+     *
+     * @return
+     */
+    public Usuario getIdusuario() {
+        return idusuario;
+    }
 
+    /**
+     *
+     * @param idusuario
+     */
+    public void setIdusuario(Usuario idusuario) {
+        this.idusuario = idusuario;
+    }
+
+    /**
+     *
+     * @return
+     */
     public String getUsuario() {
         return usuario;
     }
 
+    /**
+     *
+     * @param usuario
+     */
     public void setUsuario(String usuario) {
         this.usuario = usuario;
     }
@@ -350,12 +365,11 @@ public class instanciaUsuarioController {
         System.out.println("Usuarioooo:     "+usuario);
         
         estact = new DefaultTreeNode("root", null);
-        idusu = new Usuario();
-        
+        idusu = new Usuario();        
         idusu.setId(usuario);
         
         String icono;
-        estados = buscarestados();
+        estados = buscarEstados();
         int i = 0;
         while (estados.size() > i) {
             if ("abierta".equals(estados.get(i))) {
@@ -497,17 +511,10 @@ public class instanciaUsuarioController {
         SesionAbierta.invalidate();
         Redireccionar();
     }
-    
-    
 
     private WrInstancia consultarInstancias(com.pangea.capadeservicios.servicios.Usuario usuarioActual, com.pangea.capadeservicios.servicios.Instancia instanciaActual) {
         com.pangea.capadeservicios.servicios.GestionDeInstancias port = service.getGestionDeInstanciasPort();
         return port.consultarInstancias(usuarioActual, instanciaActual);
-    }
-
-    private java.util.List<java.lang.String> buscarestados() {
-        com.pangea.capadeservicios.servicios.GestionDeInstancias port = service.getGestionDeInstanciasPort();
-        return port.buscarestados();
     }
 
     private WrInstancia consultarInstancia(com.pangea.capadeservicios.servicios.Instancia instanciaActual) {
@@ -523,6 +530,11 @@ public class instanciaUsuarioController {
     private boolean logSesion(com.pangea.capadeservicios.servicios.Sesion sesionActual) {
         com.pangea.capadeservicios.servicios.GestionDeControlDeUsuarios port = service_1.getGestionDeControlDeUsuariosPort();
         return port.logSesion(sesionActual);
+    }
+
+    private java.util.List<java.lang.String> buscarEstados() {
+        com.pangea.capadeservicios.servicios.GestionDeInstancias port = service.getGestionDeInstanciasPort();
+        return port.buscarEstados();
     }
     
 }
