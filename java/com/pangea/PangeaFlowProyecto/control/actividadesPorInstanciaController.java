@@ -38,19 +38,59 @@ public class actividadesPorInstanciaController {
     private GestionDeInstancias_Service service;
     @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_15362/CapaDeServicios/GestionDeControlDeUsuarios.wsdl")
     private GestionDeControlDeUsuarios_Service service_1;
-    private List<Actividad> Actividades, lista;
+    /*
+     * Objeto de la clase actividad para mostrar la información de las actividades por instancia en una lista
+     */
+    private List<Actividad> Actividades;
+    /*
+     * Objeto de la clase actividad para mostrar la información de las actividades por instancia
+     */
     private Actividad act;
+    /*
+     * Objeto de la clase usuario donde se guardara el objeto de la variable de sesión
+     */
     Usuario usuarioLogueo;
+    /*
+     * Objeto de la clase sesión donde se guardara el objeto de la variable de sesión
+     */
     Sesion sesionLogueo;
 
+    /**
+     *
+     * @return
+     */
+    public Actividad getAct() {
+        return act;
+    }
+
+    /**
+     *
+     * @param act
+     */
+    public void setAct(Actividad act) {
+        this.act = act;
+    }
+
+    /**
+     *
+     * @return
+     */
     public List<Actividad> getActividades() {
         return Actividades;
     }
 
+    /**
+     *
+     * @param Actividades
+     */
     public void setActividades(List<Actividad> Actividades) {
         this.Actividades = Actividades;
     }
 
+    /**
+     * Metodo constructor que se incia al hacer la llamada a la pagina
+     * actividadesPorInstancia.xhml
+     */
     @PostConstruct
     public void init() {
         //codigo para guardar la lista de actividades por Instancia
@@ -59,13 +99,11 @@ public class actividadesPorInstanciaController {
         int j = 0;
         WrActividad Envoltorio, datosActividad;
         Envoltorio = consultarActividadesPorInstancia(Instancia);
-        System.out.println("estado_________" + Envoltorio.getEstatus());
         Actividades = new ArrayList<Actividad>();
         if (Envoltorio.getActividads().isEmpty()) {
             Actividades = null;
         }
         while (Envoltorio.getActividads().size() > j) {
-            System.out.println("Actividad" + j + "   __" + Envoltorio.getActividads().get(j).getId());
             datosActividad = consultarActividad(Envoltorio.getActividads().get(j));
             act = datosActividad.getActividads().get(0);
             Actividades.add(act);
@@ -75,6 +113,8 @@ public class actividadesPorInstanciaController {
 
     /**
      * Método para verificar si el usuario esta logueado
+     *
+     * @return un booleano si es true es por que si estaba logueado
      */
     public boolean verificarLogueo() {
         boolean bandera = false, sesionBd = false;
@@ -109,13 +149,21 @@ public class actividadesPorInstanciaController {
         }
     }
 
+    /**
+     *
+     */
     public void Desactivado() {
 
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
                 "Su sesión se cerrara", "Ud ha estado inactivo mas de 3 minutos"));
     }
 
-    public void Cerrar() {
+    /**
+     * Método encargado de cerrar la sesión del usuario en la base de datos y a
+     * nivel de variables de sesión por tener un tiempo de inactividad de
+     * 3minutos
+     */
+    public void cerrarPorInactividad() {
         WrResultado result;
         result = logOut(sesionLogueo);
         FacesContext context = FacesContext.getCurrentInstance();
@@ -123,8 +171,6 @@ public class actividadesPorInstanciaController {
         Object session = externalContext.getSession(true);
         HttpSession SesionAbierta = (HttpSession) session;
         SesionAbierta.invalidate();
-        //   System.out.println("----------------------------oyeeeeee---------------------------------");
-
         Redireccionar();
     }
 
