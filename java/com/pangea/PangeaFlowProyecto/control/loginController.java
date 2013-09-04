@@ -93,7 +93,7 @@ public class loginController {
         idusu.setId("thunder");
         String icono;
         // bande=consultarBandejas(idusu);
-        estados = buscarestados();
+        estados = buscarEstados();
         int i = 0;
         while (estados.size() > i) {
             if ("abierta".equals(estados.get(i))) {
@@ -205,7 +205,7 @@ public class loginController {
         }
     }
 
-    public void cambiarestado() {
+    public void cambiarEstado() {
        
         
          FacesContext fc = FacesContext.getCurrentInstance();
@@ -411,10 +411,7 @@ public class loginController {
         return port.iniciarActividad(actividadActual, sesionActual);
     }
 
-    private java.util.List<java.lang.String> buscarestados() {
-        com.pangea.capadeservicios.servicios.GestionDeActividades port = service_1.getGestionDeActividadesPort();
-        return port.buscarestados();
-    }
+    
 
     private WrActividad consultarActividadesCola(com.pangea.capadeservicios.servicios.Usuario usuarioActual) {
         com.pangea.capadeservicios.servicios.GestionDeActividades port = service_1.getGestionDeActividadesPort();
@@ -424,5 +421,10 @@ public class loginController {
     private java.util.List<com.pangea.capadeservicios.servicios.Grupo> gruposUsuario(com.pangea.capadeservicios.servicios.Usuario user) {
         com.pangea.capadeservicios.servicios.GestionDeGrupo port = service_2.getGestionDeGrupoPort();
         return port.gruposUsuario(user);
+    }
+
+    private java.util.List<java.lang.String> buscarEstados() {
+        com.pangea.capadeservicios.servicios.GestionDeActividades port = service_1.getGestionDeActividadesPort();
+        return port.buscarEstados();
     }
 }
