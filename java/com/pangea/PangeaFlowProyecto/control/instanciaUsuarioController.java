@@ -4,14 +4,11 @@
  */
 package com.pangea.PangeaFlowProyecto.control;
 
-import com.pangea.capadeservicios.servicios.Actividad;
-import com.pangea.capadeservicios.servicios.GestionDeActividades_Service;
 import com.pangea.capadeservicios.servicios.GestionDeInstancias_Service;
 import com.pangea.capadeservicios.servicios.Instancia;
 import com.pangea.capadeservicios.servicios.Post;
 import com.pangea.capadeservicios.servicios.Sesion;
 import com.pangea.capadeservicios.servicios.Usuario;
-import com.pangea.capadeservicios.servicios.WrActividad;
 import com.pangea.capadeservicios.servicios.WrInstancia;
 import com.pangea.capadeservicios.servicios.WrResultado;
 import java.util.ArrayList;
@@ -36,8 +33,6 @@ import org.primefaces.model.TreeNode;
 public class instanciaUsuarioController {
     @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_15362/CapaDeServicios/GestionDeInstancias.wsdl")
     private GestionDeInstancias_Service service;
-    @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_15362/CapaDeServicios/GestionDeActividades.wsdl")
-    private GestionDeActividades_Service service_1;
     private TreeNode mailboxes;
     private List<Post> mails;
     private Post mail;
@@ -47,43 +42,37 @@ public class instanciaUsuarioController {
 
     private List<String> estados;
     private TreeNode estadoSeleccionado;
-    private WrInstancia instancia;
-    private List<Instancia> instancias;
-    private Instancia inst, insta, instActividad;
+    private WrInstancia instancia, instac;
+    private List<Instancia> instancias, instacs;
+    private Instancia inst, insta, instActividad, ins;
 
     private WrResultado resul;
     private Sesion ses;
     
     private Long idInsta;
     
-    private Actividad actividad, activi;
+    public Instancia getIns() {
+        return ins;
+    }
+
+    public void setIns(Instancia ins) {
+        this.ins = ins;
+    }
     
-    private WrActividad listaActivi;
+    public List<Instancia> getInstacs() {
+        return instacs;
+    }
+
+    public void setInstacs(List<Instancia> instacs) {
+        this.instacs = instacs;
+    }
     
-    private List<Actividad> actividades;
-    
-    public Actividad getActivi() {
-        return activi;
+    public WrInstancia getInstac() {
+        return instac;
     }
 
-    public void setActivi(Actividad activi) {
-        this.activi = activi;
-    }
-
-    public List<Actividad> getActividades() {
-        return actividades;
-    }
-
-    public void setActividades(List<Actividad> actividades) {
-        this.actividades = actividades;
-    }
-
-    public WrActividad getListaActivi() {
-        return listaActivi;
-    }
-
-    public void setListaActivi(WrActividad listaActivi) {
-        this.listaActivi = listaActivi;
+    public void setInstac(WrInstancia instac) {
+        this.instac = instac;
     }
 
     public Instancia getInstActividad() {
@@ -92,14 +81,6 @@ public class instanciaUsuarioController {
 
     public void setInstActividad(Instancia instActividad) {
         this.instActividad = instActividad;
-    }
-    
-    public Actividad getActividad() {
-        return actividad;
-    }
-
-    public void setActividad(Actividad actividad) {
-        this.actividad = actividad;
     }
 
     public Long getIdInsta() {
@@ -150,13 +131,18 @@ public class instanciaUsuarioController {
         insta = new Instancia();
         insta.setEstado(estados.get(j));
         instancia = consultarInstancias(idusu, insta);
+        instac = consultarInstancia(insta);
         instancias = new ArrayList<Instancia>();
+        instacs = new ArrayList<Instancia>();
         if (instancia.getInstancias().isEmpty()) {
             instancias = null;
+            instacs = null;
         }
         while (instancia.getInstancias().size() > j) {
             inst = instancia.getInstancias().get(j);
+            ins = instac.getInstancias().get(j);
             instancias.add(inst);
+            instacs.add(ins);
             j++;
         }
           
@@ -180,7 +166,7 @@ public class instanciaUsuarioController {
     }
     
     public void listarActividades(){
-        int k=0;
+        
         idInsta=inst.getId();
         System.out.println("Ide de la Actividad es:     "+idInsta);
         
@@ -201,19 +187,6 @@ public class instanciaUsuarioController {
             System.out.println("----------------------------Error---------------------------------" + e);
         }
         
-        
-        listaActivi=consultarActividadesPorInstancia(instActividad);
-        actividades=new ArrayList<Actividad>();
-        
-        if(listaActivi.getActividads().isEmpty()){
-            actividades=null;
-        }
-        
-        while(listaActivi.getActividads().size() > k){
-            activi=listaActivi.getActividads().get(k);
-            actividades.add(activi);
-            k++;
-        }
         
     }
 
@@ -305,19 +278,18 @@ public class instanciaUsuarioController {
         this.estados = estados;
     }
 
-    private java.util.List<java.lang.String> buscarestados() {
-        com.pangea.capadeservicios.servicios.GestionDeActividades port = service_1.getGestionDeActividadesPort();
-        return port.buscarestados();
-    }
-
     private WrInstancia consultarInstancias(com.pangea.capadeservicios.servicios.Usuario usuarioActual, com.pangea.capadeservicios.servicios.Instancia instanciaActual) {
         com.pangea.capadeservicios.servicios.GestionDeInstancias port = service.getGestionDeInstanciasPort();
         return port.consultarInstancias(usuarioActual, instanciaActual);
     }
 
-    private WrActividad consultarActividadesPorInstancia(com.pangea.capadeservicios.servicios.Instancia instanciaActual) {
+    private java.util.List<java.lang.String> buscarestados() {
         com.pangea.capadeservicios.servicios.GestionDeInstancias port = service.getGestionDeInstanciasPort();
-        return port.consultarActividadesPorInstancia(instanciaActual);
+        return port.buscarestados();
     }
 
+    private WrInstancia consultarInstancia(com.pangea.capadeservicios.servicios.Instancia instanciaActual) {
+        com.pangea.capadeservicios.servicios.GestionDeInstancias port = service.getGestionDeInstanciasPort();
+        return port.consultarInstancia(instanciaActual);
+    }
 }
