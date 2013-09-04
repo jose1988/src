@@ -89,13 +89,18 @@ public class actividadesPorInstanciaController {
 
     /**
      * Metodo constructor que se incia al hacer la llamada a la pagina
-     * actividadesPorInstancia.xhml
+     * actividadesPorInstancia.xhml donde se mustra las actividades de una determinada instancia
      */
     @PostConstruct
     public void init() {
         //codigo para guardar la lista de actividades por Instancia
         Instancia Instancia = new Instancia();
         Instancia.setId((long) 1);
+//        FacesContext context = FacesContext.getCurrentInstance();
+//        ExternalContext externalContext = context.getExternalContext();
+//        Object session = externalContext.getSession(true);
+//        HttpSession SesionAbierta = (HttpSession) session;
+//        Instancia = (Instancia) (SesionAbierta.getAttribute("IdInstancia"));
         int j = 0;
         WrActividad Envoltorio, datosActividad;
         Envoltorio = consultarActividadesPorInstancia(Instancia);
@@ -105,8 +110,10 @@ public class actividadesPorInstanciaController {
         }
         while (Envoltorio.getActividads().size() > j) {
             datosActividad = consultarActividad(Envoltorio.getActividads().get(j));
-            act = datosActividad.getActividads().get(0);
-            Actividades.add(act);
+            if (datosActividad.getEstatus().compareTo("OK") == 0) {
+                act = datosActividad.getActividads().get(0);
+                Actividades.add(act);
+            }
             j++;
         }
     }
