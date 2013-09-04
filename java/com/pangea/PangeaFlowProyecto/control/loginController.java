@@ -68,6 +68,7 @@ public class loginController {
     private List<Grupo> grupos;
     private Grupo grupoSeleccionado;
     WrActividad ActividadesCola;
+    private Sesion sesion_actual;
 
     public TreeNode getEstadoSeleccionado() {
         return estadoSeleccionado;
@@ -144,7 +145,7 @@ public class loginController {
         if (actividad.getActividads().isEmpty()) {
             actividades = null;
         }
-        Grupo g = null;
+        Grupo g = new Grupo();
         for (int i = 0; i < grupos.size(); i++) {
             if (grupos.get(i).getNombre().compareTo(gSeleccionado.getNombre()) == 0) {
                 g = grupos.get(i);
@@ -205,10 +206,14 @@ public class loginController {
     }
 
     public void cambiarestado() {
-        ses = new Sesion();
-        ses.setIdUsuario(idusu);
-        ses.setId(Long.valueOf(159));
-        resul = iniciarActividad(act, ses);
+       
+        
+         FacesContext fc = FacesContext.getCurrentInstance();
+        ExternalContext ec = fc.getExternalContext();
+        HttpSession sesion = (HttpSession) ec.getSession(true);
+        sesion_actual = (Sesion) (sesion.getAttribute("Sesion"));
+        
+        resul = iniciarActividad(act, sesion_actual);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(resul.getEstatus()));
         int j = 0;
         activi = new Actividad();

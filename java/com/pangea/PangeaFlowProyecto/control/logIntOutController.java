@@ -137,7 +137,7 @@ public class logIntOutController {
             httpSession.setAttribute("Sesion", envoltorio.getSesions().get(0));
             try {
                 FacesContext contex = FacesContext.getCurrentInstance();
-                contex.getExternalContext().redirect("/PangeaFlowProyecto/faces/actividadusuario.xhtml");
+                contex.getExternalContext().redirect("/PangeaFlowProyecto/faces/actividadgrupousuario.xhtml");
             } catch (Exception e) {
                 System.out.println("----------------------------Error---------------------------------" + e);
             }
