@@ -16,6 +16,12 @@
 <message name="contarGrupoResponse">
 <part name="parameters" element="tns:contarGrupoResponse"/>
 </message>
+<message name="gruposUsuario">
+<part name="parameters" element="tns:gruposUsuario"/>
+</message>
+<message name="gruposUsuarioResponse">
+<part name="parameters" element="tns:gruposUsuarioResponse"/>
+</message>
 <portType name="GestionDeGrupo">
 <operation name="hello">
 <input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeGrupo/helloRequest" message="tns:hello"/>
@@ -24,6 +30,10 @@
 <operation name="contarGrupo">
 <input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeGrupo/contarGrupoRequest" message="tns:contarGrupo"/>
 <output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeGrupo/contarGrupoResponse" message="tns:contarGrupoResponse"/>
+</operation>
+<operation name="gruposUsuario">
+<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeGrupo/gruposUsuarioRequest" message="tns:gruposUsuario"/>
+<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeGrupo/gruposUsuarioResponse" message="tns:gruposUsuarioResponse"/>
 </operation>
 </portType>
 <binding name="GestionDeGrupoPortBinding" type="tns:GestionDeGrupo">
@@ -38,6 +48,15 @@
 </output>
 </operation>
 <operation name="contarGrupo">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="gruposUsuario">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>

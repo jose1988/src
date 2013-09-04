@@ -10,23 +10,17 @@
 <message name="ConsultarPeriodosDisponiblesResponse">
 <part name="parameters" element="tns:ConsultarPeriodosDisponiblesResponse"/>
 </message>
-<message name="ObtenerTareasIniciales">
-<part name="parameters" element="tns:ObtenerTareasIniciales"/>
-</message>
-<message name="ObtenerTareasInicialesResponse">
-<part name="parameters" element="tns:ObtenerTareasInicialesResponse"/>
-</message>
 <message name="ConsultarProcesosDisponibles">
 <part name="parameters" element="tns:ConsultarProcesosDisponibles"/>
 </message>
 <message name="ConsultarProcesosDisponiblesResponse">
 <part name="parameters" element="tns:ConsultarProcesosDisponiblesResponse"/>
 </message>
-<message name="CrearPeriodo">
-<part name="parameters" element="tns:CrearPeriodo"/>
+<message name="ObtenerTareasIniciales">
+<part name="parameters" element="tns:ObtenerTareasIniciales"/>
 </message>
-<message name="CrearPeriodoResponse">
-<part name="parameters" element="tns:CrearPeriodoResponse"/>
+<message name="ObtenerTareasInicialesResponse">
+<part name="parameters" element="tns:ObtenerTareasInicialesResponse"/>
 </message>
 <message name="CerrarInstancia">
 <part name="parameters" element="tns:CerrarInstancia"/>
@@ -64,6 +58,12 @@
 <message name="CrearInstanciaResponse">
 <part name="parameters" element="tns:CrearInstanciaResponse"/>
 </message>
+<message name="CrearPeriodo">
+<part name="parameters" element="tns:CrearPeriodo"/>
+</message>
+<message name="CrearPeriodoResponse">
+<part name="parameters" element="tns:CrearPeriodoResponse"/>
+</message>
 <message name="ConsultarActividadesPorInstancia">
 <part name="parameters" element="tns:ConsultarActividadesPorInstancia"/>
 </message>
@@ -75,17 +75,13 @@
 <input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeInstancias/ConsultarPeriodosDisponiblesRequest" message="tns:ConsultarPeriodosDisponibles"/>
 <output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeInstancias/ConsultarPeriodosDisponiblesResponse" message="tns:ConsultarPeriodosDisponiblesResponse"/>
 </operation>
-<operation name="ObtenerTareasIniciales">
-<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeInstancias/ObtenerTareasInicialesRequest" message="tns:ObtenerTareasIniciales"/>
-<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeInstancias/ObtenerTareasInicialesResponse" message="tns:ObtenerTareasInicialesResponse"/>
-</operation>
 <operation name="ConsultarProcesosDisponibles">
 <input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeInstancias/ConsultarProcesosDisponiblesRequest" message="tns:ConsultarProcesosDisponibles"/>
 <output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeInstancias/ConsultarProcesosDisponiblesResponse" message="tns:ConsultarProcesosDisponiblesResponse"/>
 </operation>
-<operation name="CrearPeriodo">
-<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeInstancias/CrearPeriodoRequest" message="tns:CrearPeriodo"/>
-<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeInstancias/CrearPeriodoResponse" message="tns:CrearPeriodoResponse"/>
+<operation name="ObtenerTareasIniciales">
+<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeInstancias/ObtenerTareasInicialesRequest" message="tns:ObtenerTareasIniciales"/>
+<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeInstancias/ObtenerTareasInicialesResponse" message="tns:ObtenerTareasInicialesResponse"/>
 </operation>
 <operation name="CerrarInstancia">
 <input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeInstancias/CerrarInstanciaRequest" message="tns:CerrarInstancia"/>
@@ -111,6 +107,10 @@
 <input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeInstancias/CrearInstanciaRequest" message="tns:CrearInstancia"/>
 <output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeInstancias/CrearInstanciaResponse" message="tns:CrearInstanciaResponse"/>
 </operation>
+<operation name="CrearPeriodo">
+<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeInstancias/CrearPeriodoRequest" message="tns:CrearPeriodo"/>
+<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeInstancias/CrearPeriodoResponse" message="tns:CrearPeriodoResponse"/>
+</operation>
 <operation name="ConsultarActividadesPorInstancia">
 <input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeInstancias/ConsultarActividadesPorInstanciaRequest" message="tns:ConsultarActividadesPorInstancia"/>
 <output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeInstancias/ConsultarActividadesPorInstanciaResponse" message="tns:ConsultarActividadesPorInstanciaResponse"/>
@@ -119,15 +119,6 @@
 <binding name="GestionDeInstanciasPortBinding" type="tns:GestionDeInstancias">
 <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
 <operation name="ConsultarPeriodosDisponibles">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="ObtenerTareasIniciales">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>
@@ -145,7 +136,7 @@
 <soap:body use="literal"/>
 </output>
 </operation>
-<operation name="CrearPeriodo">
+<operation name="ObtenerTareasIniciales">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>
@@ -200,6 +191,15 @@
 </output>
 </operation>
 <operation name="CrearInstancia">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="CrearPeriodo">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>
