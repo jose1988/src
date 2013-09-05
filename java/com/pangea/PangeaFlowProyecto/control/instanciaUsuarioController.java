@@ -57,14 +57,37 @@ public class instanciaUsuarioController {
     private TreeNode estadoSeleccionado;
     private WrInstancia instancia, instac;
     private List<Instancia> instancias;
-    private Instancia inst, insta, instActividad;
+    private Instancia inst, insta, instActividad, instCerrar;
 
-    private WrResultado resul;
+    private WrResultado resul, instanciacerrar;
     private Sesion ses;
     
     private Long idInsta;
     private String usuario;
+    
+    public WrResultado getInstanciacerrar() {
+        return instanciacerrar;
+    }
 
+    public void setInstanciacerrar(WrResultado instanciacerrar) {
+        this.instanciacerrar = instanciacerrar;
+    }
+    public Instancia getInstCerrar() {
+        return instCerrar;
+    }
+
+    public void setInstCerrar(Instancia instCerrar) {
+        this.instCerrar = instCerrar;
+    }
+    
+
+    public Sesion getSes() {
+        return ses;
+    }
+
+    public void setSes(Sesion ses) {
+        this.ses = ses;
+    }
      /**
      *
      * @return
@@ -393,8 +416,10 @@ public class instanciaUsuarioController {
         }
         while (instancia.getInstancias().size() > j) {
             instac = consultarInstancia(instancia.getInstancias().get(j));
-            inst = instac.getInstancias().get(0);
-            instancias.add(inst);
+            if(instac.getEstatus().compareTo("OK")== 0){
+                inst = instac.getInstancias().get(0);
+                instancias.add(inst);
+            }
             j++;
         }
           
@@ -417,8 +442,10 @@ public class instanciaUsuarioController {
         }
         while (instancia.getInstancias().size() > j) {
             instac = consultarInstancia(instancia.getInstancias().get(j));
-            inst = instac.getInstancias().get(0);
-            instancias.add(inst);
+            if(instac.getEstatus().compareTo("OK")== 0){
+                inst = instac.getInstancias().get(0);
+                instancias.add(inst);
+            }
             j++;
         }
           
@@ -432,7 +459,7 @@ public class instanciaUsuarioController {
     public void listarActividades(){
         
         idInsta=inst.getId();
-        System.out.println("Ide de la Actividad es:     "+idInsta);
+        System.out.println("Ide de la Instancia es:     "+idInsta);
         
         instActividad= new Instancia();
         instActividad.setId(idInsta);
@@ -453,6 +480,25 @@ public class instanciaUsuarioController {
         
         
     }
+    
+    /**
+     * Método con el cual se cierra una instancia, se necesitan la sesión 
+     * actual y la instancia que se desea cerrar, llamo al contructor init
+     * para que me recargue la información del datatable
+     */
+    
+    public void cerrarInstanciaSeleccionada(){
+        
+        idInsta=inst.getId();
+        System.out.println("Ide de la Instancia es:     "+idInsta);
+        
+        instCerrar= new Instancia();
+        instCerrar.setId(idInsta);
+        instanciacerrar=cerrarInstancia(instCerrar, ses);
+        
+        init();
+        
+    }
 
     /**
      * Método para verificar si el usuario esta logueado
@@ -471,6 +517,7 @@ public class instanciaUsuarioController {
             sesionLogueo = (Sesion) (SesionAbierta.getAttribute("Sesion"));
             
             usuario=usuarioLogueo.getId();
+            ses=sesionLogueo;
             
             sesionBd = logSesion(sesionLogueo);
             if (usuarioLogueo == null || sesionLogueo == null || !sesionBd) {
@@ -536,5 +583,10 @@ public class instanciaUsuarioController {
         com.pangea.capadeservicios.servicios.GestionDeInstancias port = service.getGestionDeInstanciasPort();
         return port.buscarEstados();
     }
-    
+
+    private WrResultado cerrarInstancia(com.pangea.capadeservicios.servicios.Instancia instanciaActual, com.pangea.capadeservicios.servicios.Sesion sesionActual) {
+        com.pangea.capadeservicios.servicios.GestionDeInstancias port = service.getGestionDeInstanciasPort();
+        return port.cerrarInstancia(instanciaActual, sesionActual);
+    }
+
 }
