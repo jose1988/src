@@ -96,11 +96,11 @@ public class actividadesPorInstanciaController {
         //codigo para guardar la lista de actividades por Instancia
         Instancia Instancia = new Instancia();
         Instancia.setId((long) 1);
-//        FacesContext context = FacesContext.getCurrentInstance();
-//        ExternalContext externalContext = context.getExternalContext();
-//        Object session = externalContext.getSession(true);
-//        HttpSession SesionAbierta = (HttpSession) session;
-//        Instancia = (Instancia) (SesionAbierta.getAttribute("IdInstancia"));
+        FacesContext context = FacesContext.getCurrentInstance();
+        ExternalContext externalContext = context.getExternalContext();
+        Object session = externalContext.getSession(true);
+        HttpSession SesionAbierta = (HttpSession) session;
+        Instancia = (Instancia) (SesionAbierta.getAttribute("IdInstancia"));
         int j = 0;
         WrActividad Envoltorio, datosActividad;
         Envoltorio = consultarActividadesPorInstancia(Instancia);
