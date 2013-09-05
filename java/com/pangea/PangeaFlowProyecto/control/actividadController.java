@@ -48,12 +48,7 @@ public class actividadController {
     private List<String> estados;
     private ClasificacionUsuario idclasi, idcla;
     
-    Actividad idSesionActividad;
-    
-    Usuario usuarioLogueo;
-    Sesion sesionLogueo;
-    
-    
+    Actividad idSesionActividad;  
     
     /**
      *
@@ -296,7 +291,8 @@ public class actividadController {
     }
     
     /**
-     *
+     * Metodo constructor que se incia al hacer la llamada a la pagina
+     * instanciaUsuario.xhml
      */
     @PostConstruct
     public void init() {
@@ -312,7 +308,7 @@ public class actividadController {
         }
         
         /**
-         * Lista de Actividades con estado pendientey que no han sido borradas
+         * Lista de Actividades con estado pendiente y que no han sido borradas
          */
         estadoSeleccionado = estact.getChildren().get(0);
         int j=0;  
@@ -330,12 +326,12 @@ public class actividadController {
     }
   
      /**
-     *
+     * Método que recarga la información del arbol dependiendo del estado que se seleccione
      * @param event
      */
     public void onNodeSelect(NodeSelectEvent event) {
         /**
-         * Lista de Actividades con estado pendientey que no han sido borradas
+         * Lista de Actividades con estado pendiente y que no han sido borradas
          */
         int j=0;  
         activi= new Actividad(); 
@@ -349,45 +345,6 @@ public class actividadController {
             actividades.add(act);
             j++;
         } 
-    }
-     
-     /**
-     * Método para verificar si el usuario esta logueado
-     * @return 
-     */
-    public boolean verificarLogueo() {
-        boolean bandera = false;
-        try {
-            /**
-             * Codigo para guardar sesion y usuario logueado, sino existe redireccionamos a index.xhtml
-             */
-            
-            FacesContext context = FacesContext.getCurrentInstance();
-            ExternalContext externalContext = context.getExternalContext();
-            Object session = externalContext.getSession(true);
-            HttpSession SesionAbierta = (HttpSession) session;
-            usuarioLogueo = (Usuario) (SesionAbierta.getAttribute("Usuario"));
-            sesionLogueo = (Sesion) (SesionAbierta.getAttribute("Sesion"));
-            if (usuarioLogueo == null || sesionLogueo == null) {
-                bandera = true;
-            }
-        } catch (Exception e) {
-            bandera = true;
-        }
-
-        return bandera;
-    }
-    
-    /**
-     * Método para redireccionar a index.xhtml si el usuario no esta logueado
-     */
-    public void Redireccionar() {
-        try {
-            FacesContext contex = FacesContext.getCurrentInstance();
-            contex.getExternalContext().redirect("/PangeaFlowProyecto/faces/index.xhtml");
-        } catch (Exception error) {
-            System.out.println("----------------------------Error---------------------------------" + error);
-        }
     }
     
     /**
@@ -415,14 +372,10 @@ public class actividadController {
         } catch (Exception e) {
             System.out.println("----------------------------Error---------------------------------" + e);
         }    
-        
-        
+       
       
     }
     
-
-   
-
     private java.util.List<com.pangea.capadeservicios.servicios.Actividad> listarActividades(java.lang.String estado, boolean borrado) {
         com.pangea.capadeservicios.servicios.GestionDeActividades port = service_1.getGestionDeActividadesPort();
         return port.listarActividades(estado, borrado);
