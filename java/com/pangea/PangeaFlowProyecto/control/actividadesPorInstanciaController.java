@@ -42,7 +42,7 @@ public class actividadesPorInstanciaController {
     /*
      * Objeto de la clase actividad para mostrar la información de las actividades por instancia en una lista
      */
-    private List<Actividad> Actividades;
+    private List<Actividad> actividades;
     /*
      * Objeto de la clase actividad para mostrar la información de las actividades por instancia
      */
@@ -77,7 +77,7 @@ public class actividadesPorInstanciaController {
      * @return
      */
     public List<Actividad> getActividades() {
-        return Actividades;
+        return actividades;
     }
 
     /**
@@ -85,7 +85,7 @@ public class actividadesPorInstanciaController {
      * @param Actividades
      */
     public void setActividades(List<Actividad> Actividades) {
-        this.Actividades = Actividades;
+        this.actividades = Actividades;
     }
 
     /**
@@ -106,15 +106,15 @@ public class actividadesPorInstanciaController {
         int j = 0;
         WrActividad Envoltorio, datosActividad;
         Envoltorio = consultarActividadesPorInstancia(Instancia);
-        Actividades = new ArrayList<Actividad>();
+        actividades = new ArrayList<Actividad>();
         if (Envoltorio.getActividads().isEmpty()) {
-            Actividades = null;
+            actividades = null;
         }
         while (Envoltorio.getActividads().size() > j) {
             datosActividad = consultarActividad(Envoltorio.getActividads().get(j));
             if (datosActividad.getEstatus().compareTo("OK") == 0) {
                 act = datosActividad.getActividads().get(0);
-                Actividades.add(act);
+                actividades.add(act);
             }
             j++;
         }
@@ -190,11 +190,14 @@ public class actividadesPorInstanciaController {
      * pinta la fila en rosa o blanco
      * @return
      */
-    public String estilo(Actividad activ) {
-        System.out.println("Fechitaa:::::::::::::::::::::"+activ.getFechaCierre());
+    public String estilo(Actividad actividadx) {
+      if(actividadx!=null){
+        if(actividadx.getEstado().compareTo("abierta")==0)
+          return " background-color: red;";
 //        if (fecha.equals("2013-09-05")) {
 //            return "background-color: mistyrose;";
 //        }
+      }
         return " background-color: white;";
     }
 
