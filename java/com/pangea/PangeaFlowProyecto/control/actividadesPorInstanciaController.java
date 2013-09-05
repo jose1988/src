@@ -23,6 +23,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
+import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.ws.WebServiceRef;
 
 /**
@@ -89,18 +90,19 @@ public class actividadesPorInstanciaController {
 
     /**
      * Metodo constructor que se incia al hacer la llamada a la pagina
-     * actividadesPorInstancia.xhml donde se mustra las actividades de una determinada instancia
+     * actividadesPorInstancia.xhml donde se mustra las actividades de una
+     * determinada instancia
      */
     @PostConstruct
     public void init() {
         //codigo para guardar la lista de actividades por Instancia
         Instancia Instancia = new Instancia();
-        Instancia.setId((long) 1);
-        FacesContext context = FacesContext.getCurrentInstance();
-        ExternalContext externalContext = context.getExternalContext();
-        Object session = externalContext.getSession(true);
-        HttpSession SesionAbierta = (HttpSession) session;
-        Instancia = (Instancia) (SesionAbierta.getAttribute("IdInstancia"));
+        Instancia.setId((long) 8);
+//        FacesContext context = FacesContext.getCurrentInstance();
+//        ExternalContext externalContext = context.getExternalContext();
+//        Object session = externalContext.getSession(true);
+//        HttpSession SesionAbierta = (HttpSession) session;
+//        Instancia = (Instancia) (SesionAbierta.getAttribute("IdInstancia"));
         int j = 0;
         WrActividad Envoltorio, datosActividad;
         Envoltorio = consultarActividadesPorInstancia(Instancia);
@@ -179,6 +181,21 @@ public class actividadesPorInstanciaController {
         HttpSession SesionAbierta = (HttpSession) session;
         SesionAbierta.invalidate();
         Redireccionar();
+    }
+
+    /**
+     * Metodo que permite colocar el estilo de una fila mediante un color
+     *
+     * @param codigo parametro que indica la condicion para determinar si se
+     * pinta la fila en rosa o blanco
+     * @return
+     */
+    public String estilo(Actividad activ) {
+        System.out.println("Fechitaa:::::::::::::::::::::"+activ.getFechaCierre());
+//        if (fecha.equals("2013-09-05")) {
+//            return "background-color: mistyrose;";
+//        }
+        return " background-color: white;";
     }
 
     private boolean logSesion(com.pangea.capadeservicios.servicios.Sesion sesionActual) {
