@@ -90,7 +90,11 @@ public class loginController {
     public void init() {
         estact = new DefaultTreeNode("root", null);
         idusu = new Usuario();
-        idusu.setId("thunder");
+        FacesContext fc = FacesContext.getCurrentInstance();
+        ExternalContext ec = fc.getExternalContext();
+        HttpSession sesion = (HttpSession) ec.getSession(true);
+        sesion_actual = (Sesion) (sesion.getAttribute("Sesion"));
+        idusu= (Usuario) (sesion.getAttribute("Usuario"));
         String icono;
         // bande=consultarBandejas(idusu);
         estados = buscarEstados();
@@ -168,6 +172,7 @@ public class loginController {
     }
 
     public void onNodeSelect(NodeSelectEvent event) {
+         
         int j = 0;
         if ("Cola de Actividades".equals(event.getTreeNode().toString())) {
 
@@ -207,13 +212,31 @@ public class loginController {
 
     public void cambiarEstado() {
        
-        
-         FacesContext fc = FacesContext.getCurrentInstance();
-        ExternalContext ec = fc.getExternalContext();
-        HttpSession sesion = (HttpSession) ec.getSession(true);
-        sesion_actual = (Sesion) (sesion.getAttribute("Sesion"));
+      
         
         resul = iniciarActividad(act, sesion_actual);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(resul.getEstatus()));
+        int j = 0;
+        activi = new Actividad();
+        activi.setEstado(estadoSeleccionado.toString());
+        actividad = consultarActividades(idusu, activi);
+        actividades = new ArrayList<Actividad>();
+        if (actividad.getActividads().isEmpty()) {
+            actividades = null;
+        }
+        while (actividad.getActividads().size() > j) {
+            act = actividad.getActividads().get(j);
+
+            actividades.add(act);
+            j++;
+        }
+
+    }
+    
+      public void cambiarEstadoPendiente() {
+       
+        
+        resul = pendienteActividad(act, sesion_actual);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(resul.getEstatus()));
         int j = 0;
         activi = new Actividad();
@@ -249,7 +272,7 @@ public class loginController {
         }
     }
 
-    public void cerraractividad(Actividad act) {
+    public void cerraractividad() {
 
         ses = new Sesion();
         ses.setIdUsuario(idusu);
@@ -272,6 +295,27 @@ public class loginController {
             j++;
         }
 
+    }
+    
+    public void asignar(){
+          
+        resul=consumirCola(act,idusu);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(resul.getEstatus()));
+         ActividadesCola = consultarActividadesCola(idusu);
+         int j=0;
+            actividades = new ArrayList<Actividad>();
+            if (actividad.getActividads().isEmpty()) {
+                actividades = null;
+            }
+
+            while (ActividadesCola.getActividads().size() > j) {
+                act = ActividadesCola.getActividads().get(j);
+                actividades.add(act);
+                j++;
+            }
+
+       
+        
     }
 
     public TreeNode getSelectedNode() {
@@ -427,4 +471,15 @@ public class loginController {
         com.pangea.capadeservicios.servicios.GestionDeActividades port = service_1.getGestionDeActividadesPort();
         return port.buscarEstados();
     }
+
+    private WrResultado pendienteActividad(com.pangea.capadeservicios.servicios.Actividad actividadActual, com.pangea.capadeservicios.servicios.Sesion sesionActual) {
+        com.pangea.capadeservicios.servicios.GestionDeActividades port = service_1.getGestionDeActividadesPort();
+        return port.pendienteActividad(actividadActual, sesionActual);
+    }
+
+    private WrResultado consumirCola(com.pangea.capadeservicios.servicios.Actividad actividadActual, com.pangea.capadeservicios.servicios.Usuario usuarioActual) {
+        com.pangea.capadeservicios.servicios.GestionDeActividades port = service_1.getGestionDeActividadesPort();
+        return port.consumirCola(actividadActual, usuarioActual);
+    }
+
 }
