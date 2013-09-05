@@ -12,7 +12,10 @@ import com.pangea.capadeservicios.servicios.Sesion;
 import com.pangea.capadeservicios.servicios.Usuario;
 import com.pangea.capadeservicios.servicios.WrInstancia;
 import com.pangea.capadeservicios.servicios.WrResultado;
+import com.sun.msv.grammar.xmlschema.XMLSchemaTypeExp;
+import com.sun.org.apache.xerces.internal.jaxp.datatype.XMLGregorianCalendarImpl;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -61,6 +64,7 @@ public class instanciaUsuarioController {
     private Sesion ses;
     private Long idInsta;
     private String usuario;
+    private Date fechaInsta;
     
     /**
      *
@@ -444,6 +448,8 @@ public class instanciaUsuarioController {
             }
             j++;
         }
+        
+        //System.out.println("ojooooooooo  "+inst.getIdPeriodoGrupoProceso().getId());
           
     }
 
@@ -530,6 +536,27 @@ public class instanciaUsuarioController {
             }
             j++;
         }
+        
+    }
+    
+    /**
+     * Metodo que permite colocar el estilo de una fila mediante un color
+     *
+     * @param codigo parametro que indica la condicion para determinar si se
+     * pinta la fila en rosa o blanco
+     * @return
+     */
+    public String estilo(XMLGregorianCalendarImpl estiloInstancia) {
+        
+        System.out.println("Fechaaaaa "+estiloInstancia);
+        
+        XMLGregorianCalendarImpl fecha = new XMLGregorianCalendarImpl();
+        
+        if(estiloInstancia.compare(fecha)==0){
+            System.out.println("Entrooooooooooo");
+            return "background-color: mistyrose;";
+        }
+        return " background-color: blue;";
         
     }
 
