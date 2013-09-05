@@ -12,7 +12,10 @@ import com.pangea.capadeservicios.servicios.Sesion;
 import com.pangea.capadeservicios.servicios.Usuario;
 import com.pangea.capadeservicios.servicios.WrInstancia;
 import com.pangea.capadeservicios.servicios.WrResultado;
+import com.sun.msv.grammar.xmlschema.XMLSchemaTypeExp;
+import com.sun.org.apache.xerces.internal.jaxp.datatype.XMLGregorianCalendarImpl;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -52,19 +55,64 @@ public class instanciaUsuarioController {
     private TreeNode mailbox;
     private Usuario idusu, idusuario;
     private TreeNode estact;
-
     private List<String> estados;
     private TreeNode estadoSeleccionado;
     private WrInstancia instancia, instac;
     private List<Instancia> instancias;
-    private Instancia inst, insta, instActividad;
-
-    private WrResultado resul;
+    private Instancia inst, insta, instActividad, instCerrar;
+    private WrResultado instanciacerrar;
     private Sesion ses;
-    
     private Long idInsta;
     private String usuario;
+    private Date fechaInsta;
+    
+    /**
+     *
+     * @return
+     */
+    public WrResultado getInstanciacerrar() {
+        return instanciacerrar;
+    }
 
+    /**
+     *
+     * @param instanciacerrar
+     */
+    public void setInstanciacerrar(WrResultado instanciacerrar) {
+        this.instanciacerrar = instanciacerrar;
+    }
+    
+    /**
+     *
+     * @return
+     */
+    public Instancia getInstCerrar() {
+        return instCerrar;
+    }
+
+    /**
+     *
+     * @param instCerrar
+     */
+    public void setInstCerrar(Instancia instCerrar) {
+        this.instCerrar = instCerrar;
+    }
+    
+    /**
+     *
+     * @return
+     */
+    public Sesion getSes() {
+        return ses;
+    }
+
+    /**
+     *
+     * @param ses
+     */
+    public void setSes(Sesion ses) {
+        this.ses = ses;
+    }
      /**
      *
      * @return
@@ -360,9 +408,8 @@ public class instanciaUsuarioController {
     @PostConstruct
     public void init() {
         
+        //Llamo al método verificar logueo apenas ingrese al xhtml
         verificarLogueo();
-        
-        System.out.println("Usuarioooo:     "+usuario);
         
         estact = new DefaultTreeNode("root", null);
         idusu = new Usuario();        
@@ -383,6 +430,8 @@ public class instanciaUsuarioController {
         }
         estadoSeleccionado = estact.getChildren().get(0);
         estact.getChildren().get(0).setSelected(true);
+        
+        //Cargo la lista de instancias dependiendo del estado y del usuario
         int j = 0;
         insta = new Instancia();
         insta.setEstado(estados.get(j));
@@ -393,10 +442,14 @@ public class instanciaUsuarioController {
         }
         while (instancia.getInstancias().size() > j) {
             instac = consultarInstancia(instancia.getInstancias().get(j));
-            inst = instac.getInstancias().get(0);
-            instancias.add(inst);
+            if(instac.getEstatus().compareTo("OK")== 0){
+                inst = instac.getInstancias().get(0);
+                instancias.add(inst);
+            }
             j++;
         }
+        
+        //System.out.println("ojooooooooo  "+inst.getIdPeriodoGrupoProceso().getId());
           
     }
 
@@ -406,7 +459,7 @@ public class instanciaUsuarioController {
      */
     public void onNodeSelect(NodeSelectEvent event) {
         
-        
+        //Cargo la lista de instancias dependiendo del estado y del usuario
         int j = 0;
         insta = new Instancia();
         insta.setEstado(event.getTreeNode().toString());
@@ -417,8 +470,10 @@ public class instanciaUsuarioController {
         }
         while (instancia.getInstancias().size() > j) {
             instac = consultarInstancia(instancia.getInstancias().get(j));
-            inst = instac.getInstancias().get(0);
-            instancias.add(inst);
+            if(instac.getEstatus().compareTo("OK")== 0){
+                inst = instac.getInstancias().get(0);
+                instancias.add(inst);
+            }
             j++;
         }
           
@@ -432,8 +487,6 @@ public class instanciaUsuarioController {
     public void listarActividades(){
         
         idInsta=inst.getId();
-        System.out.println("Ide de la Actividad es:     "+idInsta);
-        
         instActividad= new Instancia();
         instActividad.setId(idInsta);
         
@@ -453,6 +506,59 @@ public class instanciaUsuarioController {
         
         
     }
+    
+    /**
+     * Método con el cual se cierra una instancia, se necesitan la sesión 
+     * actual y la instancia que se desea cerrar y recargo la información
+     */
+    
+    public void cerrarInstanciaSeleccionada(){
+        
+        idInsta=inst.getId();
+        instCerrar= new Instancia();
+        instCerrar.setId(idInsta);
+        instanciacerrar=cerrarInstancia(instCerrar, ses);
+        
+        //Cargo la lista de instancias dependiendo del estado y del usuario
+        int j = 0;
+        insta = new Instancia();
+        insta.setEstado(estados.get(j));
+        instancia = consultarInstancias(idusu, insta);
+        instancias = new ArrayList<Instancia>();
+        if (instancia.getInstancias().isEmpty()) {
+            instancias = null;
+        }
+        while (instancia.getInstancias().size() > j) {
+            instac = consultarInstancia(instancia.getInstancias().get(j));
+            if(instac.getEstatus().compareTo("OK")== 0){
+                inst = instac.getInstancias().get(0);
+                instancias.add(inst);
+            }
+            j++;
+        }
+        
+    }
+    
+    /**
+     * Metodo que permite colocar el estilo de una fila mediante un color
+     *
+     * @param codigo parametro que indica la condicion para determinar si se
+     * pinta la fila en rosa o blanco
+     * @return
+     */
+    public String estilo(XMLGregorianCalendarImpl estiloInstancia) {
+        
+        System.out.println("Fechaaaaa "+estiloInstancia);
+        
+        XMLGregorianCalendarImpl fecha = new XMLGregorianCalendarImpl();
+        
+        if(estiloInstancia.compare(fecha)==0){
+            System.out.println("Entrooooooooooo");
+            return "background-color: mistyrose;";
+        }
+        return " background-color: blue;";
+        
+    }
 
     /**
      * Método para verificar si el usuario esta logueado
@@ -462,7 +568,7 @@ public class instanciaUsuarioController {
     public boolean verificarLogueo() {
         boolean bandera = false, sesionBd = false;
         try {
-            //codigo para guardar sesion y usuario logueado, sino existe redireccionamos a index.xhtml
+            //Codigo para guardar sesion y usuario logueado, sino existe redireccionamos a index.xhtml
             FacesContext context = FacesContext.getCurrentInstance();
             ExternalContext externalContext = context.getExternalContext();
             Object session = externalContext.getSession(true);
@@ -470,7 +576,9 @@ public class instanciaUsuarioController {
             usuarioLogueo = (Usuario) (SesionAbierta.getAttribute("Usuario"));
             sesionLogueo = (Sesion) (SesionAbierta.getAttribute("Sesion"));
             
+            //Guardo el valor del id del usuario y la sesión
             usuario=usuarioLogueo.getId();
+            ses=sesionLogueo;
             
             sesionBd = logSesion(sesionLogueo);
             if (usuarioLogueo == null || sesionLogueo == null || !sesionBd) {
@@ -536,5 +644,10 @@ public class instanciaUsuarioController {
         com.pangea.capadeservicios.servicios.GestionDeInstancias port = service.getGestionDeInstanciasPort();
         return port.buscarEstados();
     }
-    
+
+    private WrResultado cerrarInstancia(com.pangea.capadeservicios.servicios.Instancia instanciaActual, com.pangea.capadeservicios.servicios.Sesion sesionActual) {
+        com.pangea.capadeservicios.servicios.GestionDeInstancias port = service.getGestionDeInstanciasPort();
+        return port.cerrarInstancia(instanciaActual, sesionActual);
+    }
+
 }
