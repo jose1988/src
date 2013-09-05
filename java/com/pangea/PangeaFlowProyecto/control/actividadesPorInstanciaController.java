@@ -23,6 +23,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
+import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.ws.WebServiceRef;
 
 /**
@@ -41,7 +42,7 @@ public class actividadesPorInstanciaController {
     /*
      * Objeto de la clase actividad para mostrar la información de las actividades por instancia en una lista
      */
-    private List<Actividad> Actividades;
+    private List<Actividad> actividades;
     /*
      * Objeto de la clase actividad para mostrar la información de las actividades por instancia
      */
@@ -76,7 +77,7 @@ public class actividadesPorInstanciaController {
      * @return
      */
     public List<Actividad> getActividades() {
-        return Actividades;
+        return actividades;
     }
 
     /**
@@ -84,35 +85,36 @@ public class actividadesPorInstanciaController {
      * @param Actividades
      */
     public void setActividades(List<Actividad> Actividades) {
-        this.Actividades = Actividades;
+        this.actividades = Actividades;
     }
 
     /**
      * Metodo constructor que se incia al hacer la llamada a la pagina
-     * actividadesPorInstancia.xhml donde se mustra las actividades de una determinada instancia
+     * actividadesPorInstancia.xhml donde se mustra las actividades de una
+     * determinada instancia
      */
     @PostConstruct
     public void init() {
         //codigo para guardar la lista de actividades por Instancia
         Instancia Instancia = new Instancia();
-        Instancia.setId((long) 1);
-        FacesContext context = FacesContext.getCurrentInstance();
-        ExternalContext externalContext = context.getExternalContext();
-        Object session = externalContext.getSession(true);
-        HttpSession SesionAbierta = (HttpSession) session;
-        Instancia = (Instancia) (SesionAbierta.getAttribute("IdInstancia"));
+        Instancia.setId((long) 8);
+//        FacesContext context = FacesContext.getCurrentInstance();
+//        ExternalContext externalContext = context.getExternalContext();
+//        Object session = externalContext.getSession(true);
+//        HttpSession SesionAbierta = (HttpSession) session;
+//        Instancia = (Instancia) (SesionAbierta.getAttribute("IdInstancia"));
         int j = 0;
         WrActividad Envoltorio, datosActividad;
         Envoltorio = consultarActividadesPorInstancia(Instancia);
-        Actividades = new ArrayList<Actividad>();
+        actividades = new ArrayList<Actividad>();
         if (Envoltorio.getActividads().isEmpty()) {
-            Actividades = null;
+            actividades = null;
         }
         while (Envoltorio.getActividads().size() > j) {
             datosActividad = consultarActividad(Envoltorio.getActividads().get(j));
             if (datosActividad.getEstatus().compareTo("OK") == 0) {
                 act = datosActividad.getActividads().get(0);
-                Actividades.add(act);
+                actividades.add(act);
             }
             j++;
         }
@@ -179,6 +181,24 @@ public class actividadesPorInstanciaController {
         HttpSession SesionAbierta = (HttpSession) session;
         SesionAbierta.invalidate();
         Redireccionar();
+    }
+
+    /**
+     * Metodo que permite colocar el estilo de una fila mediante un color
+     *
+     * @param codigo parametro que indica la condicion para determinar si se
+     * pinta la fila en rosa o blanco
+     * @return
+     */
+    public String estilo(Actividad actividadx) {
+      if(actividadx!=null){
+        if(actividadx.getEstado().compareTo("abierta")==0)
+          return " background-color: red;";
+//        if (fecha.equals("2013-09-05")) {
+//            return "background-color: mistyrose;";
+//        }
+      }
+        return " background-color: white;";
     }
 
     private boolean logSesion(com.pangea.capadeservicios.servicios.Sesion sesionActual) {
