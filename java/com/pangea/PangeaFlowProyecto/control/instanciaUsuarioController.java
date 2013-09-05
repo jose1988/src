@@ -52,39 +52,60 @@ public class instanciaUsuarioController {
     private TreeNode mailbox;
     private Usuario idusu, idusuario;
     private TreeNode estact;
-
     private List<String> estados;
     private TreeNode estadoSeleccionado;
     private WrInstancia instancia, instac;
     private List<Instancia> instancias;
     private Instancia inst, insta, instActividad, instCerrar;
-
-    private WrResultado resul, instanciacerrar;
+    private WrResultado instanciacerrar;
     private Sesion ses;
-    
     private Long idInsta;
     private String usuario;
     
+    /**
+     *
+     * @return
+     */
     public WrResultado getInstanciacerrar() {
         return instanciacerrar;
     }
 
+    /**
+     *
+     * @param instanciacerrar
+     */
     public void setInstanciacerrar(WrResultado instanciacerrar) {
         this.instanciacerrar = instanciacerrar;
     }
+    
+    /**
+     *
+     * @return
+     */
     public Instancia getInstCerrar() {
         return instCerrar;
     }
 
+    /**
+     *
+     * @param instCerrar
+     */
     public void setInstCerrar(Instancia instCerrar) {
         this.instCerrar = instCerrar;
     }
     
-
+    /**
+     *
+     * @return
+     */
     public Sesion getSes() {
         return ses;
     }
 
+    /**
+     *
+     * @param ses
+     */
     public void setSes(Sesion ses) {
         this.ses = ses;
     }
@@ -383,9 +404,8 @@ public class instanciaUsuarioController {
     @PostConstruct
     public void init() {
         
+        //Llamo al método verificar logueo apenas ingrese al xhtml
         verificarLogueo();
-        
-        System.out.println("Usuarioooo:     "+usuario);
         
         estact = new DefaultTreeNode("root", null);
         idusu = new Usuario();        
@@ -406,6 +426,8 @@ public class instanciaUsuarioController {
         }
         estadoSeleccionado = estact.getChildren().get(0);
         estact.getChildren().get(0).setSelected(true);
+        
+        //Cargo la lista de instancias dependiendo del estado y del usuario
         int j = 0;
         insta = new Instancia();
         insta.setEstado(estados.get(j));
@@ -431,7 +453,7 @@ public class instanciaUsuarioController {
      */
     public void onNodeSelect(NodeSelectEvent event) {
         
-        
+        //Cargo la lista de instancias dependiendo del estado y del usuario
         int j = 0;
         insta = new Instancia();
         insta.setEstado(event.getTreeNode().toString());
@@ -459,8 +481,6 @@ public class instanciaUsuarioController {
     public void listarActividades(){
         
         idInsta=inst.getId();
-        System.out.println("Ide de la Instancia es:     "+idInsta);
-        
         instActividad= new Instancia();
         instActividad.setId(idInsta);
         
@@ -483,20 +503,33 @@ public class instanciaUsuarioController {
     
     /**
      * Método con el cual se cierra una instancia, se necesitan la sesión 
-     * actual y la instancia que se desea cerrar, llamo al contructor init
-     * para que me recargue la información del datatable
+     * actual y la instancia que se desea cerrar y recargo la información
      */
     
     public void cerrarInstanciaSeleccionada(){
         
         idInsta=inst.getId();
-        System.out.println("Ide de la Instancia es:     "+idInsta);
-        
         instCerrar= new Instancia();
         instCerrar.setId(idInsta);
         instanciacerrar=cerrarInstancia(instCerrar, ses);
         
-        init();
+        //Cargo la lista de instancias dependiendo del estado y del usuario
+        int j = 0;
+        insta = new Instancia();
+        insta.setEstado(estados.get(j));
+        instancia = consultarInstancias(idusu, insta);
+        instancias = new ArrayList<Instancia>();
+        if (instancia.getInstancias().isEmpty()) {
+            instancias = null;
+        }
+        while (instancia.getInstancias().size() > j) {
+            instac = consultarInstancia(instancia.getInstancias().get(j));
+            if(instac.getEstatus().compareTo("OK")== 0){
+                inst = instac.getInstancias().get(0);
+                instancias.add(inst);
+            }
+            j++;
+        }
         
     }
 
@@ -508,7 +541,7 @@ public class instanciaUsuarioController {
     public boolean verificarLogueo() {
         boolean bandera = false, sesionBd = false;
         try {
-            //codigo para guardar sesion y usuario logueado, sino existe redireccionamos a index.xhtml
+            //Codigo para guardar sesion y usuario logueado, sino existe redireccionamos a index.xhtml
             FacesContext context = FacesContext.getCurrentInstance();
             ExternalContext externalContext = context.getExternalContext();
             Object session = externalContext.getSession(true);
@@ -516,6 +549,7 @@ public class instanciaUsuarioController {
             usuarioLogueo = (Usuario) (SesionAbierta.getAttribute("Usuario"));
             sesionLogueo = (Sesion) (SesionAbierta.getAttribute("Sesion"));
             
+            //Guardo el valor del id del usuario y la sesión
             usuario=usuarioLogueo.getId();
             ses=sesionLogueo;
             
