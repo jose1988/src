@@ -14,7 +14,9 @@ import com.pangea.capadeservicios.servicios.Sesion;
 import com.pangea.capadeservicios.servicios.Usuario;
 import com.pangea.capadeservicios.servicios.WrActividad;
 import com.pangea.capadeservicios.servicios.WrResultado;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -98,11 +100,11 @@ public class actividadesPorInstanciaController {
         //codigo para guardar la lista de actividades por Instancia
         Instancia Instancia = new Instancia();
         Instancia.setId((long) 8);
-//        FacesContext context = FacesContext.getCurrentInstance();
-//        ExternalContext externalContext = context.getExternalContext();
-//        Object session = externalContext.getSession(true);
-//        HttpSession SesionAbierta = (HttpSession) session;
-//        Instancia = (Instancia) (SesionAbierta.getAttribute("IdInstancia"));
+        FacesContext context = FacesContext.getCurrentInstance();
+        ExternalContext externalContext = context.getExternalContext();
+        Object session = externalContext.getSession(true);
+        HttpSession SesionAbierta = (HttpSession) session;
+        Instancia = (Instancia) (SesionAbierta.getAttribute("IdInstancia"));
         int j = 0;
         WrActividad Envoltorio, datosActividad;
         Envoltorio = consultarActividadesPorInstancia(Instancia);
@@ -183,6 +185,17 @@ public class actividadesPorInstanciaController {
         Redireccionar();
     }
 
+    public String formatoFecha(XMLGregorianCalendar fecha) {
+        if (fecha != null) {
+            Date fechaDate = fecha.toGregorianCalendar().getTime();
+            SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+            String fechaCadena = formateador.format(fechaDate);
+            return fechaCadena;
+        }
+        return "";
+
+    }
+
     /**
      * Metodo que permite colocar el estilo de una fila mediante un color
      *
@@ -191,14 +204,35 @@ public class actividadesPorInstanciaController {
      * @return
      */
     public String estilo(Actividad actividadx) {
-      if(actividadx!=null){
-        if(actividadx.getEstado().compareTo("abierta")==0)
-          return " background-color: red;";
-//        if (fecha.equals("2013-09-05")) {
-//            return "background-color: mistyrose;";
-//        }
-      }
+        if (actividadx != null) {
+            Date fecha = actividadx.getFechaCierre().toGregorianCalendar().getTime();
+            SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+            String fechaSistema = formateador.format(new Date());
+            String fechaCierre = formateador.format(fecha);
+            boolean resultado = compararFechasConDate(fechaCierre, fechaSistema);
+            if (resultado) {
+                return " background-color: #FF8888;";
+            }
+        }
         return " background-color: white;";
+    }
+
+    private boolean compararFechasConDate(String fecha1, String fechaActual) {
+        boolean resultado = false;
+        try {
+            /**
+             * Obtenemos las fechas enviadas en el formato a comparar
+             */
+            SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+            Date fechaDate1 = formateador.parse(fecha1);
+            Date fechaDate2 = formateador.parse(fechaActual);
+            if (fechaDate2.before(fechaDate1)) {
+                resultado = true;
+            }
+        } catch (Exception e) {
+            System.out.println("Se Produjo un Error!!!  " + e.getMessage());
+        }
+        return resultado;
     }
 
     private boolean logSesion(com.pangea.capadeservicios.servicios.Sesion sesionActual) {
