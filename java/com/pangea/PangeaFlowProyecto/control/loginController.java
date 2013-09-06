@@ -19,6 +19,8 @@ import com.pangea.capadeservicios.servicios.WrBandeja;
 import com.pangea.capadeservicios.servicios.WrPost;
 import com.pangea.capadeservicios.servicios.WrResultado;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -27,6 +29,9 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.ws.WebServiceRef;
 import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.event.TabChangeEvent;
@@ -61,6 +66,9 @@ public class loginController {
     private WrActividad actividad;
     private List<Actividad> actividades;
     private Actividad act;
+     private Actividad aux;
+
+    
     private WrResultado resul;
     private Sesion ses;
     private Condicion cond;
@@ -296,6 +304,22 @@ public class loginController {
         }
 
     }
+     public String sombreado(Actividad actividadx) throws DatatypeConfigurationException {
+          if(actividadx!=null ){
+              if(actividadx.getFechaCierre()!=null){
+               XMLGregorianCalendar cod;
+               cod=actividadx.getFechaCierre();
+               Date fech=cod.toGregorianCalendar().getTime();
+               Date fecha= new Date();
+
+            if (fech.before(fecha)) {
+               return "background-color: red;";
+           }
+             }
+             return " background-color: blue;";
+             }
+           return " background-color: blue;";
+    }
     
     public void asignar(){
           
@@ -365,7 +389,13 @@ public class loginController {
     public void setAct(Actividad act) {
         this.act = act;
     }
+       public Actividad getAux() {
+        return aux;
+    }
 
+    public void setAux(Actividad aux) {
+        this.aux = aux;
+    }
     public TreeNode getMailboxes() {
         return mailboxes;
     }
