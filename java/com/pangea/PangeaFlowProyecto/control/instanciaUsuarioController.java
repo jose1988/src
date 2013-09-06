@@ -12,10 +12,7 @@ import com.pangea.capadeservicios.servicios.Sesion;
 import com.pangea.capadeservicios.servicios.Usuario;
 import com.pangea.capadeservicios.servicios.WrInstancia;
 import com.pangea.capadeservicios.servicios.WrResultado;
-import com.sun.msv.grammar.xmlschema.XMLSchemaTypeExp;
-import com.sun.org.apache.xerces.internal.jaxp.datatype.XMLGregorianCalendarImpl;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -64,7 +61,6 @@ public class instanciaUsuarioController {
     private Sesion ses;
     private Long idInsta;
     private String usuario;
-    private Date fechaInsta;
     
     /**
      *
@@ -546,18 +542,19 @@ public class instanciaUsuarioController {
      * pinta la fila en rosa o blanco
      * @return
      */
-    public String estilo(XMLGregorianCalendarImpl estiloInstancia) {
-        
-        System.out.println("Fechaaaaa "+estiloInstancia);
-        
-        XMLGregorianCalendarImpl fecha = new XMLGregorianCalendarImpl();
-        
-        if(estiloInstancia.compare(fecha)==0){
-            System.out.println("Entrooooooooooo");
-            return "background-color: mistyrose;";
-        }
-        return " background-color: blue;";
-        
+    public String estilo(Instancia instanciaPintar) {
+      if(instanciaPintar!=null){
+          
+          
+          System.out.println("FECHAAAAAA: "+instanciaPintar.getFechaCierre().toGregorianCalendar());
+          
+         // if(instanciaPintar.getEstado().compareTo("abierta")==0)
+          //return " background-color: red;";
+//        if (fecha.equals("2013-09-05")) {
+//            return "background-color: mistyrose;";
+//        }
+      }
+        return " background-color: white;";
     }
 
     /**

@@ -304,16 +304,21 @@ public class loginController {
         }
 
     }
-     public String sombreado(XMLGregorianCalendar cod) throws DatatypeConfigurationException {
-        
-        cod=aux.getFechaCierre();
-        Date fech=cod.toGregorianCalendar().getTime();
-        Date fecha= new Date();
-      
-         if (fech.before(fecha)) {
-            return "background-color: red;";
-        }
-        return " background-color: blue;";
+     public String sombreado(Actividad actividadx) throws DatatypeConfigurationException {
+          if(actividadx!=null ){
+              if(actividadx.getFechaCierre()!=null){
+               XMLGregorianCalendar cod;
+               cod=actividadx.getFechaCierre();
+               Date fech=cod.toGregorianCalendar().getTime();
+               Date fecha= new Date();
+
+            if (fech.before(fecha)) {
+               return "background-color: red;";
+           }
+             }
+             return " background-color: blue;";
+             }
+           return " background-color: blue;";
     }
     
     public void asignar(){
