@@ -31,9 +31,9 @@ import javax.xml.ws.WebServiceRef;
 /**
  * @author Pangea
  */
-@ManagedBean(name = "actividadesPorInstanciaController")
+@ManagedBean(name = "actividadesUsuarioController")
 @SessionScoped
-public class actividadesPorInstanciaController {
+public class actividadesUsuarioController {
 
     @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_15362/CapaDeServicios/GestionDeActividades.wsdl")
     private GestionDeActividades_Service service_2;
@@ -48,7 +48,8 @@ public class actividadesPorInstanciaController {
     /*
      * Objeto de la clase actividad para mostrar la información de las actividades por instancia
      */
-    private Actividad act;
+    private Actividad act,actividadLibrar;
+   long idAct;
     /*
      * Objeto de la clase usuario donde se guardara el objeto de la variable de sesión
      */
@@ -98,22 +99,31 @@ public class actividadesPorInstanciaController {
     @PostConstruct
     public void init() {
         //codigo para guardar la lista de actividades por Instancia
-        Instancia Instancia = new Instancia();
-        Instancia.setId((long) 8);
-        FacesContext context = FacesContext.getCurrentInstance();
-        ExternalContext externalContext = context.getExternalContext();
-        Object session = externalContext.getSession(true);
-        HttpSession SesionAbierta = (HttpSession) session;
-        Instancia = (Instancia) (SesionAbierta.getAttribute("IdInstancia"));
         int j = 0;
-        WrActividad Envoltorio, datosActividad;
-        Envoltorio = consultarActividadesPorInstancia(Instancia);
+        WrActividad envoltorioAbiertas, envoltorioPendientes, datosActividad;
+        Actividad actividadesPendientes = new Actividad();
+        actividadesPendientes.setEstado("pendiente");
+        Actividad actividadesAbiertas = new Actividad();
+        actividadesAbiertas.setEstado("abierta");
+        usuarioLogueo=new Usuario();
+        usuarioLogueo.setId("thunder");
+        envoltorioAbiertas = consultarActividades(usuarioLogueo, actividadesAbiertas);
+        envoltorioPendientes = consultarActividades(usuarioLogueo, actividadesPendientes);
         actividades = new ArrayList<Actividad>();
-        if (Envoltorio.getActividads().isEmpty()) {
+        if ((envoltorioAbiertas.getActividads().isEmpty() || envoltorioAbiertas.getActividads()==null) && (envoltorioPendientes.getActividads().isEmpty()|| envoltorioPendientes.getActividads()==null)) {
             actividades = null;
         }
-        while (Envoltorio.getActividads().size() > j) {
-            datosActividad = consultarActividad(Envoltorio.getActividads().get(j));
+        while (envoltorioAbiertas.getActividads().size() > j) {
+            datosActividad = consultarActividad(envoltorioAbiertas.getActividads().get(j));
+            if (datosActividad.getEstatus().compareTo("OK") == 0) {
+                act = datosActividad.getActividads().get(0);
+                actividades.add(act);
+            }
+            j++;
+        }
+        j = 0;
+        while (envoltorioPendientes.getActividads().size() > j) {
+            datosActividad = consultarActividad(envoltorioPendientes.getActividads().get(j));
             if (datosActividad.getEstatus().compareTo("OK") == 0) {
                 act = datosActividad.getActividads().get(0);
                 actividades.add(act);
@@ -122,6 +132,21 @@ public class actividadesPorInstanciaController {
         }
     }
 
+      public void liberarActividad(){
+        
+        idAct=act.getId();
+        actividadLibrar= new Actividad();
+        actividadLibrar.setId(idAct);
+        
+        FacesContext context = FacesContext.getCurrentInstance();
+        ExternalContext externalContext = context.getExternalContext();
+        Object sessionInstancia = externalContext.getSession(true);
+        HttpSession httpSession = (HttpSession) sessionInstancia;
+        httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+        httpSession.setAttribute("IdInstancia", actividadLibrar);
+    
+          System.out.println("LIBROOOOOOOOOOOOOOOOOOO");
+    }
     /**
      * Método para verificar si el usuario esta logueado
      *
@@ -204,7 +229,7 @@ public class actividadesPorInstanciaController {
     /**
      * Metodo que permite colocar el estilo de una fila mediante un color
      *
-     * @param actividadx 
+     * @param actividadx
      * @return
      */
     public String estilo(Actividad actividadx) {
@@ -255,13 +280,13 @@ public class actividadesPorInstanciaController {
         return port.logOut(sesionActual);
     }
 
-    private com.pangea.capadeservicios.servicios.WrActividad consultarActividadesPorInstancia(com.pangea.capadeservicios.servicios.Instancia instanciaActual) {
-        com.pangea.capadeservicios.servicios.GestionDeInstancias port = service.getGestionDeInstanciasPort();
-        return port.consultarActividadesPorInstancia(instanciaActual);
-    }
-
     private WrActividad consultarActividad(com.pangea.capadeservicios.servicios.Actividad actividadActual) {
         com.pangea.capadeservicios.servicios.GestionDeActividades port = service_2.getGestionDeActividadesPort();
         return port.consultarActividad(actividadActual);
+    }
+
+    private WrActividad consultarActividades(com.pangea.capadeservicios.servicios.Usuario usuarioActual, com.pangea.capadeservicios.servicios.Actividad actividadActual) {
+        com.pangea.capadeservicios.servicios.GestionDeActividades port = service_2.getGestionDeActividadesPort();
+        return port.consultarActividades(usuarioActual, actividadActual);
     }
 }
