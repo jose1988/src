@@ -19,6 +19,7 @@ import com.pangea.capadeservicios.servicios.WrBandeja;
 import com.pangea.capadeservicios.servicios.WrPost;
 import com.pangea.capadeservicios.servicios.WrResultado;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -77,6 +78,7 @@ public class loginController {
     private Grupo grupoSeleccionado;
     WrActividad ActividadesCola;
     private Sesion sesion_actual;
+    private int rango;
 
     public TreeNode getEstadoSeleccionado() {
         return estadoSeleccionado;
@@ -307,18 +309,49 @@ public class loginController {
      public String sombreado(Actividad actividadx) throws DatatypeConfigurationException {
           if(actividadx!=null ){
               if(actividadx.getFechaCierre()!=null){
-               XMLGregorianCalendar cod;
-               cod=actividadx.getFechaCierre();
-               Date fech=cod.toGregorianCalendar().getTime();
+               XMLGregorianCalendar FC1;
+               XMLGregorianCalendar FA1;
+               FC1=actividadx.getFechaCierre();
+               Date fc=FC1.toGregorianCalendar().getTime();
                Date fecha= new Date();
 
-            if (fech.before(fecha)) {
-               return "background-color: red;";
+            if (fc.before(fecha)) {
+               return "background-color:  #FF8888";
+           }else  if(actividadx.getFechaAlerta()!=null){
+                  FA1=actividadx.getFechaAlerta();
+                  Date fa=FA1.toGregorianCalendar().getTime();
+                        if(fa.before(fecha)){
+                      return "background-color: orange;";
+                            }
+                       return "background-color: white";
+                  }
+             }
+             return " background-color: white;";
+             }
+           return " background-color: white;";
+    }
+     
+     public String sombreadoc(Actividad actividadx) throws DatatypeConfigurationException {
+          if(actividadx!=null ){
+              if(actividadx.getFechaCierre()!=null && actividadx.getFechaApertura()!=null){
+               XMLGregorianCalendar FC1;
+               XMLGregorianCalendar FA1;
+               FC1=actividadx.getFechaCierre();
+               FA1=actividadx.getFechaApertura();
+               long duracion=actividadx.getDuracion().longValue();
+               
+               long f=FC1.toGregorianCalendar().getTimeInMillis();
+               long f2=FA1.toGregorianCalendar().getTimeInMillis();
+               long resta=f-f2;
+               long dias = resta / (24 * 60 * 60 * 1000);
+
+            if (dias > duracion) {
+               return "background-color:  #FF8888;";
            }
              }
-             return " background-color: blue;";
+             return " background-color: white";
              }
-           return " background-color: blue;";
+           return " background-color: white;";
     }
     
     public void asignar(){
