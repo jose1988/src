@@ -13,6 +13,7 @@ import com.pangea.capadeservicios.servicios.Usuario;
 import com.pangea.capadeservicios.servicios.WrInstancia;
 import com.pangea.capadeservicios.servicios.WrResultado;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -20,6 +21,8 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.ws.WebServiceRef;
 import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.model.DefaultTreeNode;
@@ -444,8 +447,6 @@ public class instanciaUsuarioController {
             }
             j++;
         }
-        
-        //System.out.println("ojooooooooo  "+inst.getIdPeriodoGrupoProceso().getId());
           
     }
 
@@ -538,23 +539,56 @@ public class instanciaUsuarioController {
     /**
      * Metodo que permite colocar el estilo de una fila mediante un color
      *
-     * @param codigo parametro que indica la condicion para determinar si se
-     * pinta la fila en rosa o blanco
+     * @param instanciaPintar parametro que indica la condición para determinar si 
+     * se pinta la fila en rosa o blanco si se ha pasado la fecha de cerrar o no
+     * en las instancias que aun estan abiertas
      * @return
      */
-    public String estilo(Instancia instanciaPintar) {
+    public String estiloAbierta(Instancia instanciaPintar) throws DatatypeConfigurationException {
+        
       if(instanciaPintar!=null){
+          if(instanciaPintar.getFechaCierre()!=null){
+            XMLGregorianCalendar cod;
+            cod=instanciaPintar.getFechaCierre();
+            Date fech=cod.toGregorianCalendar().getTime();
+            Date fecha= new Date();
           
+            if(fech.before(fecha)) {
+                return "background-color: #FF8888;";
+            }
+          }
+          return " background-color: #FFFFFF;";
+          }
+       return " background-color: #FFFFFF;";
+    }
+    
+    /**
+     * Metodo que permite colocar el estilo de una fila mediante un color
+     *
+     * @param instanciaPintar parametro que indica la condición para determinar si 
+     * se pinta la fila en rosa o blanco si se ha pasado la fecha de periodo o no
+     * en las instancias que aun estan cerradas
+     * @return
+     */
+    public String estiloCerrada(Instancia instanciaPintar) throws DatatypeConfigurationException {
+        
+      if(instanciaPintar!=null){
+          if(instanciaPintar.getIdPeriodoGrupoProceso().getIdPeriodo().getFechaHasta()!=null){
+            XMLGregorianCalendar cod;
+            cod=instanciaPintar.getFechaCierre();
+            Date fech=cod.toGregorianCalendar().getTime();
+            Date fecha= new Date();
           
-          System.out.println("FECHAAAAAA: "+instanciaPintar.getFechaCierre().toGregorianCalendar());
-          
-         // if(instanciaPintar.getEstado().compareTo("abierta")==0)
-          //return " background-color: red;";
-//        if (fecha.equals("2013-09-05")) {
-//            return "background-color: mistyrose;";
-//        }
-      }
-        return " background-color: white;";
+            if(fech.before(fecha)) {
+                return "background-color: #FF8888;";
+            }
+          }
+          else{
+              System.out.println("Traeeeee: "+instanciaPintar.getIdPeriodoGrupoProceso().getId());
+          }
+          return " background-color: #FFFFFF;";
+          }
+       return " background-color: #FFFFFF;";
     }
 
     /**
