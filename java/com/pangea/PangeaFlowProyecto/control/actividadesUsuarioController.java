@@ -48,8 +48,8 @@ public class actividadesUsuarioController {
     /*
      * Objeto de la clase actividad para mostrar la información de las actividades por instancia
      */
-    private Actividad act,actividadLibrar;
-   long idAct;
+    private Actividad act, actividadLibrar;
+    long idAct;
     /*
      * Objeto de la clase usuario donde se guardara el objeto de la variable de sesión
      */
@@ -105,12 +105,12 @@ public class actividadesUsuarioController {
         actividadesPendientes.setEstado("pendiente");
         Actividad actividadesAbiertas = new Actividad();
         actividadesAbiertas.setEstado("abierta");
-        usuarioLogueo=new Usuario();
+        usuarioLogueo = new Usuario();
         usuarioLogueo.setId("thunder");
         envoltorioAbiertas = consultarActividades(usuarioLogueo, actividadesAbiertas);
         envoltorioPendientes = consultarActividades(usuarioLogueo, actividadesPendientes);
         actividades = new ArrayList<Actividad>();
-        if ((envoltorioAbiertas.getActividads().isEmpty() || envoltorioAbiertas.getActividads()==null) && (envoltorioPendientes.getActividads().isEmpty()|| envoltorioPendientes.getActividads()==null)) {
+        if ((envoltorioAbiertas.getActividads().isEmpty() || envoltorioAbiertas.getActividads() == null) && (envoltorioPendientes.getActividads().isEmpty() || envoltorioPendientes.getActividads() == null)) {
             actividades = null;
         }
         while (envoltorioAbiertas.getActividads().size() > j) {
@@ -132,21 +132,13 @@ public class actividadesUsuarioController {
         }
     }
 
-      public void liberarActividad(){
-        
-        idAct=act.getId();
-        actividadLibrar= new Actividad();
-        actividadLibrar.setId(idAct);
-        
-        FacesContext context = FacesContext.getCurrentInstance();
-        ExternalContext externalContext = context.getExternalContext();
-        Object sessionInstancia = externalContext.getSession(true);
-        HttpSession httpSession = (HttpSession) sessionInstancia;
-        httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-        httpSession.setAttribute("IdInstancia", actividadLibrar);
-    
-          System.out.println("LIBROOOOOOOOOOOOOOOOOOO");
+    public void liberarActividadUsuario() {
+        actividadLibrar = new Actividad();
+        actividadLibrar.setId(act.getId());
+        WrResultado envoltorio = liberarActividad(actividadLibrar, usuarioLogueo);
+        System.out.println("LIBROOOOOOOOOOOOOOOOOOO_______" + act.getId());
     }
+
     /**
      * Método para verificar si el usuario esta logueado
      *
@@ -288,5 +280,15 @@ public class actividadesUsuarioController {
     private WrActividad consultarActividades(com.pangea.capadeservicios.servicios.Usuario usuarioActual, com.pangea.capadeservicios.servicios.Actividad actividadActual) {
         com.pangea.capadeservicios.servicios.GestionDeActividades port = service_2.getGestionDeActividadesPort();
         return port.consultarActividades(usuarioActual, actividadActual);
+    }
+
+    private WrResultado liberarActividades(com.pangea.capadeservicios.servicios.Usuario usuarioActual) {
+        com.pangea.capadeservicios.servicios.GestionDeActividades port = service_2.getGestionDeActividadesPort();
+        return port.liberarActividades(usuarioActual);
+    }
+
+    private WrResultado liberarActividad(com.pangea.capadeservicios.servicios.Actividad actividadActual, com.pangea.capadeservicios.servicios.Usuario usuarioActual) {
+        com.pangea.capadeservicios.servicios.GestionDeActividades port = service_2.getGestionDeActividadesPort();
+        return port.liberarActividad(actividadActual, usuarioActual);
     }
 }
