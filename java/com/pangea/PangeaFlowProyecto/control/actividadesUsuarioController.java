@@ -139,6 +139,12 @@ public class actividadesUsuarioController {
         System.out.println("LIBROOOOOOOOOOOOOOOOOOO_______" + act.getId());
     }
 
+    public void liberarActividadesUsuario() {
+        WrResultado envoltorio = liberarActividades(usuarioLogueo);
+                System.out.println("LIBeROOOOOOOOOOOOOOOOOOO_______");
+
+    }
+
     /**
      * Método para verificar si el usuario esta logueado
      *
