@@ -492,35 +492,8 @@ public class loginController {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Mail Sent!"));
     }
 
-    private static WrPost consultarMensajes(com.pangea.capadeservicios.servicios.Usuario usuarioActual, com.pangea.capadeservicios.servicios.Bandeja bandejaActual) {
-        com.pangea.capadeservicios.servicios.Mensajeria_Service service = new com.pangea.capadeservicios.servicios.Mensajeria_Service();
-        com.pangea.capadeservicios.servicios.Mensajeria port = service.getMensajeriaPort();
-        return port.consultarMensajes(usuarioActual, bandejaActual);
-    }
+  
 
-    private static WrPost consultarMensaje(com.pangea.capadeservicios.servicios.Post mensajeActual, com.pangea.capadeservicios.servicios.Usuario usuarioActual) {
-        com.pangea.capadeservicios.servicios.Mensajeria_Service service = new com.pangea.capadeservicios.servicios.Mensajeria_Service();
-        com.pangea.capadeservicios.servicios.Mensajeria port = service.getMensajeriaPort();
-        return port.consultarMensaje(mensajeActual, usuarioActual);
-    }
-
-    private static WrResultado moverMensaje(com.pangea.capadeservicios.servicios.PostEnBandeja postEnBandejaActual) {
-        com.pangea.capadeservicios.servicios.Mensajeria_Service service = new com.pangea.capadeservicios.servicios.Mensajeria_Service();
-        com.pangea.capadeservicios.servicios.Mensajeria port = service.getMensajeriaPort();
-        return port.moverMensaje(postEnBandejaActual);
-    }
-
-    private static WrResultado enviarMensaje(com.pangea.capadeservicios.servicios.WrDestinatario destinatarios, com.pangea.capadeservicios.servicios.Usuario usuarioActual, com.pangea.capadeservicios.servicios.Mensaje mensajeActual) {
-        com.pangea.capadeservicios.servicios.Mensajeria_Service service = new com.pangea.capadeservicios.servicios.Mensajeria_Service();
-        com.pangea.capadeservicios.servicios.Mensajeria port = service.getMensajeriaPort();
-        return port.enviarMensaje(destinatarios, usuarioActual, mensajeActual);
-    }
-
-    private static WrBandeja consultarBandejas(com.pangea.capadeservicios.servicios.Usuario usuarioActual) {
-        com.pangea.capadeservicios.servicios.Mensajeria_Service service = new com.pangea.capadeservicios.servicios.Mensajeria_Service();
-        com.pangea.capadeservicios.servicios.Mensajeria port = service.getMensajeriaPort();
-        return port.consultarBandejas(usuarioActual);
-    }
 
     private WrActividad consultarActividades(com.pangea.capadeservicios.servicios.Usuario usuarioActual, com.pangea.capadeservicios.servicios.Actividad actividadActual) {
         com.pangea.capadeservicios.servicios.GestionDeActividades port = service_1.getGestionDeActividadesPort();
