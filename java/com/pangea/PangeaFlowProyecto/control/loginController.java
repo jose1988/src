@@ -67,9 +67,8 @@ public class loginController {
     private WrActividad actividad;
     private List<Actividad> actividades;
     private Actividad act;
-     private Actividad aux;
-
-    
+    private Actividad aux;
+    private int indice;
     private WrResultado resul;
     private Sesion ses;
     private Condicion cond;
@@ -79,6 +78,14 @@ public class loginController {
     WrActividad ActividadesCola;
     private Sesion sesion_actual;
     private int rango;
+
+    public int getIndice() {
+        return indice;
+    }
+
+    public void setIndice(int indice) {
+        this.indice = indice;
+    }
 
     public TreeNode getEstadoSeleccionado() {
         return estadoSeleccionado;
@@ -104,7 +111,7 @@ public class loginController {
         ExternalContext ec = fc.getExternalContext();
         HttpSession sesion = (HttpSession) ec.getSession(true);
         sesion_actual = (Sesion) (sesion.getAttribute("Sesion"));
-        idusu= (Usuario) (sesion.getAttribute("Usuario"));
+        idusu = (Usuario) (sesion.getAttribute("Usuario"));
         String icono;
         // bande=consultarBandejas(idusu);
         estados = buscarEstados();
@@ -126,6 +133,7 @@ public class loginController {
         TreeNode inbox = new DefaultTreeNode("s", "Cola de Actividades", estact);
         grupos = this.gruposUsuario(idusu);
         estadoSeleccionado = estact.getChildren().get(0);
+        indice = 0;
         estact.getChildren().get(0).setSelected(true);
         int j = 0;
         activi = new Actividad();
@@ -163,6 +171,7 @@ public class loginController {
         for (int i = 0; i < grupos.size(); i++) {
             if (grupos.get(i).getNombre().compareTo(gSeleccionado.getNombre()) == 0) {
                 g = grupos.get(i);
+                indice = i;
             }
 
         }
@@ -182,7 +191,7 @@ public class loginController {
     }
 
     public void onNodeSelect(NodeSelectEvent event) {
-         
+
         int j = 0;
         if ("Cola de Actividades".equals(event.getTreeNode().toString())) {
 
@@ -207,10 +216,17 @@ public class loginController {
             if (actividad.getActividads().isEmpty()) {
                 actividades = null;
             }
+            Grupo g = new Grupo();
+            for (int i = 0; i < grupos.size(); i++) {
+                if (grupos.get(i).getNombre().compareTo(grupoSeleccionado.getNombre()) == 0) {
+                    g = grupos.get(i);
+                    indice = i;
+                }
 
+            }
             while (actividad.getActividads().size() > j) {
                 act = actividad.getActividads().get(j);
-                if (act.getIdInstancia().getIdPeriodoGrupoProceso().getIdGrupo().getId().compareTo(grupoSeleccionado.getId()) != 0) {
+                if (act.getIdInstancia().getIdPeriodoGrupoProceso().getIdGrupo().getId().compareTo(g.getId()) != 0) {
                 } else {
                     actividades.add(act);
                 }
@@ -221,9 +237,9 @@ public class loginController {
     }
 
     public void cambiarEstado() {
-       
-      
-        
+
+
+
         resul = iniciarActividad(act, sesion_actual);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(resul.getEstatus()));
         int j = 0;
@@ -242,10 +258,10 @@ public class loginController {
         }
 
     }
-    
-      public void cambiarEstadoPendiente() {
-       
-        
+
+    public void cambiarEstadoPendiente() {
+
+
         resul = pendienteActividad(act, sesion_actual);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(resul.getEstatus()));
         int j = 0;
@@ -306,73 +322,74 @@ public class loginController {
         }
 
     }
-     public String sombreado(Actividad actividadx) throws DatatypeConfigurationException {
-          if(actividadx!=null ){
-              if(actividadx.getFechaCierre()!=null){
-               XMLGregorianCalendar FC1;
-               XMLGregorianCalendar FA1;
-               FC1=actividadx.getFechaCierre();
-               Date fc=FC1.toGregorianCalendar().getTime();
-               Date fecha= new Date();
 
-            if (fc.before(fecha)) {
-               return "background-color:  #FF8888";
-           }else  if(actividadx.getFechaAlerta()!=null){
-                  FA1=actividadx.getFechaAlerta();
-                  Date fa=FA1.toGregorianCalendar().getTime();
-                        if(fa.before(fecha)){
-                      return "background-color: orange;";
-                            }
-                       return "background-color: white";
-                  }
-             }
-             return " background-color: white;";
-             }
-           return " background-color: white;";
-    }
-     
-     public String sombreadoc(Actividad actividadx) throws DatatypeConfigurationException {
-          if(actividadx!=null ){
-              if(actividadx.getFechaCierre()!=null && actividadx.getFechaApertura()!=null){
-               XMLGregorianCalendar FC1;
-               XMLGregorianCalendar FA1;
-               FC1=actividadx.getFechaCierre();
-               FA1=actividadx.getFechaApertura();
-               long duracion=actividadx.getDuracion().longValue();
-               
-               long f=FC1.toGregorianCalendar().getTimeInMillis();
-               long f2=FA1.toGregorianCalendar().getTimeInMillis();
-               long resta=f-f2;
-               long dias = resta / (24 * 60 * 60 * 1000);
+    public String sombreado(Actividad actividadx) throws DatatypeConfigurationException {
+        if (actividadx != null) {
+            if (actividadx.getFechaCierre() != null) {
+                XMLGregorianCalendar FC1;
+                XMLGregorianCalendar FA1;
+                FC1 = actividadx.getFechaCierre();
+                Date fc = FC1.toGregorianCalendar().getTime();
+                Date fecha = new Date();
 
-            if (dias > duracion) {
-               return "background-color:  #FF8888;";
-           }
-             }
-             return " background-color: white";
-             }
-           return " background-color: white;";
+                if (fc.before(fecha)) {
+                    return "background-color:  #FF8888";
+                } else if (actividadx.getFechaAlerta() != null) {
+                    FA1 = actividadx.getFechaAlerta();
+                    Date fa = FA1.toGregorianCalendar().getTime();
+                    if (fa.before(fecha)) {
+                        return "background-color: orange;";
+                    }
+                    return "background-color: white";
+                }
+            }
+            return " background-color: white;";
+        }
+        return " background-color: white;";
     }
-    
-    public void asignar(){
-          
-        resul=consumirCola(act,idusu);
+
+    public String sombreadoc(Actividad actividadx) throws DatatypeConfigurationException {
+        if (actividadx != null) {
+            if (actividadx.getFechaCierre() != null && actividadx.getFechaApertura() != null) {
+                XMLGregorianCalendar FC1;
+                XMLGregorianCalendar FA1;
+                FC1 = actividadx.getFechaCierre();
+                FA1 = actividadx.getFechaApertura();
+                long duracion = actividadx.getDuracion().longValue();
+
+                long f = FC1.toGregorianCalendar().getTimeInMillis();
+                long f2 = FA1.toGregorianCalendar().getTimeInMillis();
+                long resta = f - f2;
+                long dias = resta / (24 * 60 * 60 * 1000);
+
+                if (dias > duracion) {
+                    return "background-color:  #FF8888;";
+                }
+            }
+            return " background-color: white";
+        }
+        return " background-color: white;";
+    }
+
+    public void asignar() {
+
+        resul = consumirCola(act, idusu);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(resul.getEstatus()));
-         ActividadesCola = consultarActividadesCola(idusu);
-         int j=0;
-            actividades = new ArrayList<Actividad>();
-            if (actividad.getActividads().isEmpty()) {
-                actividades = null;
-            }
+        ActividadesCola = consultarActividadesCola(idusu);
+        int j = 0;
+        actividades = new ArrayList<Actividad>();
+        if (actividad.getActividads().isEmpty()) {
+            actividades = null;
+        }
 
-            while (ActividadesCola.getActividads().size() > j) {
-                act = ActividadesCola.getActividads().get(j);
-                actividades.add(act);
-                j++;
-            }
+        while (ActividadesCola.getActividads().size() > j) {
+            act = ActividadesCola.getActividads().get(j);
+            actividades.add(act);
+            j++;
+        }
 
-       
-        
+
+
     }
 
     public TreeNode getSelectedNode() {
@@ -422,13 +439,15 @@ public class loginController {
     public void setAct(Actividad act) {
         this.act = act;
     }
-       public Actividad getAux() {
+
+    public Actividad getAux() {
         return aux;
     }
 
     public void setAux(Actividad aux) {
         this.aux = aux;
     }
+
     public TreeNode getMailboxes() {
         return mailboxes;
     }
@@ -518,8 +537,6 @@ public class loginController {
         return port.iniciarActividad(actividadActual, sesionActual);
     }
 
-    
-
     private WrActividad consultarActividadesCola(com.pangea.capadeservicios.servicios.Usuario usuarioActual) {
         com.pangea.capadeservicios.servicios.GestionDeActividades port = service_1.getGestionDeActividadesPort();
         return port.consultarActividadesCola(usuarioActual);
@@ -544,5 +561,4 @@ public class loginController {
         com.pangea.capadeservicios.servicios.GestionDeActividades port = service_1.getGestionDeActividadesPort();
         return port.consumirCola(actividadActual, usuarioActual);
     }
-
 }
