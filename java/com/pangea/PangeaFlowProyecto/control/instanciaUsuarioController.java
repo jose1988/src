@@ -451,7 +451,8 @@ public class instanciaUsuarioController {
     }
 
     /**
-     * Método que recarga la información del arbol dependiendo del estado que se seleccione
+     * Método que recarga la información del arbol dependiendo del 
+     * estado que se seleccione
      * @param event
      */
     public void onNodeSelect(NodeSelectEvent event) {
@@ -477,9 +478,9 @@ public class instanciaUsuarioController {
     }
     
     /**
-     * Método que recibe el id de la instancia a la que se desea 
-     * consultar las actividades asociadas a ella y crea una
-     * variable de sesión con dicho id y redirecciona a actividadesPorInstancia.xhtml
+     * Método que recibe el id de la instancia a la que se desea consultar 
+     * las actividades asociadas a ella y crea una variable de sesión con 
+     * dicho id y redirecciona a actividadesPorInstancia.xhtml
      */
     public void listarActividades(){
         
@@ -539,9 +540,9 @@ public class instanciaUsuarioController {
     /**
      * Metodo que permite colocar el estilo de una fila mediante un color
      *
-     * @param instanciaPintar parametro que indica la condición para determinar si 
-     * se pinta la fila en rosa o blanco si se ha pasado la fecha de cerrar o no
-     * en las instancias que aun estan abiertas
+     * @param instanciaPintar parametro que indica la condición para determinar 
+     * si se pinta la fila en rosa o blanco si se ha pasado la fecha de cerrar 
+     * o no en las instancias que aun estan abiertas
      * @return
      */
     public String estiloAbierta(Instancia instanciaPintar) throws DatatypeConfigurationException {
@@ -565,9 +566,9 @@ public class instanciaUsuarioController {
     /**
      * Metodo que permite colocar el estilo de una fila mediante un color
      *
-     * @param instanciaPintar parametro que indica la condición para determinar si 
-     * se pinta la fila en rosa o blanco si se ha pasado la fecha de periodo o no
-     * en las instancias que aun estan cerradas
+     * @param instanciaPintar parametro que indica la condición para determinar 
+     * si se pinta la fila en rosa o blanco si se ha pasado la fecha de periodo 
+     * o no en las instancias que aun estan cerradas
      * @return
      */
     public String estiloCerrada(Instancia instanciaPintar) throws DatatypeConfigurationException {
@@ -636,9 +637,9 @@ public class instanciaUsuarioController {
     }
 
     /**
-     * Método encargado de cerrar la sesión del usuario en la base de datos y a
-     * nivel de variables de sesión por tener un tiempo de inactividad de
-     * 3minutos
+     * Método encargado de cerrar la sesión del usuario en la base de datos 
+     * y a nivel de variables de sesión por tener un tiempo de inactividad 
+     * de 3minutos
      */
     public void cerrarPorInactividad() {
         WrResultado result;

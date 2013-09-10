@@ -31,6 +31,16 @@ public class usuarioGrupoController {
     private GestionDeUsuarios_Service service;
     @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_15362/CapaDeServicios/GestionDeGrupo.wsdl")
     private GestionDeGrupo_Service service_2;
+    
+    /*
+     * Objeto de la clase usuario donde se guardara el objeto de la variable de sesión
+     */
+    Usuario usuarioLogueo;
+    /*
+     * Objeto de la clase sesión donde se guardara el objeto de la variable de sesión
+     */
+    Sesion sesionLogueo;
+    
     private Usuario idusu, usuarioGrupoSeleccionado, datosusuarios;    
     private Grupo grupoSeleccionado;
     private Sesion sesion_actual;
@@ -305,8 +315,10 @@ public class usuarioGrupoController {
         ExternalContext externalContext = context.getExternalContext();
         Object sessionInstancia = externalContext.getSession(true);
         HttpSession httpSession = (HttpSession) sessionInstancia;
+        httpSession.invalidate();  
         httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
         httpSession.setAttribute("IdUsuario", usuarioGrupoSeleccionado);
+        httpSession.setAttribute("IdGrupo", grupoSeleccionado);
         
         try {
             FacesContext contex = FacesContext.getCurrentInstance();
