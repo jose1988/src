@@ -59,6 +59,11 @@ public class actividadesUsuarioController {
      */
     Sesion sesionLogueo;
 
+    /*
+     * Objeto de la clase usuario donde se guardara el objeto de la variable de sesión
+     */
+    Usuario usuarioId;
+
     /**
      *
      * @return
@@ -101,19 +106,16 @@ public class actividadesUsuarioController {
         //codigo para guardar la lista de actividades por Instancia
         int j = 0;
         WrActividad envoltorioAbiertas, envoltorioPendientes, datosActividad;
-        Actividad actividadesPendientes = new Actividad();
-        actividadesPendientes.setEstado("pendiente");
-        Actividad actividadesAbiertas = new Actividad();
-        actividadesAbiertas.setEstado("abierta");
-        usuarioLogueo = new Usuario();
-        usuarioLogueo.setId("thunder");
+        Actividad estadoActividad = new Actividad();
+        estadoActividad.setEstado("abierta");
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext externalContext = context.getExternalContext();
         Object session = externalContext.getSession(true);
         HttpSession SesionAbierta = (HttpSession) session;
-        usuarioLogueo = (Usuario) (SesionAbierta.getAttribute("IdUsuario"));
-        envoltorioAbiertas = consultarActividades(usuarioLogueo, actividadesAbiertas);
-        envoltorioPendientes = consultarActividades(usuarioLogueo, actividadesPendientes);
+        usuarioId = (Usuario) (SesionAbierta.getAttribute("IdUsuario"));
+        envoltorioAbiertas = consultarActividades(usuarioId, estadoActividad);
+        estadoActividad.setEstado("pendiente");
+        envoltorioPendientes = consultarActividades(usuarioId, estadoActividad);
         actividades = new ArrayList<Actividad>();
         if ((envoltorioAbiertas.getActividads().isEmpty() || envoltorioAbiertas.getActividads() == null) && (envoltorioPendientes.getActividads().isEmpty() || envoltorioPendientes.getActividads() == null)) {
             actividades = null;
@@ -137,15 +139,22 @@ public class actividadesUsuarioController {
         }
     }
 
+    /**
+     *
+     */
     public void liberarActividadUsuario() {
         actividadLibrar = new Actividad();
         actividadLibrar.setId(act.getId());
-        WrResultado envoltorio = liberarActividad(actividadLibrar, usuarioLogueo);
+        WrResultado envoltorio = liberarActividad(actividadLibrar, usuarioId);
         System.out.println("LIBROOOOOOOOOOOOOOOOOOO_______" + act.getId());
     }
 
+    /**
+     *
+     */
     public void liberarActividadesUsuario() {
-        WrResultado envoltorio = liberarActividades(usuarioLogueo);
+      
+        WrResultado envoltorio = liberarActividades(usuarioId);
         System.out.println("LIBeROOOOOOOOOOOOOOOOOOO_______");
 
     }
@@ -163,7 +172,7 @@ public class actividadesUsuarioController {
             ExternalContext externalContext = context.getExternalContext();
             Object session = externalContext.getSession(true);
             HttpSession SesionAbierta = (HttpSession) session;
-            usuarioLogueo = (Usuario) (SesionAbierta.getAttribute("Usuario"));
+            usuarioLogueo = (Usuario) (SesionAbierta.getAttribute("IdUsuario"));
             sesionLogueo = (Sesion) (SesionAbierta.getAttribute("Sesion"));
             sesionBd = logSesion(sesionLogueo);
             if (usuarioLogueo == null || sesionLogueo == null || !sesionBd) {
@@ -172,8 +181,36 @@ public class actividadesUsuarioController {
         } catch (Exception e) {
             bandera = true;
         }
-
         return bandera;
+    }
+
+    public void verificarUsuarioId() {
+        boolean bandera = false, sesionBd = false;
+        try {
+            //codigo para guardar sesion y usuario logueado, sino existe redireccionamos a index.xhtml
+            FacesContext context = FacesContext.getCurrentInstance();
+            ExternalContext externalContext = context.getExternalContext();
+            Object session = externalContext.getSession(true);
+            HttpSession SesionAbierta = (HttpSession) session;
+            usuarioId = (Usuario) (SesionAbierta.getAttribute("IdUsuario"));
+            if (usuarioId == null) {
+                try {
+                    FacesContext contex = FacesContext.getCurrentInstance();
+                    contex.getExternalContext().redirect("/PangeaFlowProyecto/faces/index.xhtml");
+                } catch (Exception error) {
+                    System.out.println("----------------------------Error---------------------------------" + error);
+                }
+            } else {
+                try {
+                    FacesContext contex = FacesContext.getCurrentInstance();
+                    contex.getExternalContext().redirect("/PangeaFlowProyecto/faces/index.xhtml");
+                } catch (Exception error) {
+                    System.out.println("----------------------------Error---------------------------------" + error);
+                }
+            }
+        } catch (Exception e) {
+            bandera = true;
+        }
     }
 
     /**
@@ -227,50 +264,6 @@ public class actividadesUsuarioController {
         }
         return "";
 
-    }
-
-    /**
-     * Metodo que permite colocar el estilo de una fila mediante un color
-     *
-     * @param actividadx
-     * @return
-     */
-    public String estilo(Actividad actividadx) {
-        if (actividadx != null) {
-            Date fecha = actividadx.getFechaCierre().toGregorianCalendar().getTime();
-            SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
-            String fechaSistema = formateador.format(new Date());
-            String fechaCierre = formateador.format(fecha);
-            boolean resultado = compararFechasConDate(fechaCierre, fechaSistema);
-            if (resultado) {
-                return " background-color: #FF8888;";
-            }
-        }
-        return " background-color: white;";
-    }
-
-    /**
-     *
-     * @param fecha1
-     * @param fechaActual
-     * @return
-     */
-    public boolean compararFechasConDate(String fecha1, String fechaActual) {
-        boolean resultado = false;
-        try {
-            /**
-             * Obtenemos las fechas enviadas en el formato a comparar
-             */
-            SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
-            Date fechaDate1 = formateador.parse(fecha1);
-            Date fechaDate2 = formateador.parse(fechaActual);
-            if (fechaDate2.before(fechaDate1)) {
-                resultado = true;
-            }
-        } catch (Exception e) {
-            System.out.println("Se Produjo un Error!!!  " + e.getMessage());
-        }
-        return resultado;
     }
 
     private boolean logSesion(com.pangea.capadeservicios.servicios.Sesion sesionActual) {
