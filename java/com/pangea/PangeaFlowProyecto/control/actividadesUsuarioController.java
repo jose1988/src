@@ -107,6 +107,12 @@ public class actividadesUsuarioController {
         actividadesAbiertas.setEstado("abierta");
         usuarioLogueo = new Usuario();
         usuarioLogueo.setId("thunder");
+//        FacesContext context = FacesContext.getCurrentInstance();
+//        ExternalContext externalContext = context.getExternalContext();
+//        Object session = externalContext.getSession(true);
+//        HttpSession SesionAbierta = (HttpSession) session;
+//        usuarioLogueo = (Usuario) (SesionAbierta.getAttribute("IdUsuario"));
+//         usuarioLogueo.setId("thunder");
         envoltorioAbiertas = consultarActividades(usuarioLogueo, actividadesAbiertas);
         envoltorioPendientes = consultarActividades(usuarioLogueo, actividadesPendientes);
         actividades = new ArrayList<Actividad>();
@@ -135,13 +141,17 @@ public class actividadesUsuarioController {
     public void liberarActividadUsuario() {
         actividadLibrar = new Actividad();
         actividadLibrar.setId(act.getId());
+        usuarioLogueo=new Usuario();
+         usuarioLogueo.setId("admin");
         WrResultado envoltorio = liberarActividad(actividadLibrar, usuarioLogueo);
         System.out.println("LIBROOOOOOOOOOOOOOOOOOO_______" + act.getId());
     }
 
     public void liberarActividadesUsuario() {
+        usuarioLogueo=new Usuario();
+        usuarioLogueo.setId("admin");
         WrResultado envoltorio = liberarActividades(usuarioLogueo);
-                System.out.println("LIBeROOOOOOOOOOOOOOOOOOO_______");
+        System.out.println("LIBeROOOOOOOOOOOOOOOOOOO_______");
 
     }
 
