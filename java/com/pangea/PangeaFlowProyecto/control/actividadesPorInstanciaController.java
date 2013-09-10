@@ -25,6 +25,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
+import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.ws.WebServiceRef;
 
@@ -100,11 +101,11 @@ public class actividadesPorInstanciaController {
         //codigo para guardar la lista de actividades por Instancia
         Instancia Instancia = new Instancia();
         Instancia.setId((long) 8);
-        FacesContext context = FacesContext.getCurrentInstance();
-        ExternalContext externalContext = context.getExternalContext();
-        Object session = externalContext.getSession(true);
-        HttpSession SesionAbierta = (HttpSession) session;
-        Instancia = (Instancia) (SesionAbierta.getAttribute("IdInstancia"));
+//        FacesContext context = FacesContext.getCurrentInstance();
+//        ExternalContext externalContext = context.getExternalContext();
+//        Object session = externalContext.getSession(true);
+//        HttpSession SesionAbierta = (HttpSession) session;
+//        Instancia = (Instancia) (SesionAbierta.getAttribute("IdInstancia"));
         int j = 0;
         WrActividad Envoltorio, datosActividad;
         Envoltorio = consultarActividadesPorInstancia(Instancia);
@@ -201,26 +202,70 @@ public class actividadesPorInstanciaController {
 
     }
 
-    /**
-     * Metodo que permite colocar el estilo de una fila mediante un color
-     *
-     * @param actividadx 
-     * @return
-     */
-    public String estilo(Actividad actividadx) {
+    public String estilo(Actividad actividadx) throws DatatypeConfigurationException {
+
         if (actividadx != null) {
-            Date fecha = actividadx.getFechaCierre().toGregorianCalendar().getTime();
-            SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
-            String fechaSistema = formateador.format(new Date());
-            String fechaCierre = formateador.format(fecha);
-            boolean resultado = compararFechasConDate(fechaCierre, fechaSistema);
-            if (resultado) {
-                return " background-color: #FF8888;";
+            if (actividadx.getEstado().compareTo("cerrada") == 0) {
+                if (actividadx.getFechaCierre() != null && actividadx.getFechaApertura() != null) {
+                    XMLGregorianCalendar FC1;
+                    XMLGregorianCalendar FA1;
+                    FC1 = actividadx.getFechaCierre();
+                    FA1 = actividadx.getFechaApertura();
+                    long duracion = actividadx.getDuracion().longValue();
+                    long f = FC1.toGregorianCalendar().getTimeInMillis();
+                    long f2 = FA1.toGregorianCalendar().getTimeInMillis();
+                    long resta = f - f2;
+                    long dias = resta / (24 * 60 * 60 * 1000);
+                    if (dias > duracion) {
+                        return "background-color:  #FF8888;";
+                    }
+
+                    return " background-color: white";
+                }
+            } else {
+                if (actividadx.getFechaCierre() != null) {
+                    XMLGregorianCalendar FC1;
+                    XMLGregorianCalendar FA1;
+                    FC1 = actividadx.getFechaCierre();
+                    Date fc = FC1.toGregorianCalendar().getTime();
+                    Date fecha = new Date();
+
+                    if (fc.before(fecha)) {
+                        return "background-color:  #FF8888";
+                    } else if (actividadx.getFechaAlerta() != null) {
+                        FA1 = actividadx.getFechaAlerta();
+                        Date fa = FA1.toGregorianCalendar().getTime();
+                        if (fa.before(fecha)) {
+                            return "background-color: orange;";
+                        }
+                        return "background-color: white";
+                    }
+                }
             }
         }
+
         return " background-color: white;";
     }
 
+    /**
+     * Metodo que permite colocar el estilo de una fila mediante un color
+     *
+     * @param actividadx
+     * @return
+     */
+//    public String estilo(Actividad actividadx) {
+//        if (actividadx != null) {
+//            Date fecha = actividadx.getFechaCierre().toGregorianCalendar().getTime();
+//            SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+//            String fechaSistema = formateador.format(new Date());
+//            String fechaCierre = formateador.format(fecha);
+//            boolean resultado = compararFechasConDate(fechaCierre, fechaSistema);
+//            if (resultado) {
+//                return " background-color: #FF8888;";
+//            }
+//        }
+//        return " background-color: white;";
+//    }
     /**
      *
      * @param fecha1
