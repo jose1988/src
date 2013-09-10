@@ -305,7 +305,7 @@ public class loginController {
         cond = new Condicion();
         cond.setEstado("activa");
         resul = finalizarActividad(act, ses, cond);
-
+        
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(resul.getEstatus()));
         int j = 0;
         activi = new Actividad();
@@ -331,7 +331,6 @@ public class loginController {
                 FC1 = actividadx.getFechaCierre();
                 Date fc = FC1.toGregorianCalendar().getTime();
                 Date fecha = new Date();
-
                 if (fc.before(fecha)) {
                     return "background-color:  #FF8888";
                 } else if (actividadx.getFechaAlerta() != null) {
