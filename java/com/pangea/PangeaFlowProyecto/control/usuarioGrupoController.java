@@ -5,7 +5,6 @@
 package com.pangea.PangeaFlowProyecto.control;
 
 import com.pangea.capadeservicios.servicios.Usuario;
-import com.pangea.capadeservicios.servicios.GestionDeActividades_Service;
 import com.pangea.capadeservicios.servicios.GestionDeGrupo_Service;
 import com.pangea.capadeservicios.servicios.GestionDeUsuarios_Service;
 import com.pangea.capadeservicios.servicios.Grupo;
@@ -32,7 +31,7 @@ public class usuarioGrupoController {
     private GestionDeUsuarios_Service service;
     @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_15362/CapaDeServicios/GestionDeGrupo.wsdl")
     private GestionDeGrupo_Service service_2;
-    private Usuario idusu, usuarioGrupoSeleccionado;
+    private Usuario idusu, usuarioGrupoSeleccionado, datosusuarios;    
     private Grupo grupoSeleccionado;
     private Sesion sesion_actual;
     private List<Grupo> grupos;
@@ -40,6 +39,22 @@ public class usuarioGrupoController {
     private List<UsuarioGrupoRol> grupo, grupoUsuarios;
     private int indice;
     private String idUsuario;
+
+    /**
+     *
+     * @return
+     */
+    public Usuario getDatosusuarios() {
+        return datosusuarios;
+    }
+
+    /**
+     *
+     * @param datosusuarios
+     */
+    public void setDatosusuarios(Usuario datosusuarios) {
+        this.datosusuarios = datosusuarios;
+    }
     
     /**
      *
@@ -202,7 +217,8 @@ public class usuarioGrupoController {
     }
 
     /**
-     *
+     * Método constructor que se incia al hacer la llamada a la pagina
+     * usuarioGrupo.xhml
      */
     @PostConstruct
     public void init() {
@@ -214,13 +230,10 @@ public class usuarioGrupoController {
         idusu= (Usuario) (sesion.getAttribute("Usuario"));
         
         grupoSeleccionado = new Grupo();
-        
         grupos=listarGrupos();
         grupoSeleccionado = grupos.get(0);
-        System.out.println("Grupoooo  "+grupoSeleccionado.getId());
-        
         grupo = new ArrayList<UsuarioGrupoRol>();
-        grupo=listarUsuariosGrupo(grupoSeleccionado);
+        grupo=listarUsuariosGrupo(grupoSeleccionado,false);
         
         int j=0;
         grupoUsuarios=new ArrayList<UsuarioGrupoRol>();
@@ -237,10 +250,12 @@ public class usuarioGrupoController {
             }
             j++;
         }
+        
     }
 
     /**
-     *
+     * Método que es llamado al momento de cambiar de grupo y lista 
+     * los usuarios que posee dicho grupo
      * @param event
      */
     public void onTabChange(TabChangeEvent event) {
@@ -248,11 +263,8 @@ public class usuarioGrupoController {
         Grupo gSeleccionado = (Grupo) event.getData();
         grupoSeleccionado = gSeleccionado;
         
-        System.out.println("Grupoooo  "+grupoSeleccionado.getId());
-        
         grupo = new ArrayList<UsuarioGrupoRol>();
-        grupo=listarUsuariosGrupo(grupoSeleccionado);
-        
+        grupo=listarUsuariosGrupo(grupoSeleccionado,false);
         grupoUsuarios=new ArrayList<UsuarioGrupoRol>();
         
         if(grupo.isEmpty()){
@@ -279,12 +291,13 @@ public class usuarioGrupoController {
     }
     
     /**
-     *
+     * Método que es llamado para ver las actividades que posee un usuario 
+     * en especifico guarda el id del usuario en una variable de sesión y 
+     * redirecciona a la página actividadesPorUsuario.xhtml
      */
     public void verActividadesUsuario(){
         
         idUsuario=grup.getIdUsuario().getId();
-        System.out.println("Usuarioooooooo: "+idUsuario);
         usuarioGrupoSeleccionado = new Usuario();
         usuarioGrupoSeleccionado.setId(idUsuario);
         
@@ -302,15 +315,31 @@ public class usuarioGrupoController {
             System.out.println("----------------------------Error---------------------------------" + e);
         }
     }
+    
+    /**
+     * Método que es llamado para mostrar la información del usuario seleccionado
+     */
+    public void verDatosUsuario(){
+        
+        idUsuario=grup.getIdUsuario().getId();
+        usuarioGrupoSeleccionado = new Usuario();
+        usuarioGrupoSeleccionado.setId(idUsuario);
+        datosusuarios=buscarUsuario(usuarioGrupoSeleccionado);
+    }
 
     private java.util.List<com.pangea.capadeservicios.servicios.Grupo> listarGrupos() {
         com.pangea.capadeservicios.servicios.GestionDeGrupo port = service_2.getGestionDeGrupoPort();
         return port.listarGrupos();
     }
 
-    private java.util.List<com.pangea.capadeservicios.servicios.UsuarioGrupoRol> listarUsuariosGrupo(com.pangea.capadeservicios.servicios.Grupo grupousuarios) {
+    private Usuario buscarUsuario(com.pangea.capadeservicios.servicios.Usuario usuarioActual) {
+        com.pangea.capadeservicios.servicios.GestionDeUsuarios port = service.getGestionDeUsuariosPort();
+        return port.buscarUsuario(usuarioActual);
+    }
+
+    private java.util.List<com.pangea.capadeservicios.servicios.UsuarioGrupoRol> listarUsuariosGrupo(com.pangea.capadeservicios.servicios.Grupo grupousuarios, boolean borrado) {
         com.pangea.capadeservicios.servicios.GestionDeGrupo port = service_2.getGestionDeGrupoPort();
-        return port.listarUsuariosGrupo(grupousuarios);
+        return port.listarUsuariosGrupo(grupousuarios, borrado);
     }
 
 }
