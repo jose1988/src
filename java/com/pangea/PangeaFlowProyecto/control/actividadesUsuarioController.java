@@ -113,6 +113,7 @@ public class actividadesUsuarioController {
         Object session = externalContext.getSession(true);
         HttpSession SesionAbierta = (HttpSession) session;
         usuarioId = (Usuario) (SesionAbierta.getAttribute("IdUsuario"));
+         System.out.println("VALOR ID ES_________"+usuarioId.getId());
         envoltorioAbiertas = consultarActividades(usuarioId, estadoActividad);
         estadoActividad.setEstado("pendiente");
         envoltorioPendientes = consultarActividades(usuarioId, estadoActividad);
@@ -145,6 +146,7 @@ public class actividadesUsuarioController {
     public void liberarActividadUsuario() {
         actividadLibrar = new Actividad();
         actividadLibrar.setId(act.getId());
+        
         WrResultado envoltorio = liberarActividad(actividadLibrar, usuarioId);
         System.out.println("LIBROOOOOOOOOOOOOOOOOOO_______" + act.getId());
     }
@@ -153,7 +155,7 @@ public class actividadesUsuarioController {
      *
      */
     public void liberarActividadesUsuario() {
-      
+
         WrResultado envoltorio = liberarActividades(usuarioId);
         System.out.println("LIBeROOOOOOOOOOOOOOOOOOO_______");
 
@@ -184,42 +186,47 @@ public class actividadesUsuarioController {
         return bandera;
     }
 
-    public void verificarUsuarioId() {
-        boolean bandera = false, sesionBd = false;
+    /**
+     *
+     * @return
+     */
+    public boolean verificarUsuarioId() {
+        boolean bandera = false;
         try {
-            //codigo para guardar sesion y usuario logueado, sino existe redireccionamos a index.xhtml
             FacesContext context = FacesContext.getCurrentInstance();
             ExternalContext externalContext = context.getExternalContext();
             Object session = externalContext.getSession(true);
             HttpSession SesionAbierta = (HttpSession) session;
             usuarioId = (Usuario) (SesionAbierta.getAttribute("IdUsuario"));
+          
             if (usuarioId == null) {
-                try {
-                    FacesContext contex = FacesContext.getCurrentInstance();
-                    contex.getExternalContext().redirect("/PangeaFlowProyecto/faces/index.xhtml");
-                } catch (Exception error) {
-                    System.out.println("----------------------------Error---------------------------------" + error);
-                }
-            } else {
-                try {
-                    FacesContext contex = FacesContext.getCurrentInstance();
-                    contex.getExternalContext().redirect("/PangeaFlowProyecto/faces/index.xhtml");
-                } catch (Exception error) {
-                    System.out.println("----------------------------Error---------------------------------" + error);
-                }
+                bandera = true;
             }
         } catch (Exception e) {
             bandera = true;
         }
+        return bandera;
     }
 
     /**
      * Método para redireccionar a index.xhtml si el usuario no esta logueado
      */
-    public void Redireccionar() {
+    public void Redirecionar() {
         try {
             FacesContext contex = FacesContext.getCurrentInstance();
             contex.getExternalContext().redirect("/PangeaFlowProyecto/faces/index.xhtml");
+        } catch (Exception error) {
+            System.out.println("----------------------------Error---------------------------------" + error);
+        }
+    }
+
+    /**
+     *
+     */
+    public void redireccionarUsuarioGrupo() {
+        try {
+            FacesContext contex = FacesContext.getCurrentInstance();
+            contex.getExternalContext().redirect("/PangeaFlowProyecto/faces/usuarioGrupo.xhtml");
         } catch (Exception error) {
             System.out.println("----------------------------Error---------------------------------" + error);
         }
@@ -247,7 +254,7 @@ public class actividadesUsuarioController {
         Object session = externalContext.getSession(true);
         HttpSession SesionAbierta = (HttpSession) session;
         SesionAbierta.invalidate();
-        Redireccionar();
+        Redirecionar();
     }
 
     /**
@@ -263,7 +270,6 @@ public class actividadesUsuarioController {
             return fechaCadena;
         }
         return "";
-
     }
 
     private boolean logSesion(com.pangea.capadeservicios.servicios.Sesion sesionActual) {
