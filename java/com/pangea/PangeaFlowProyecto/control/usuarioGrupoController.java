@@ -320,6 +320,8 @@ public class usuarioGrupoController {
         httpSession.setAttribute("IdUsuario", usuarioGrupoSeleccionado);
         httpSession.setAttribute("IdGrupo", grupoSeleccionado);
         
+        System.out.println("Usuariooooooo: "+usuarioGrupoSeleccionado.getId());
+        
         try {
             FacesContext contex = FacesContext.getCurrentInstance();
             contex.getExternalContext().redirect("/PangeaFlowProyecto/faces/actividadesPorUsuario.xhtml");
