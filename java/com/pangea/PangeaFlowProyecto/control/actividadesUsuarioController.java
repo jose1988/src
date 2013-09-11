@@ -9,6 +9,7 @@ import com.pangea.capadeservicios.servicios.GestionDeActividades_Service;
 import com.pangea.capadeservicios.servicios.GestionDeControlDeUsuarios_Service;
 import com.pangea.capadeservicios.servicios.GestionDeInstancias_Service;
 import com.pangea.capadeservicios.servicios.GestionDeUsuarios_Service;
+import com.pangea.capadeservicios.servicios.Grupo;
 import com.pangea.capadeservicios.servicios.Instancia;
 import com.pangea.capadeservicios.servicios.Sesion;
 import com.pangea.capadeservicios.servicios.Usuario;
@@ -63,6 +64,7 @@ public class actividadesUsuarioController {
      * Objeto de la clase usuario donde se guardara el objeto de la variable de sesión
      */
     Usuario usuarioId;
+    Grupo grupoId;
 
     /**
      *
@@ -113,7 +115,7 @@ public class actividadesUsuarioController {
         Object session = externalContext.getSession(true);
         HttpSession SesionAbierta = (HttpSession) session;
         usuarioId = (Usuario) (SesionAbierta.getAttribute("IdUsuario"));
-         System.out.println("VALOR ID ES_________"+usuarioId.getId());
+        grupoId = (Grupo) (SesionAbierta.getAttribute("IdGrupo"));
         envoltorioAbiertas = consultarActividades(usuarioId, estadoActividad);
         estadoActividad.setEstado("pendiente");
         envoltorioPendientes = consultarActividades(usuarioId, estadoActividad);
@@ -122,18 +124,16 @@ public class actividadesUsuarioController {
             actividades = null;
         }
         while (envoltorioAbiertas.getActividads().size() > j) {
-            datosActividad = consultarActividad(envoltorioAbiertas.getActividads().get(j));
-            if (datosActividad.getEstatus().compareTo("OK") == 0) {
-                act = datosActividad.getActividads().get(0);
+            act = envoltorioAbiertas.getActividads().get(j);
+            if (act.getIdInstancia().getIdPeriodoGrupoProceso().getIdGrupo().getId() == grupoId.getId()) {
                 actividades.add(act);
             }
             j++;
         }
         j = 0;
         while (envoltorioPendientes.getActividads().size() > j) {
-            datosActividad = consultarActividad(envoltorioPendientes.getActividads().get(j));
-            if (datosActividad.getEstatus().compareTo("OK") == 0) {
-                act = datosActividad.getActividads().get(0);
+            act = envoltorioPendientes.getActividads().get(j);
+            if (act.getIdInstancia().getIdPeriodoGrupoProceso().getIdGrupo().getId() == grupoId.getId()) {
                 actividades.add(act);
             }
             j++;
@@ -146,7 +146,7 @@ public class actividadesUsuarioController {
     public void liberarActividadUsuario() {
         actividadLibrar = new Actividad();
         actividadLibrar.setId(act.getId());
-        
+
         WrResultado envoltorio = liberarActividad(actividadLibrar, usuarioId);
         System.out.println("LIBROOOOOOOOOOOOOOOOOOO_______" + act.getId());
     }
@@ -198,7 +198,7 @@ public class actividadesUsuarioController {
             Object session = externalContext.getSession(true);
             HttpSession SesionAbierta = (HttpSession) session;
             usuarioId = (Usuario) (SesionAbierta.getAttribute("IdUsuario"));
-          
+
             if (usuarioId == null) {
                 bandera = true;
             }
