@@ -1,16 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.pangea.PangeaFlowProyecto.control;
 
 import com.pangea.capadeservicios.servicios.Actividad;
 import com.pangea.capadeservicios.servicios.GestionDeActividades_Service;
 import com.pangea.capadeservicios.servicios.GestionDeControlDeUsuarios_Service;
 import com.pangea.capadeservicios.servicios.GestionDeInstancias_Service;
-import com.pangea.capadeservicios.servicios.GestionDeUsuarios_Service;
 import com.pangea.capadeservicios.servicios.Grupo;
-import com.pangea.capadeservicios.servicios.Instancia;
 import com.pangea.capadeservicios.servicios.Sesion;
 import com.pangea.capadeservicios.servicios.Usuario;
 import com.pangea.capadeservicios.servicios.WrActividad;
@@ -30,7 +24,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.ws.WebServiceRef;
 
 /**
- * @author Pangea
+ * @author PangeaTech
  */
 @ManagedBean(name = "actividadesUsuarioController")
 @SessionScoped
@@ -47,24 +41,29 @@ public class actividadesUsuarioController {
      */
     private List<Actividad> actividades;
     /*
-     * Objeto de la clase actividad para mostrar la información de las actividades por instancia
+     * Objeto de la clase actividad para mostrar la información de las actividades de acuerdo al usuario y al grupo
      */
-    private Actividad act, actividadLibrar;
-    long idAct;
+    private Actividad act;
     /*
-     * Objeto de la clase usuario donde se guardara el objeto de la variable de sesión
+     * Objeto de la clase actividad usada para guardar el id de la actividad que se liberara 
      */
-    Usuario usuarioLogueo;
+    private Actividad actividadLibrar;
     /*
-     * Objeto de la clase sesión donde se guardara el objeto de la variable de sesión
+     * Objeto de la clase usuario donde se guardara el objeto de la variable de sesión del logueo
      */
-    Sesion sesionLogueo;
-
+    private Usuario usuarioLogueo;
     /*
-     * Objeto de la clase usuario donde se guardara el objeto de la variable de sesión
+     * Objeto de la clase sesión donde se guardara el objeto de la variable de sesión del logueo
      */
-    Usuario usuarioId;
-    Grupo grupoId;
+    private Sesion sesionLogueo;
+    /* Las actividades se mostraran de acuerdo a un usuario y al grupo al que pertenecen
+     * Objeto de la clase usuario donde se guardara el id del usuario para mostrar sus respectivas actividades
+     */
+    private Usuario usuarioId;
+    /*
+     * Objeto de la clase Grupo donde se guardara el id del grupo para mostrar sus respectivas actividades
+     */
+    private Grupo grupoId;
 
     /**
      *
@@ -99,9 +98,9 @@ public class actividadesUsuarioController {
     }
 
     /**
-     * Metodo constructor que se incia al hacer la llamada a la pagina
-     * actividadesPorInstancia.xhml donde se mustra las actividades de una
-     * determinada instancia
+     * Método constructor que se inicia al hacer la llamada a la pagina
+     * actividadesPorUsuario.xhml donde se muestra las actividades de acuerdo a
+     * un usuario y al grupo al que pertenecen
      */
     @PostConstruct
     public void init() {
@@ -141,24 +140,20 @@ public class actividadesUsuarioController {
     }
 
     /**
-     *
+     * Método en el cual se libera una actividad especifica y se agrega a la
+     * cola
      */
     public void liberarActividadUsuario() {
         actividadLibrar = new Actividad();
         actividadLibrar.setId(act.getId());
-
         WrResultado envoltorio = liberarActividad(actividadLibrar, usuarioId);
-        System.out.println("LIBROOOOOOOOOOOOOOOOOOO_______" + act.getId());
     }
 
     /**
-     *
+     * Método en el cual se libera todas las actividades
      */
     public void liberarActividadesUsuario() {
-
         WrResultado envoltorio = liberarActividades(usuarioId);
-        System.out.println("LIBeROOOOOOOOOOOOOOOOOOO_______");
-
     }
 
     /**
@@ -187,8 +182,11 @@ public class actividadesUsuarioController {
     }
 
     /**
+     * Método para verificar si existen las variables de sesión del usuario y el
+     * grupo al que pertenecen las actividades a mostrar
      *
-     * @return
+     * @return un booleano si es true es porque no existen las variables de
+     * sesión no existenn
      */
     public boolean verificarUsuarioId() {
         boolean bandera = false;
@@ -198,8 +196,8 @@ public class actividadesUsuarioController {
             Object session = externalContext.getSession(true);
             HttpSession SesionAbierta = (HttpSession) session;
             usuarioId = (Usuario) (SesionAbierta.getAttribute("IdUsuario"));
-
-            if (usuarioId == null) {
+            sesionLogueo = (Sesion) (SesionAbierta.getAttribute("Sesion"));
+            if (usuarioId == null || sesionLogueo == null) {
                 bandera = true;
             }
         } catch (Exception e) {
@@ -221,7 +219,8 @@ public class actividadesUsuarioController {
     }
 
     /**
-     *
+     * Método para redireccionar a UsuarioGrupo.xhtml si las variables de sesion
+     * de usuario y grupo no existen
      */
     public void redireccionarUsuarioGrupo() {
         try {
@@ -258,6 +257,7 @@ public class actividadesUsuarioController {
     }
 
     /**
+     * Método encargado de mostrar la fecha en el formato dd/mm/yyyy
      *
      * @param fecha
      * @return
