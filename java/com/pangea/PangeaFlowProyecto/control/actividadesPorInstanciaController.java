@@ -53,6 +53,10 @@ public class actividadesPorInstanciaController {
      * Objeto de la clase sesión donde se guardara el objeto de la variable de sesión del logueo
      */
     Sesion sesionLogueo;
+    /*
+     * Objeto de la clase Instancia donde se guardara el objeto de la instancia a la que pertenecen las actividades
+     */
+    Instancia Instancia;
 
     /**
      *
@@ -94,8 +98,6 @@ public class actividadesPorInstanciaController {
     @PostConstruct
     public void init() {
         //codigo para guardar la lista de actividades por Instancia
-        Instancia Instancia = new Instancia();
-        Instancia.setId((long) 8);
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext externalContext = context.getExternalContext();
         Object session = externalContext.getSession(true);
@@ -116,6 +118,7 @@ public class actividadesPorInstanciaController {
             }
             j++;
         }
+        SesionAbierta.removeAttribute("IdInstancia");
     }
 
     /**
@@ -141,6 +144,30 @@ public class actividadesPorInstanciaController {
             bandera = true;
         }
 
+        return bandera;
+    }
+
+    /**
+     * Método para verificar si existen las variables de sesión del usuario y el
+     * grupo al que pertenecen las actividades a mostrar
+     *
+     * @return un booleano si es true es porque no existen las variables de
+     * sesión no existenn
+     */
+    public boolean verificarInstancia() {
+        boolean bandera = false;
+        try {
+            FacesContext context = FacesContext.getCurrentInstance();
+            ExternalContext externalContext = context.getExternalContext();
+            Object session = externalContext.getSession(true);
+            HttpSession SesionAbierta = (HttpSession) session;
+            Instancia = (Instancia) (SesionAbierta.getAttribute("IdInstancia"));
+            if (Instancia == null) {
+                bandera = true;
+            }
+        } catch (Exception e) {
+            bandera = true;
+        }
         return bandera;
     }
 

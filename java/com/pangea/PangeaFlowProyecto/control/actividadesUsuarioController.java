@@ -196,8 +196,7 @@ public class actividadesUsuarioController {
             Object session = externalContext.getSession(true);
             HttpSession SesionAbierta = (HttpSession) session;
             usuarioId = (Usuario) (SesionAbierta.getAttribute("IdUsuario"));
-            sesionLogueo = (Sesion) (SesionAbierta.getAttribute("Sesion"));
-            if (usuarioId == null || sesionLogueo == null) {
+            if (usuarioId == null) {
                 bandera = true;
             }
         } catch (Exception e) {
