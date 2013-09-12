@@ -7,11 +7,11 @@ package com.pangea.PangeaFlowProyecto.control;
 import com.pangea.capadeservicios.servicios.GestionDeControlDeUsuarios_Service;
 import com.pangea.capadeservicios.servicios.GestionDeInstancias_Service;
 import com.pangea.capadeservicios.servicios.Instancia;
-import com.pangea.capadeservicios.servicios.Post;
 import com.pangea.capadeservicios.servicios.Sesion;
 import com.pangea.capadeservicios.servicios.Usuario;
 import com.pangea.capadeservicios.servicios.WrInstancia;
 import com.pangea.capadeservicios.servicios.WrResultado;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -41,28 +41,66 @@ public class instanciaUsuarioController {
     private GestionDeInstancias_Service service;
     
     /*
-     * Objeto de la clase usuario donde se guardara el objeto de la variable de sesión
+     * Objeto de la clase Usuario donde se guardara el objeto de la variable de sesión
      */
     Usuario usuarioLogueo;
     /*
-     * Objeto de la clase sesión donde se guardara el objeto de la variable de sesión
+     * Objeto de la clase Sesión donde se guardara el objeto de la variable de sesión
      */
     Sesion sesionLogueo;
     
-    private TreeNode mailboxes;
-    private List<Post> mails;
-    private Post mail;
-    private TreeNode mailbox;
+    /*
+     * Objetos de la clase Usuario donde se guardan el id de usuario
+     */
     private Usuario idusu, idusuario;
-    private TreeNode estact;
+    
+    /*
+     * Objetos de la clase TreeNode en donde se guardan los valores de los estados que se 
+     * seleccionan en el arbol
+     */
+    private TreeNode estact, estadoSeleccionado;
+    
+    /*
+     * Objetos de la clase List<String> en donde se guarda el valor de los estados que se
+     * cargan del servicio buscarestados
+     */
     private List<String> estados;
-    private TreeNode estadoSeleccionado;
+    
+    /*
+     * Objetos de la clase WrInstancia en donde se guardan los valores de las instancias
+     * que se cargan del servicio consultarinstancias y consultarinstancia
+     */
     private WrInstancia instancia, instac;
+    
+    /*
+     * Objetos de la clase List<Instancia> en donde se guarda la lista de instancias consultadas
+     * en el serivicio
+     */
     private List<Instancia> instancias;
+    
+    /*
+     * Objetos de la clase Instancia en donde se guardan los datos de alguna instancia en especifico
+     */
     private Instancia inst, insta, instActividad, instCerrar;
+    
+    /*
+     * Objetos de la clase WrResultado en donde se guarda el valor de cerrar la instancia
+     */
     private WrResultado instanciacerrar;
+    
+    /*
+     * Objeto de la clase Sesion en donde se guarda el valor de la variable de la sesion abierta
+     */
     private Sesion ses;
+    
+    /*
+     * Variable de tipo Long en donde se guarda el id de la instancia
+     */
     private Long idInsta;
+    
+    /*
+     * Objeto de tipo String en donde se guarda el id del usuario
+     */
     private String usuario;
     
     /**
@@ -210,22 +248,6 @@ public class instanciaUsuarioController {
 
     /**
      *
-     * @param mailboxes
-     */
-    public void setMailboxes(TreeNode mailboxes) {
-        this.mailboxes = mailboxes;
-    }
-
-    /**
-     *
-     * @param mails
-     */
-    public void setMails(List<Post> mails) {
-        this.mails = mails;
-    }
-
-    /**
-     *
      * @return
      */
     public Instancia getInsta() {
@@ -324,30 +346,6 @@ public class instanciaUsuarioController {
      *
      * @return
      */
-    public TreeNode getMailboxes() {
-        return mailboxes;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public List<Post> getMails() {
-        return mails;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public Post getMail() {
-        return mail;
-    }
-
-    /**
-     *
-     * @return
-     */
     public TreeNode getEstact() {
         return estact;
     }
@@ -358,30 +356,6 @@ public class instanciaUsuarioController {
      */
     public void setEstact(TreeNode estact) {
         this.estact = estact;
-    }
-
-    /**
-     *
-     * @param mail
-     */
-    public void setMail(Post mail) {
-        this.mail = mail;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public TreeNode getMailbox() {
-        return mailbox;
-    }
-
-    /**
-     *
-     * @param mailbox
-     */
-    public void setMailbox(TreeNode mailbox) {
-        this.mailbox = mailbox;
     }
 
     /**
@@ -417,6 +391,8 @@ public class instanciaUsuarioController {
         String icono;
         estados = buscarEstados();
         int i = 0;
+        
+        //Carga el arbol con los estados existentes
         while (estados.size() > i) {
             if ("abierta".equals(estados.get(i))) {
                 icono = "s";
@@ -430,7 +406,7 @@ public class instanciaUsuarioController {
         estadoSeleccionado = estact.getChildren().get(0);
         estact.getChildren().get(0).setSelected(true);
         
-        //Cargo la lista de instancias dependiendo del estado y del usuario
+        //Carga la lista de instancias dependiendo del estado y del usuario
         int j = 0;
         insta = new Instancia();
         insta.setEstado(estados.get(j));
@@ -457,7 +433,7 @@ public class instanciaUsuarioController {
      */
     public void onNodeSelect(NodeSelectEvent event) {
         
-        //Cargo la lista de instancias dependiendo del estado y del usuario
+        //Carga la lista de instancias dependiendo del estado y del usuario
         int j = 0;
         insta = new Instancia();
         insta.setEstado(event.getTreeNode().toString());
@@ -487,7 +463,8 @@ public class instanciaUsuarioController {
         idInsta=inst.getId();
         instActividad= new Instancia();
         instActividad.setId(idInsta);
-        
+       
+        //Creación de la variable de Sesión con el id de la instancia
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext externalContext = context.getExternalContext();
         Object sessionInstancia = externalContext.getSession(true);
@@ -517,7 +494,7 @@ public class instanciaUsuarioController {
         instCerrar.setId(idInsta);
         instanciacerrar=cerrarInstancia(instCerrar, ses);
         
-        //Cargo la lista de instancias dependiendo del estado y del usuario
+        //Carga la lista de instancias dependiendo del estado y del usuario
         int j = 0;
         insta = new Instancia();
         insta.setEstado(estados.get(j));
@@ -650,6 +627,22 @@ public class instanciaUsuarioController {
         HttpSession SesionAbierta = (HttpSession) session;
         SesionAbierta.invalidate();
         Redireccionar();
+    }
+    
+    /**
+     * Método que cambia el formato de la fecha
+     * @param fecha
+     * @return
+     */
+    public String formatoFecha(XMLGregorianCalendar fecha) {
+        if (fecha != null) {
+            Date fechaDate = fecha.toGregorianCalendar().getTime();
+            SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+            String fechaCadena = formateador.format(fechaDate);
+            return fechaCadena;
+        }
+        return "";
+
     }
 
     private WrInstancia consultarInstancias(com.pangea.capadeservicios.servicios.Usuario usuarioActual, com.pangea.capadeservicios.servicios.Instancia instanciaActual) {

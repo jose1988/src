@@ -41,13 +41,43 @@ public class usuarioGrupoController {
      */
     Sesion sesionLogueo;
     
+    /*
+     * Objetos de la clase Usuario en donde se guardan los datos del usuario
+     */
     private Usuario idusu, usuarioGrupoSeleccionado, datosusuarios;    
+    
+    /*
+     * Objeto de la clase Grupo en donde se guarda el grupo seleccionado en el menu
+     */
     private Grupo grupoSeleccionado;
-    private Sesion sesion_actual;
+    
+    /*
+     * Objetos de la clase List<Grupo> en donde se guarda la lista de grupos consultados
+     * en el servicio
+     */
     private List<Grupo> grupos;
+    
+    /*
+     * Objetos de la clase UsuarioGrupoRol donde se guardan los datos de un
+     * usuario_grupo_rol en especifico
+     */
     private UsuarioGrupoRol grup;
+    
+    /*
+     * Objetos de la clase List<UsuarioGrupoRol> donde se guardan la lista de
+     * usuario_grupo_rol consultadas
+     */
     private List<UsuarioGrupoRol> grupo, grupoUsuarios;
+    
+    /*
+     * Variable de tipo int en donde se guarda el valor del indice de grupo
+     * seleccionado
+     */
     private int indice;
+    
+    /*
+     * Variable de tipo String en donde se guarda el id del usuario
+     */
     private String idUsuario;
 
     /**
@@ -96,22 +126,6 @@ public class usuarioGrupoController {
      */
     public void setGrupoSeleccionado(Grupo grupoSeleccionado) {
         this.grupoSeleccionado = grupoSeleccionado;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public Sesion getSesion_actual() {
-        return sesion_actual;
-    }
-
-    /**
-     *
-     * @param sesion_actual
-     */
-    public void setSesion_actual(Sesion sesion_actual) {
-        this.sesion_actual = sesion_actual;
     }
 
     /**
@@ -232,19 +246,15 @@ public class usuarioGrupoController {
      */
     @PostConstruct
     public void init() {
-        idusu = new Usuario();
-        FacesContext fc = FacesContext.getCurrentInstance();
-        ExternalContext ec = fc.getExternalContext();
-        HttpSession sesion = (HttpSession) ec.getSession(true);
-        sesion_actual = (Sesion) (sesion.getAttribute("Sesion"));
-        idusu= (Usuario) (sesion.getAttribute("Usuario"));
         
+        //Creación de las listas con la información de los grupos
         grupoSeleccionado = new Grupo();
         grupos=listarGrupos();
         grupoSeleccionado = grupos.get(0);
         grupo = new ArrayList<UsuarioGrupoRol>();
         grupo=listarUsuariosGrupo(grupoSeleccionado,false);
         
+        //Carga la información de la tabla usuario_grupo_rol dependiendo del grupo
         int j=0;
         grupoUsuarios=new ArrayList<UsuarioGrupoRol>();
         
@@ -273,6 +283,7 @@ public class usuarioGrupoController {
         Grupo gSeleccionado = (Grupo) event.getData();
         grupoSeleccionado = gSeleccionado;
         
+        //Carga la información de la tabla usuario_grupo_rol dependiendo del grupo
         grupo = new ArrayList<UsuarioGrupoRol>();
         grupo=listarUsuariosGrupo(grupoSeleccionado,false);
         grupoUsuarios=new ArrayList<UsuarioGrupoRol>();
@@ -311,6 +322,7 @@ public class usuarioGrupoController {
         usuarioGrupoSeleccionado = new Usuario();
         usuarioGrupoSeleccionado.setId(idUsuario);
         
+        //Creación de la variable de Sesión para el id de usuario y del id de grupo
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext externalContext = context.getExternalContext();
         Object sessionInstancia = externalContext.getSession(true);

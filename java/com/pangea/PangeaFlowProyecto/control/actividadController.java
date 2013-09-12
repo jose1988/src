@@ -3,13 +3,14 @@
  * and open the template in the editor.
  */
 package com.pangea.PangeaFlowProyecto.control;
-import com.pangea.capadeservicios.servicios.Post;
 import com.pangea.capadeservicios.servicios.Usuario;
 import com.pangea.capadeservicios.servicios.Actividad;
 import com.pangea.capadeservicios.servicios.ClasificacionUsuario;
 import com.pangea.capadeservicios.servicios.GestionDeActividades_Service;
 import com.pangea.capadeservicios.servicios.Sesion;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -17,10 +18,8 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
+import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.ws.WebServiceRef;
-import org.primefaces.event.NodeSelectEvent;
-import org.primefaces.model.DefaultTreeNode;
-import org.primefaces.model.TreeNode;
 
 /**
  * @author Pangea
@@ -33,22 +32,13 @@ import org.primefaces.model.TreeNode;
 public class actividadController {
     @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_15362/CapaDeServicios/GestionDeActividades.wsdl")
     private GestionDeActividades_Service service_1;
-   
-    private TreeNode mailboxes;
-    private List<Post> mails;
-    private Post mail;
-    private TreeNode mailbox;    
-    private TreeNode estact;
-    private TreeNode estadoSeleccionado;
     
     private List<Actividad> actividades, actividad;
     private Actividad activi, act, id;
-    
     private Usuario idusu;
     private List<String> estados;
     private ClasificacionUsuario idclasi, idcla;
-    
-    Actividad idSesionActividad;  
+    private Actividad idSesionActividad;  
     
     /**
      *
@@ -97,54 +87,6 @@ public class actividadController {
     public void setId(Actividad id) {
         this.id = id;
     }
-  
-    /**
-     *
-     * @return
-     */
-    public TreeNode getEstadoSeleccionado() {
-        return estadoSeleccionado;
-    }
-
-    /**
-     *
-     * @param estadoSeleccionado
-     */
-    public void setEstadoSeleccionado(TreeNode estadoSeleccionado) {
-        this.estadoSeleccionado = estadoSeleccionado;
-    }
-
-    /**
-     *
-     * @param mailboxes
-     */
-    public void setMailboxes(TreeNode mailboxes) {
-        this.mailboxes = mailboxes;
-    }
-
-    /**
-     *
-     * @param mails
-     */
-    public void setMails(List<Post> mails) {
-        this.mails = mails;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public TreeNode getSelectedNode() {  
-        return estact;  
-    }  
-  
-    /**
-     *
-     * @param selectedNode
-     */
-    public void setSelectedNode(TreeNode selectedNode) {  
-        this.estact = selectedNode;  
-    }  
    
     /**
      *
@@ -214,70 +156,6 @@ public class actividadController {
      *
      * @return
      */
-    public TreeNode getMailboxes() {
-        return mailboxes;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public List<Post> getMails() {
-        return mails;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public Post getMail() {
-        return mail;
-    }
-    
-    /**
-     *
-     * @return
-     */
-    public TreeNode getEstact() {
-        return estact;
-    }
-
-    /**
-     *
-     * @param estact
-     */
-    public void setEstact(TreeNode estact) {
-        this.estact = estact;
-    }
-
-    /**
-     *
-     * @param mail
-     */
-    public void setMail(Post mail) {
-        this.mail = mail;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public TreeNode getMailbox() {
-        return mailbox;
-    }
-
-    /**
-     *
-     * @param mailbox
-     */
-    public void setMailbox(TreeNode mailbox) {
-        this.mailbox = mailbox;
-    }
-    
-    /**
-     *
-     * @return
-     */
     public List<String> getEstados() {
         return estados;
     }
@@ -297,45 +175,11 @@ public class actividadController {
     @PostConstruct
     public void init() {
         
-        estact = new DefaultTreeNode("root", null);
-        estados=buscarEstados();
-        int i=0;
-        while (estados.size()>i){
-            if("pendiente".equals(estados.get(i))){
-                TreeNode inbox = new DefaultTreeNode(estados.get(i), estact);
-            }
-            i++;
-        }
-        
-        /**
-         * Lista de Actividades con estado pendiente y que no han sido borradas
-         */
-        estadoSeleccionado = estact.getChildren().get(0);
-        int j=0;  
-        activi= new Actividad(); 
-        activi.setEstado(estados.get(j));
-        actividad=listarActividades("pendiente",false);
-        actividades=new ArrayList<Actividad>();
-        if(actividad.isEmpty())
-            actividades=null;
-        while (actividad.size()>j){
-            act= actividad.get(j);
-            actividades.add(act);
-            j++;
-        } 
-    }
-  
-     /**
-     * Método que recarga la información del arbol dependiendo del estado que se seleccione
-     * @param event
-     */
-    public void onNodeSelect(NodeSelectEvent event) {
         /**
          * Lista de Actividades con estado pendiente y que no han sido borradas
          */
         int j=0;  
         activi= new Actividad(); 
-        activi.setEstado(event.getTreeNode().toString());
         actividad=listarActividades("pendiente",false);
         actividades=new ArrayList<Actividad>();
         if(actividad.isEmpty())
@@ -353,8 +197,6 @@ public class actividadController {
      * a asignaractividad.xhtml 
      */
     public void actividadAsignar(){
-        
-        System.out.println("IDEEEEEEEEE    "+act.getId());
         
         idSesionActividad= new Actividad();
         idSesionActividad.setId(act.getId());
@@ -374,6 +216,22 @@ public class actividadController {
         }    
        
       
+    }
+    
+    /**
+     * Método que cambia el formato de la fecha
+     * @param fecha
+     * @return
+     */
+    public String formatoFecha(XMLGregorianCalendar fecha) {
+        if (fecha != null) {
+            Date fechaDate = fecha.toGregorianCalendar().getTime();
+            SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+            String fechaCadena = formateador.format(fechaDate);
+            return fechaCadena;
+        }
+        return "";
+
     }
     
     private java.util.List<com.pangea.capadeservicios.servicios.Actividad> listarActividades(java.lang.String estado, boolean borrado) {
