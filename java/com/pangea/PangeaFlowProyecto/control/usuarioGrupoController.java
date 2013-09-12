@@ -4,12 +4,14 @@
  */
 package com.pangea.PangeaFlowProyecto.control;
 
+import com.pangea.capadeservicios.servicios.GestionDeControlDeUsuarios_Service;
 import com.pangea.capadeservicios.servicios.Usuario;
 import com.pangea.capadeservicios.servicios.GestionDeGrupo_Service;
 import com.pangea.capadeservicios.servicios.GestionDeUsuarios_Service;
 import com.pangea.capadeservicios.servicios.Grupo;
 import com.pangea.capadeservicios.servicios.Sesion;
 import com.pangea.capadeservicios.servicios.UsuarioGrupoRol;
+import com.pangea.capadeservicios.servicios.WrResultado;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -27,6 +29,8 @@ import org.primefaces.event.TabChangeEvent;
 @ManagedBean(name = "usuarioGrupoController")
 @SessionScoped
 public class usuarioGrupoController {
+    @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_15362/CapaDeServicios/GestionDeControlDeUsuarios.wsdl")
+    private GestionDeControlDeUsuarios_Service service_1;
     @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_15362/CapaDeServicios/GestionDeUsuarios.wsdl")
     private GestionDeUsuarios_Service service;
     @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_15362/CapaDeServicios/GestionDeGrupo.wsdl")
@@ -42,43 +46,87 @@ public class usuarioGrupoController {
     Sesion sesionLogueo;
     
     /*
-     * Objetos de la clase Usuario en donde se guardan los datos del usuario
+     * Objetos de la clase Usuario en donde se guardaran los objetos del usuario
      */
     private Usuario idusu, usuarioGrupoSeleccionado, datosusuarios;    
     
     /*
-     * Objeto de la clase Grupo en donde se guarda el grupo seleccionado en el menu
+     * Objeto de la clase Grupo en donde se guardara el obejto del grupo seleccionado 
+     * en el menu
      */
     private Grupo grupoSeleccionado;
     
     /*
-     * Objetos de la clase List<Grupo> en donde se guarda la lista de grupos consultados
-     * en el servicio
+     * Objetos de la clase List<Grupo> en donde se guardara el objeto de la lista
+     * de grupo que se cargan o se consultan en el servicio
      */
     private List<Grupo> grupos;
     
     /*
-     * Objetos de la clase UsuarioGrupoRol donde se guardan los datos de un
-     * usuario_grupo_rol en especifico
+     * Objetos de la clase UsuarioGrupoRol donde se guardara el objeto de UsuarioGrupoRol
      */
     private UsuarioGrupoRol grup;
     
     /*
-     * Objetos de la clase List<UsuarioGrupoRol> donde se guardan la lista de
-     * usuario_grupo_rol consultadas
+     * Objetos de la clase List<UsuarioGrupoRol> donde se se guardara el objeto de
+     * List<UsuarioGrupoRol> que se cargan o se consultan en el serivicio
      */
     private List<UsuarioGrupoRol> grupo, grupoUsuarios;
     
     /*
-     * Variable de tipo int en donde se guarda el valor del indice de grupo
+     * Objetos de tipo int en donde se guardara la variable indice de grupo
      * seleccionado
      */
     private int indice;
     
     /*
-     * Variable de tipo String en donde se guarda el id del usuario
+     * Objetos de tipo String en donde se guardara la variable id del usuario
      */
     private String idUsuario;
+    
+    /*
+     * Objeto de la clase Sesion en donde se guarda el valor de la variable de la sesion 
+     * abierta
+     */
+    private Sesion ses;
+    
+    /*
+     * Objeto de tipo String en donde se guarda el id del usuario que inicio sesión
+     */
+    private String usuario;
+    
+    
+    /**
+     *
+     * @return
+     */
+    public Sesion getSes() {
+        return ses;
+    }
+
+    /**
+     *
+     * @param ses
+     */
+    public void setSes(Sesion ses) {
+        this.ses = ses;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public String getUsuario() {
+        return usuario;
+    }
+
+    /**
+     *
+     * @param usuario
+     */
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
+    }
 
     /**
      *
@@ -327,7 +375,6 @@ public class usuarioGrupoController {
         ExternalContext externalContext = context.getExternalContext();
         Object sessionInstancia = externalContext.getSession(true);
         HttpSession httpSession = (HttpSession) sessionInstancia;
-        httpSession.invalidate();  
         httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
         httpSession.setAttribute("IdUsuario", usuarioGrupoSeleccionado);
         httpSession.setAttribute("IdGrupo", grupoSeleccionado);
@@ -352,6 +399,66 @@ public class usuarioGrupoController {
         usuarioGrupoSeleccionado.setId(idUsuario);
         datosusuarios=buscarUsuario(usuarioGrupoSeleccionado);
     }
+    
+    /**
+     * Método para verificar si el usuario esta logueado
+     *
+     * @return un booleano si es true es por que si estaba logueado
+     */
+    public boolean verificarLogueo() {
+        boolean bandera = false, sesionBd = false;
+        try {
+            //Codigo para guardar sesion y usuario logueado, sino existe redireccionamos a index.xhtml
+            FacesContext context = FacesContext.getCurrentInstance();
+            ExternalContext externalContext = context.getExternalContext();
+            Object session = externalContext.getSession(true);
+            HttpSession SesionAbierta = (HttpSession) session;
+            usuarioLogueo = (Usuario) (SesionAbierta.getAttribute("Usuario"));
+            sesionLogueo = (Sesion) (SesionAbierta.getAttribute("Sesion"));
+            
+            //Guardo el valor del id del usuario y la sesión
+            usuario=usuarioLogueo.getId();
+            ses=sesionLogueo;
+            
+            sesionBd = logSesion(sesionLogueo);
+            if (usuarioLogueo == null || sesionLogueo == null || !sesionBd) {
+                bandera = true;
+            }
+            
+        } catch (Exception e) {
+            bandera = true;
+        }
+
+        return bandera;
+    }
+
+    /**
+     * Método para redireccionar a index.xhtml si el usuario no esta logueado
+     */
+    public void Redireccionar() {
+        try {
+            FacesContext contex = FacesContext.getCurrentInstance();
+            contex.getExternalContext().redirect("/PangeaFlowProyecto/faces/index.xhtml");
+        } catch (Exception error) {
+            System.out.println("----------------------------Error---------------------------------" + error);
+        }
+    }
+
+    /**
+     * Método encargado de cerrar la sesión del usuario en la base de datos 
+     * y a nivel de variables de sesión por tener un tiempo de inactividad 
+     * de 3minutos
+     */
+    public void cerrarPorInactividad() {
+        WrResultado result;
+        result = logOut(sesionLogueo);
+        FacesContext context = FacesContext.getCurrentInstance();
+        ExternalContext externalContext = context.getExternalContext();
+        Object session = externalContext.getSession(true);
+        HttpSession SesionAbierta = (HttpSession) session;
+        SesionAbierta.invalidate();
+        Redireccionar();
+    }
 
     private java.util.List<com.pangea.capadeservicios.servicios.Grupo> listarGrupos() {
         com.pangea.capadeservicios.servicios.GestionDeGrupo port = service_2.getGestionDeGrupoPort();
@@ -368,4 +475,15 @@ public class usuarioGrupoController {
         return port.listarUsuariosGrupo(grupousuarios, borrado);
     }
 
+    private WrResultado logOut(com.pangea.capadeservicios.servicios.Sesion sesionActual) {
+        com.pangea.capadeservicios.servicios.GestionDeControlDeUsuarios port = service_1.getGestionDeControlDeUsuariosPort();
+        return port.logOut(sesionActual);
+    }
+
+    private boolean logSesion(com.pangea.capadeservicios.servicios.Sesion sesionActual) {
+        com.pangea.capadeservicios.servicios.GestionDeControlDeUsuarios port = service_1.getGestionDeControlDeUsuariosPort();
+        return port.logSesion(sesionActual);
+    }
+
+    
 }

@@ -50,56 +50,60 @@ public class instanciaUsuarioController {
     Sesion sesionLogueo;
     
     /*
-     * Objetos de la clase Usuario donde se guardan el id de usuario
+     * Objetos de la clase Usuario donde se guardara el obejto de la variable id 
+     * de usuario
      */
     private Usuario idusu, idusuario;
     
     /*
-     * Objetos de la clase TreeNode en donde se guardan los valores de los estados que se 
-     * seleccionan en el arbol
+     * Objetos de la clase TreeNode en donde se guardara los objetos de la variable 
+     * estados que se seleccionan en el arbol
      */
     private TreeNode estact, estadoSeleccionado;
     
     /*
-     * Objetos de la clase List<String> en donde se guarda el valor de los estados que se
-     * cargan del servicio buscarestados
+     * Objetos de la clase List<String> en donde se guardara los obejtos de la 
+     * variable estado que se cargan o se consultan del servicio
      */
     private List<String> estados;
     
     /*
-     * Objetos de la clase WrInstancia en donde se guardan los valores de las instancias
-     * que se cargan del servicio consultarinstancias y consultarinstancia
+     * Objetos de la clase WrInstancia en donde se guardara los obejtos de las 
+     * instancias que se cargan o se consultan de los servicios
      */
     private WrInstancia instancia, instac;
     
     /*
-     * Objetos de la clase List<Instancia> en donde se guarda la lista de instancias consultadas
-     * en el serivicio
+     * Objetos de la clase List<Instancia> en donde se guardara  la lista de 
+     * instancias que se cargan o se consultan en el serivicio
      */
     private List<Instancia> instancias;
     
     /*
-     * Objetos de la clase Instancia en donde se guardan los datos de alguna instancia en especifico
+     * Objetos de la clase Instancia donde se guardara los objetos de la variables
+     * de instancia que se cargan o consultan del servicio
      */
     private Instancia inst, insta, instActividad, instCerrar;
     
     /*
-     * Objetos de la clase WrResultado en donde se guarda el valor de cerrar la instancia
+     * Objetos de la clase WrResultado en donde se guardara los objetos de la 
+     * variable de WrResultado que se cargan o consultan del servicio
      */
     private WrResultado instanciacerrar;
     
     /*
-     * Objeto de la clase Sesion en donde se guarda el valor de la variable de la sesion abierta
+     * Objeto de la clase Sesion en donde se guardara la variable de la sesion 
+     * abierta
      */
     private Sesion ses;
     
     /*
-     * Variable de tipo Long en donde se guarda el id de la instancia
+     * Objeto de tipo Long en donde se guardara la variable del id de la instancia
      */
     private Long idInsta;
     
     /*
-     * Objeto de tipo String en donde se guarda el id del usuario
+     * Objeto de tipo String en donde se guardara la variable del id del usuario
      */
     private String usuario;
     
@@ -395,10 +399,10 @@ public class instanciaUsuarioController {
         //Carga el arbol con los estados existentes
         while (estados.size() > i) {
             if ("abierta".equals(estados.get(i))) {
-                icono = "s";
+                icono = "a";
                 TreeNode inbox = new DefaultTreeNode(icono, estados.get(i), estact);
             } else if ("cerrada".equals(estados.get(i))) {
-                icono = "i";
+                icono = "c";
                 TreeNode inbox = new DefaultTreeNode(icono, estados.get(i), estact);
             }
             i++;
@@ -568,6 +572,22 @@ public class instanciaUsuarioController {
           }
        return " background-color: #FFFFFF;";
     }
+    
+    /**
+     * Método que cambia el formato de la fecha
+     * @param fecha
+     * @return
+     */
+    public String formatoFecha(XMLGregorianCalendar fecha) {
+        if (fecha != null) {
+            Date fechaDate = fecha.toGregorianCalendar().getTime();
+            SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+            String fechaCadena = formateador.format(fechaDate);
+            return fechaCadena;
+        }
+        return "";
+
+    }
 
     /**
      * Método para verificar si el usuario esta logueado
@@ -627,22 +647,6 @@ public class instanciaUsuarioController {
         HttpSession SesionAbierta = (HttpSession) session;
         SesionAbierta.invalidate();
         Redireccionar();
-    }
-    
-    /**
-     * Método que cambia el formato de la fecha
-     * @param fecha
-     * @return
-     */
-    public String formatoFecha(XMLGregorianCalendar fecha) {
-        if (fecha != null) {
-            Date fechaDate = fecha.toGregorianCalendar().getTime();
-            SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
-            String fechaCadena = formateador.format(fechaDate);
-            return fechaCadena;
-        }
-        return "";
-
     }
 
     private WrInstancia consultarInstancias(com.pangea.capadeservicios.servicios.Usuario usuarioActual, com.pangea.capadeservicios.servicios.Instancia instanciaActual) {

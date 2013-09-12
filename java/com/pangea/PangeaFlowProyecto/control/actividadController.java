@@ -5,9 +5,10 @@
 package com.pangea.PangeaFlowProyecto.control;
 import com.pangea.capadeservicios.servicios.Usuario;
 import com.pangea.capadeservicios.servicios.Actividad;
-import com.pangea.capadeservicios.servicios.ClasificacionUsuario;
 import com.pangea.capadeservicios.servicios.GestionDeActividades_Service;
+import com.pangea.capadeservicios.servicios.GestionDeControlDeUsuarios_Service;
 import com.pangea.capadeservicios.servicios.Sesion;
+import com.pangea.capadeservicios.servicios.WrResultado;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -30,46 +31,80 @@ import javax.xml.ws.WebServiceRef;
 @SessionScoped
 
 public class actividadController {
+    @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_15362/CapaDeServicios/GestionDeControlDeUsuarios.wsdl")
+    private GestionDeControlDeUsuarios_Service service;
     @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_15362/CapaDeServicios/GestionDeActividades.wsdl")
     private GestionDeActividades_Service service_1;
     
+    /*
+     * Objeto de la clase Usuario donde se guardara el objeto de la variable de sesión
+     */
+    Usuario usuarioLogueo;
+    /*
+     * Objeto de la clase Sesión donde se guardara el objeto de la variable de sesión
+     */
+    Sesion sesionLogueo;
+    
+    /*
+     * Objetos de la clase List<Actividad> donde se guardara el objeto de la lista
+     * de actividades que se cargan o consultan del servicio
+     */
     private List<Actividad> actividades, actividad;
+    
+    /*
+     * Objetos de la clase Actividad donde se guardara los objetos de la variables
+     * de actividad que se cargan o conultadan del servicio
+     */
     private Actividad activi, act, id;
-    private Usuario idusu;
-    private List<String> estados;
-    private ClasificacionUsuario idclasi, idcla;
-    private Actividad idSesionActividad;  
+    
+    /*
+     * Objeto de la clase Actividad donde se guardara el objeto de la variable de id de
+     * la actividad
+     */
+    private Actividad idSesionActividad;
+    
+    /*
+     * Objeto de la clase Sesion en donde se guarda el valor de la variable de la sesion 
+     * abierta
+     */
+    private Sesion ses;
+    
+    /*
+     * Objeto de tipo String en donde se guarda el id del usuario que inicio sesión
+     */
+    private String usuario;
+    
     
     /**
      *
      * @return
      */
-    public ClasificacionUsuario getIdcla() {
-        return idcla;
+    public Sesion getSes() {
+        return ses;
     }
 
     /**
      *
-     * @param idcla
+     * @param ses
      */
-    public void setIdcla(ClasificacionUsuario idcla) {
-        this.idcla = idcla;
+    public void setSes(Sesion ses) {
+        this.ses = ses;
     }
 
     /**
      *
      * @return
      */
-    public ClasificacionUsuario getIdclasi() {
-        return idclasi;
+    public String getUsuario() {
+        return usuario;
     }
 
     /**
      *
-     * @param idclasi
+     * @param usuario
      */
-    public void setIdclasi(ClasificacionUsuario idclasi) {
-        this.idclasi = idclasi;
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
     }
     
     /**
@@ -87,23 +122,7 @@ public class actividadController {
     public void setId(Actividad id) {
         this.id = id;
     }
-   
-    /**
-     *
-     * @return
-     */
-    public Usuario getIdusu() {
-        return idusu;
-    }
-
-    /**
-     *
-     * @param idusu
-     */
-    public void setIdusu(Usuario idusu) {
-        this.idusu = idusu;
-    }
-
+    
     /**
      *
      * @return
@@ -153,31 +172,14 @@ public class actividadController {
     }
     
     /**
-     *
-     * @return
-     */
-    public List<String> getEstados() {
-        return estados;
-    }
-
-    /**
-     *
-     * @param estados
-     */
-    public void setEstados(List<String> estados) {
-        this.estados = estados;
-    }
-    
-    /**
      * Metodo constructor que se incia al hacer la llamada a la pagina
      * instanciaUsuario.xhml
      */
     @PostConstruct
     public void init() {
         
-        /**
-         * Lista de Actividades con estado pendiente y que no han sido borradas
-         */
+        //Carga las actividades con estado pendiente y que no han sido borradas
+         
         int j=0;  
         activi= new Actividad(); 
         actividad=listarActividades("pendiente",false);
@@ -234,14 +236,80 @@ public class actividadController {
 
     }
     
+    
+    /**
+     * Método para verificar si el usuario esta logueado
+     *
+     * @return un booleano si es true es por que si estaba logueado
+     */
+    public boolean verificarLogueo() {
+        boolean bandera = false, sesionBd = false;
+        try {
+            //Codigo para guardar sesion y usuario logueado, sino existe redireccionamos a index.xhtml
+            FacesContext context = FacesContext.getCurrentInstance();
+            ExternalContext externalContext = context.getExternalContext();
+            Object session = externalContext.getSession(true);
+            HttpSession SesionAbierta = (HttpSession) session;
+            usuarioLogueo = (Usuario) (SesionAbierta.getAttribute("Usuario"));
+            sesionLogueo = (Sesion) (SesionAbierta.getAttribute("Sesion"));
+            
+            //Guardo el valor del id del usuario y la sesión
+            usuario=usuarioLogueo.getId();
+            ses=sesionLogueo;
+            
+            sesionBd = logSesion(sesionLogueo);
+            if (usuarioLogueo == null || sesionLogueo == null || !sesionBd) {
+                bandera = true;
+            }
+            
+        } catch (Exception e) {
+            bandera = true;
+        }
+
+        return bandera;
+    }
+
+    /**
+     * Método para redireccionar a index.xhtml si el usuario no esta logueado
+     */
+    public void Redireccionar() {
+        try {
+            FacesContext contex = FacesContext.getCurrentInstance();
+            contex.getExternalContext().redirect("/PangeaFlowProyecto/faces/index.xhtml");
+        } catch (Exception error) {
+            System.out.println("----------------------------Error---------------------------------" + error);
+        }
+    }
+
+    /**
+     * Método encargado de cerrar la sesión del usuario en la base de datos 
+     * y a nivel de variables de sesión por tener un tiempo de inactividad 
+     * de 3minutos
+     */
+    public void cerrarPorInactividad() {
+        WrResultado result;
+        result = logOut(sesionLogueo);
+        FacesContext context = FacesContext.getCurrentInstance();
+        ExternalContext externalContext = context.getExternalContext();
+        Object session = externalContext.getSession(true);
+        HttpSession SesionAbierta = (HttpSession) session;
+        SesionAbierta.invalidate();
+        Redireccionar();
+    }
+    
     private java.util.List<com.pangea.capadeservicios.servicios.Actividad> listarActividades(java.lang.String estado, boolean borrado) {
         com.pangea.capadeservicios.servicios.GestionDeActividades port = service_1.getGestionDeActividadesPort();
         return port.listarActividades(estado, borrado);
     }
 
-    private java.util.List<java.lang.String> buscarEstados() {
-        com.pangea.capadeservicios.servicios.GestionDeActividades port = service_1.getGestionDeActividadesPort();
-        return port.buscarEstados();
+    private WrResultado logOut(com.pangea.capadeservicios.servicios.Sesion sesionActual) {
+        com.pangea.capadeservicios.servicios.GestionDeControlDeUsuarios port = service.getGestionDeControlDeUsuariosPort();
+        return port.logOut(sesionActual);
     }
-   
+
+    private boolean logSesion(com.pangea.capadeservicios.servicios.Sesion sesionActual) {
+        com.pangea.capadeservicios.servicios.GestionDeControlDeUsuarios port = service.getGestionDeControlDeUsuariosPort();
+        return port.logSesion(sesionActual);
+    }
+
 }
