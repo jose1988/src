@@ -419,8 +419,7 @@ public class instanciaUsuarioController {
         if (instancia.getInstancias().isEmpty()) {
             instancias = null;
         }
-        else
-        {
+        else{
             instancias=instancia.getInstancias();
         }
        
@@ -443,8 +442,7 @@ public class instanciaUsuarioController {
         if (instancia.getInstancias().isEmpty()) {
             instancias = null;
         }
-       else
-        {
+       else{
             instancias=instancia.getInstancias();
         }
           
@@ -466,6 +464,7 @@ public class instanciaUsuarioController {
         ExternalContext externalContext = context.getExternalContext();
         Object sessionInstancia = externalContext.getSession(true);
         HttpSession httpSession = (HttpSession) sessionInstancia;
+        httpSession.removeAttribute("IdInstancia");
         httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
         httpSession.setAttribute("IdInstancia", instActividad);
         
@@ -500,13 +499,8 @@ public class instanciaUsuarioController {
         if (instancia.getInstancias().isEmpty()) {
             instancias = null;
         }
-        while (instancia.getInstancias().size() > j) {
-            instac = consultarInstancia(instancia.getInstancias().get(j));
-            if(instac.getEstatus().compareTo("OK")== 0){
-                inst = instac.getInstancias().get(0);
-                instancias.add(inst);
-            }
-            j++;
+        else{
+            instancias=instancia.getInstancias();
         }
         
     }
@@ -645,11 +639,6 @@ public class instanciaUsuarioController {
     private WrInstancia consultarInstancias(com.pangea.capadeservicios.servicios.Usuario usuarioActual, com.pangea.capadeservicios.servicios.Instancia instanciaActual) {
         com.pangea.capadeservicios.servicios.GestionDeInstancias port = service.getGestionDeInstanciasPort();
         return port.consultarInstancias(usuarioActual, instanciaActual);
-    }
-
-    private WrInstancia consultarInstancia(com.pangea.capadeservicios.servicios.Instancia instanciaActual) {
-        com.pangea.capadeservicios.servicios.GestionDeInstancias port = service.getGestionDeInstanciasPort();
-        return port.consultarInstancia(instanciaActual);
     }
 
     private WrResultado logOut(com.pangea.capadeservicios.servicios.Sesion sesionActual) {
