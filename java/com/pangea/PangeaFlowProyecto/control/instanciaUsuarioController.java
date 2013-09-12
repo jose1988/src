@@ -419,14 +419,11 @@ public class instanciaUsuarioController {
         if (instancia.getInstancias().isEmpty()) {
             instancias = null;
         }
-        while (instancia.getInstancias().size() > j) {
-            instac = consultarInstancia(instancia.getInstancias().get(j));
-            if(instac.getEstatus().compareTo("OK")== 0){
-                inst = instac.getInstancias().get(0);
-                instancias.add(inst);
-            }
-            j++;
+        else
+        {
+            instancias=instancia.getInstancias();
         }
+       
           
     }
 
@@ -446,13 +443,9 @@ public class instanciaUsuarioController {
         if (instancia.getInstancias().isEmpty()) {
             instancias = null;
         }
-        while (instancia.getInstancias().size() > j) {
-            instac = consultarInstancia(instancia.getInstancias().get(j));
-            if(instac.getEstatus().compareTo("OK")== 0){
-                inst = instac.getInstancias().get(0);
-                instancias.add(inst);
-            }
-            j++;
+       else
+        {
+            instancias=instancia.getInstancias();
         }
           
     }
