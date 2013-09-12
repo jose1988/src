@@ -12,6 +12,7 @@ import com.pangea.capadeservicios.servicios.WrResultado;
 import com.pangea.capadeservicios.servicios.WrSesion;
 import com.sun.org.apache.xerces.internal.jaxp.datatype.XMLGregorianCalendarImpl;
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.util.Date;
@@ -29,8 +30,9 @@ import javax.xml.ws.WebServiceRef;
  */
 @ManagedBean(name = "logIntOutController")
 @SessionScoped
-public class logIntOutController {
+public class logIntOutController implements Serializable {
 
+    private static final long serialVersionUID = 1L;
     @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_15362/CapaDeServicios/GestionDeUsuarios.wsdl")
     private GestionDeUsuarios_Service service_1;
     @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_15362/CapaDeServicios/GestionDeControlDeUsuarios.wsdl")
@@ -41,7 +43,8 @@ public class logIntOutController {
      */
     private Usuario usuarioLogeo;
     /**
-     * objeto con el cual se guardara la información del usuario para guardar en la variable de sesión
+     * objeto con el cual se guardara la información del usuario para guardar en
+     * la variable de sesión
      */
     private Usuario usuarioSesion;
     /**
