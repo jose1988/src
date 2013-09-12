@@ -1,14 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.pangea.PangeaFlowProyecto.control;
 
 import com.pangea.capadeservicios.servicios.Actividad;
 import com.pangea.capadeservicios.servicios.GestionDeActividades_Service;
 import com.pangea.capadeservicios.servicios.GestionDeControlDeUsuarios_Service;
 import com.pangea.capadeservicios.servicios.GestionDeInstancias_Service;
-import com.pangea.capadeservicios.servicios.GestionDeUsuarios_Service;
 import com.pangea.capadeservicios.servicios.Instancia;
 import com.pangea.capadeservicios.servicios.Sesion;
 import com.pangea.capadeservicios.servicios.Usuario;
@@ -30,7 +25,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.ws.WebServiceRef;
 
 /**
- * @author Pangea
+ * @author PangeaTech
  */
 @ManagedBean(name = "actividadesPorInstanciaController")
 @SessionScoped
@@ -51,11 +46,11 @@ public class actividadesPorInstanciaController {
      */
     private Actividad act;
     /*
-     * Objeto de la clase usuario donde se guardara el objeto de la variable de sesión
+     * Objeto de la clase usuario donde se guardara el objeto de la variable de sesión del logueo
      */
     Usuario usuarioLogueo;
     /*
-     * Objeto de la clase sesión donde se guardara el objeto de la variable de sesión
+     * Objeto de la clase sesión donde se guardara el objeto de la variable de sesión del logueo
      */
     Sesion sesionLogueo;
 
@@ -92,8 +87,8 @@ public class actividadesPorInstanciaController {
     }
 
     /**
-     * Metodo constructor que se incia al hacer la llamada a la pagina
-     * actividadesPorInstancia.xhml donde se mustra las actividades de una
+     * Método constructor que se incia al hacer la llamada a la pagina
+     * actividadesPorInstancia.xhml donde se muestra las actividades de una
      * determinada instancia
      */
     @PostConstruct
@@ -101,11 +96,11 @@ public class actividadesPorInstanciaController {
         //codigo para guardar la lista de actividades por Instancia
         Instancia Instancia = new Instancia();
         Instancia.setId((long) 8);
-//        FacesContext context = FacesContext.getCurrentInstance();
-//        ExternalContext externalContext = context.getExternalContext();
-//        Object session = externalContext.getSession(true);
-//        HttpSession SesionAbierta = (HttpSession) session;
-//        Instancia = (Instancia) (SesionAbierta.getAttribute("IdInstancia"));
+        FacesContext context = FacesContext.getCurrentInstance();
+        ExternalContext externalContext = context.getExternalContext();
+        Object session = externalContext.getSession(true);
+        HttpSession SesionAbierta = (HttpSession) session;
+        Instancia = (Instancia) (SesionAbierta.getAttribute("IdInstancia"));
         int j = 0;
         WrActividad Envoltorio, datosActividad;
         Envoltorio = consultarActividadesPorInstancia(Instancia);
@@ -162,12 +157,12 @@ public class actividadesPorInstanciaController {
     }
 
     /**
-     *
+     * Mensaje a mostrar si el usuario deja la cuenta sin usar luego de 3 min
      */
     public void Desactivado() {
 
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
-                "Su sesión se cerrara", "Ud ha estado inactivo mas de 3 minutos"));
+                "Su sesión se cerrara", "Ud ha estado inactivo más de 3 minutos"));
     }
 
     /**
@@ -187,6 +182,7 @@ public class actividadesPorInstanciaController {
     }
 
     /**
+     * Método encargado de mostrar la fecha en el formato dd/mm/yyyy
      *
      * @param fecha
      * @return
@@ -202,6 +198,14 @@ public class actividadesPorInstanciaController {
 
     }
 
+    /**
+     * Método encargado de sombrear las actividades en caso de que halla cerrado
+     * la actividad luego de que caducara el periodo de tiempo asignado
+     *
+     * @param actividadx
+     * @return el color del sombreado de la actividad
+     * @throws DatatypeConfigurationException
+     */
     public String estilo(Actividad actividadx) throws DatatypeConfigurationException {
 
         if (actividadx != null) {
@@ -267,6 +271,8 @@ public class actividadesPorInstanciaController {
 //        return " background-color: white;";
 //    }
     /**
+     * Método encargado de comparar fechas enviandolas coomo String en formato
+     * dd/mm/yyyy
      *
      * @param fecha1
      * @param fechaActual
@@ -275,9 +281,7 @@ public class actividadesPorInstanciaController {
     public boolean compararFechasConDate(String fecha1, String fechaActual) {
         boolean resultado = false;
         try {
-            /**
-             * Obtenemos las fechas enviadas en el formato a comparar
-             */
+            // Obtenemos las fechas enviadas en el formato a comparar
             SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
             Date fechaDate1 = formateador.parse(fecha1);
             Date fechaDate2 = formateador.parse(fechaActual);
@@ -289,6 +293,7 @@ public class actividadesPorInstanciaController {
         }
         return resultado;
     }
+//Servicios de Capa de Servicios
 
     private boolean logSesion(com.pangea.capadeservicios.servicios.Sesion sesionActual) {
         com.pangea.capadeservicios.servicios.GestionDeControlDeUsuarios port = service_1.getGestionDeControlDeUsuariosPort();

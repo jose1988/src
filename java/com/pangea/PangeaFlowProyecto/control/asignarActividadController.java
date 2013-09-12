@@ -1,7 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.pangea.PangeaFlowProyecto.control;
 
 import com.pangea.capadeservicios.servicios.Actividad;
@@ -23,7 +20,7 @@ import javax.servlet.http.HttpSession;
 import javax.xml.ws.WebServiceRef;
 
 /**
- * @author Pangea
+ * @author PangeaTech
  */
 @ManagedBean(name = "asignarActividadController")
 @SessionScoped
@@ -40,14 +37,25 @@ public class asignarActividadController {
     Usuario usuarioLogueo;
     Sesion sesionLogueo;
 
+    /**
+     *
+     * @return
+     */
     public List<Usuario> getUsuarios() {
         return usuarios;
     }
 
+    /**
+     *
+     * @param usuarios
+     */
     public void setUsuarios(List<Usuario> usuarios) {
         this.usuarios = usuarios;
     }
 
+    /**
+     *
+     */
     @PostConstruct
     public void init() {
         //codigo para guardar la lista de usuarios
@@ -64,6 +72,9 @@ public class asignarActividadController {
         }
     }
 
+    /**
+     *
+     */
     public void asignacionActividad() {
 
         Actividad actividadAsignada = new Actividad();
@@ -82,6 +93,7 @@ public class asignarActividadController {
 
     /**
      * Método para verificar si el usuario esta logueado
+     * @return 
      */
     public boolean verificarLogueo() {
         boolean bandera = false, sesionBd = false;
@@ -116,12 +128,18 @@ public class asignarActividadController {
         }
     }
 
+    /**
+     *
+     */
     public void Desactivado() {
 
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
                 "Su sesión se cerrara", "Ud ha estado inactivo mas de 3 minutos"));
     }
 
+    /**
+     *
+     */
     public void Cerrar() {
         WrResultado result;
         result = logOut(sesionLogueo);

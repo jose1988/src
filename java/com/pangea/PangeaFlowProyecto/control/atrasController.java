@@ -1,7 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.pangea.PangeaFlowProyecto.control;
 
 import com.pangea.capadeservicios.servicios.GestionDeControlDeUsuarios_Service;
@@ -18,14 +15,13 @@ import javax.xml.ws.WebServiceRef;
 
 /**
  *
- * @author pc
+ * @author PangeaTech
  */
 @ManagedBean(name = "atrasController")
 @SessionScoped
 public class atrasController {
     /**
-     *Metodo creado para el cierre de sesión del usuario en cuanto a las variables de sesión 
-     * y en cuanto a la base de datos
+     *Método creado para redireccionar a la pagina anterior
      */
     public void Atras() {
             try {

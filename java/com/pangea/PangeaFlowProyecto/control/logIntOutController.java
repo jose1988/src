@@ -25,7 +25,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.ws.WebServiceRef;
 
 /**
- * @author Pangea
+ * @author PangeaTech
  */
 @ManagedBean(name = "logIntOutController")
 @SessionScoped
@@ -36,26 +36,27 @@ public class logIntOutController {
     @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_15362/CapaDeServicios/GestionDeControlDeUsuarios.wsdl")
     private GestionDeControlDeUsuarios_Service service;
     /**
-     *
-     */
-    /**
      * objeto con el cual se haran las validaciones en cuanto al inicio y el
      * cerrar sesión de usuario
      */
-    private Usuario usuarioLogeo, usuarioSesion;
+    private Usuario usuarioLogeo;
     /**
-     * cadena donde se guardara el nombre de usuario
+     * objeto con el cual se guardara la información del usuario para guardar en la variable de sesión
+     */
+    private Usuario usuarioSesion;
+    /**
+     * cadena donde se guardara el nombre de usuario en el xhtml
      */
     private String User;
     /**
-     * cadena donde se guardara el nombre de usuario
+     * cadena donde se guardara la contraseña en el xhtml
      */
     private String Contrasena;
     /**
-     * objeto de la clase de sesión
+     * objeto de la clase de sesión creada para crear la sesión en la bd con el
+     * servicio
      */
-    Sesion sesionUsuario;
-    Sesion sesionLogueo;
+    private Sesion sesionUsuario;
 
     /**
      *
@@ -142,7 +143,8 @@ public class logIntOutController {
                 System.out.println("----------------------------Error---------------------------------" + e);
             }
         } else {
-            mostrarMensaje(1, "Advertencia", envoltorio.getObservacion());
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Advertencia", envoltorio.getObservacion()));
         }
     }
 
@@ -178,35 +180,6 @@ public class logIntOutController {
     private WrSesion logIn(com.pangea.capadeservicios.servicios.Sesion sesionActual) {
         com.pangea.capadeservicios.servicios.GestionDeControlDeUsuarios port = service.getGestionDeControlDeUsuariosPort();
         return port.logIn(sesionActual);
-    }
-
-    /**
-     *
-     * @param opcMensaje
-     * @param cabeceraMensaje
-     * @param cuerpoMensaje
-     */
-    public void mostrarMensaje(int opcMensaje, String cabeceraMensaje, String cuerpoMensaje) {
-        //0 informacón 1 advertenciA 2 error 3 fatal
-        FacesContext context = FacesContext.getCurrentInstance();
-        switch (opcMensaje) {
-            case 0: {
-                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, cabeceraMensaje, cuerpoMensaje));
-                break;
-            }
-            case 1: {
-                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, cabeceraMensaje, cuerpoMensaje));
-                break;
-            }
-            case 2: {
-                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, cabeceraMensaje, cuerpoMensaje));
-                break;
-            }
-            case 3: {
-                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_FATAL, cabeceraMensaje, cuerpoMensaje));
-                break;
-            }
-        }
     }
 
     private Usuario buscarUsuario(com.pangea.capadeservicios.servicios.Usuario usuarioActual) {
