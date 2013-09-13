@@ -543,17 +543,21 @@ public class instanciaUsuarioController {
         
       if(instanciaPintar!=null){
           if(instanciaPintar.getIdPeriodoGrupoProceso().getIdPeriodo().getFechaHasta()!=null){
-            XMLGregorianCalendar cod;
-            cod=instanciaPintar.getFechaCierre();
-            Date fech=cod.toGregorianCalendar().getTime();
-            Date fecha= new Date();
+            XMLGregorianCalendar cierre, hasta;
+            
+            cierre=instanciaPintar.getFechaCierre();
+            hasta=instanciaPintar.getIdPeriodoGrupoProceso().getIdPeriodo().getFechaHasta();
+            
+            Date fechainstancia=cierre.toGregorianCalendar().getTime();
+            Date fechaperiodo=hasta.toGregorianCalendar().getTime();
+            
+              System.out.println("Referenciaaaaaa: "+instanciaPintar.getReferencia());
+              System.out.println("Fecha de Cierre: "+fechainstancia);
+              System.out.println("Fecha de Periodo: "+fechaperiodo);
           
-            if(fech.before(fecha)) {
+            if(fechaperiodo.after(fechainstancia)){
                 return "background-color: #FF8888;";
             }
-          }
-          else{
-              System.out.println("Traeeeee: "+instanciaPintar.getIdPeriodoGrupoProceso().getId());
           }
           return " background-color: #FFFFFF;";
           }
