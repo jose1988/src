@@ -34,6 +34,7 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.ws.WebServiceRef;
+import org.primefaces.event.CloseEvent;
 import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.event.TabChangeEvent;
 import org.primefaces.model.DefaultTreeNode;
@@ -229,7 +230,7 @@ public class gestionActividadesController {
      * cambia el estado de la actividad pendiente a abierta,
      * inicia la actividad y refresca el datatable
      */
-    public void cambiarEstado() {
+    public void cambiarEstado(CloseEvent evento) {
 
 
 
@@ -387,16 +388,14 @@ public class gestionActividadesController {
     /**
      * asiga al usuario actual la actividad seleccionada en la cola de actividades
      */
-    public void asignar() {
+    public void asignar(CloseEvent evento) {
       
         resul = consumirCola(act, idusu);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(resul.getEstatus()));
         ActividadesCola = consultarActividadesCola(idusu);
         int j = 0;
         actividades = new ArrayList<Actividad>();
-        if (actividad.getActividads().isEmpty()) {
-            actividades = null;
-        }
+        
 
         while (ActividadesCola.getActividads().size() > j) {
             act = ActividadesCola.getActividads().get(j);
