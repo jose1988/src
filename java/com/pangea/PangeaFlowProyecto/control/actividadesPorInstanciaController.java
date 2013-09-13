@@ -97,28 +97,34 @@ public class actividadesPorInstanciaController {
      */
     @PostConstruct
     public void init() {
-        //codigo para guardar la lista de actividades por Instancia
-        FacesContext context = FacesContext.getCurrentInstance();
-        ExternalContext externalContext = context.getExternalContext();
-        Object session = externalContext.getSession(true);
-        HttpSession SesionAbierta = (HttpSession) session;
-        Instancia = (Instancia) (SesionAbierta.getAttribute("IdInstancia"));
-        int j = 0;
-        WrActividad Envoltorio, datosActividad;
-        Envoltorio = consultarActividadesPorInstancia(Instancia);
-        actividades = new ArrayList<Actividad>();
-        if (Envoltorio.getActividads().isEmpty()) {
-            actividades = null;
-        }
-        while (Envoltorio.getActividads().size() > j) {
-            datosActividad = consultarActividad(Envoltorio.getActividads().get(j));
-            if (datosActividad.getEstatus().compareTo("OK") == 0) {
-                act = datosActividad.getActividads().get(0);
-                actividades.add(act);
+        if (verificarLogueo()) {
+            Redireccionar();
+        } else if (verificarInstancia()) {
+            redireccionarInstanciaUsuario();
+        } else {
+            //codigo para guardar la lista de actividades por Instancia
+            FacesContext context = FacesContext.getCurrentInstance();
+            ExternalContext externalContext = context.getExternalContext();
+            Object session = externalContext.getSession(true);
+            HttpSession SesionAbierta = (HttpSession) session;
+            Instancia = (Instancia) (SesionAbierta.getAttribute("IdInstancia"));
+            int j = 0;
+            WrActividad Envoltorio, datosActividad;
+            Envoltorio = consultarActividadesPorInstancia(Instancia);
+            actividades = new ArrayList<Actividad>();
+            if (Envoltorio.getActividads().isEmpty()) {
+                actividades = null;
             }
-            j++;
+            while (Envoltorio.getActividads().size() > j) {
+                datosActividad = consultarActividad(Envoltorio.getActividads().get(j));
+                if (datosActividad.getEstatus().compareTo("OK") == 0) {
+                    act = datosActividad.getActividads().get(0);
+                    actividades.add(act);
+                }
+                j++;
+            }
         }
-        SesionAbierta.removeAttribute("IdInstancia");
+        // SesionAbierta.removeAttribute("IdInstancia");
     }
 
     /**
@@ -178,6 +184,15 @@ public class actividadesPorInstanciaController {
         try {
             FacesContext contex = FacesContext.getCurrentInstance();
             contex.getExternalContext().redirect("/PangeaFlowProyecto/faces/index.xhtml");
+        } catch (Exception error) {
+            System.out.println("----------------------------Error---------------------------------" + error);
+        }
+    }
+
+    public void redireccionarInstanciaUsuario() {
+        try {
+            FacesContext contex = FacesContext.getCurrentInstance();
+            contex.getExternalContext().redirect("/PangeaFlowProyecto/faces/instanciaUsuario.xhtml");
         } catch (Exception error) {
             System.out.println("----------------------------Error---------------------------------" + error);
         }

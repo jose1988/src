@@ -42,9 +42,9 @@ import org.primefaces.model.TreeNode;
 /**
  * @author Pangea
  */
-@ManagedBean(name = "loginController")
+@ManagedBean(name = "gestionActividades")
 @SessionScoped
-public class loginController {
+public class gestionActividadesController {
 
     @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_15362/CapaDeServicios/GestionDeGrupo.wsdl")
     private GestionDeGrupo_Service service_2;
@@ -77,32 +77,12 @@ public class loginController {
     private Grupo grupoSeleccionado;
     WrActividad ActividadesCola;
     private Sesion sesion_actual;
-    private int rango;
+    private boolean boton=false;
 
-    public int getIndice() {
-        return indice;
-    }
-
-    public void setIndice(int indice) {
-        this.indice = indice;
-    }
-
-    public TreeNode getEstadoSeleccionado() {
-        return estadoSeleccionado;
-    }
-
-    public void setEstadoSeleccionado(TreeNode estadoSeleccionado) {
-        this.estadoSeleccionado = estadoSeleccionado;
-    }
-
-    public void setMailboxes(TreeNode mailboxes) {
-        this.mailboxes = mailboxes;
-    }
-
-    public void setMails(List<Post> mails) {
-        this.mails = mails;
-    }
-
+    /**
+     * enlista los estados, muestra por defecto las actividades el primer estado 
+     * que conigue las actividades y del primer grupo de consigue.
+     */
     @PostConstruct
     public void init() {
         estact = new DefaultTreeNode("root", null);
@@ -120,9 +100,9 @@ public class loginController {
             if ("abierta".equals(estados.get(i))) {
                 icono = "s";
             } else if ("pendiente".equals(estados.get(i))) {
-                icono = "t";
-            } else if ("cerrada".equals(estados.get(i))) {
                 icono = "i";
+            } else if ("cerrada".equals(estados.get(i))) {
+                icono = "t";
             } else {
                 icono = "j";
             }
@@ -130,7 +110,7 @@ public class loginController {
             i++;
         }
 
-        TreeNode inbox = new DefaultTreeNode("s", "Cola de Actividades", estact);
+        TreeNode inbox = new DefaultTreeNode("j", "Cola de Actividades", estact);
         grupos = this.gruposUsuario(idusu);
         estadoSeleccionado = estact.getChildren().get(0);
         indice = 0;
@@ -157,6 +137,12 @@ public class loginController {
 
     }
 
+    /**
+     *
+     * Cambio de pestaña de los grupo, enlista las actividades por el grupo seleccionado
+     * y refresca el datatable
+     * @param event
+     */
     public void onTabChange(TabChangeEvent event) {
         activi = new Actividad();
         Grupo gSeleccionado = (Grupo) event.getData();
@@ -190,6 +176,11 @@ public class loginController {
 
     }
 
+    /**
+     * enlista las actividades por el estado seleccionado y el grupo actual 
+     * refresca el datatable
+     * @param event
+     */
     public void onNodeSelect(NodeSelectEvent event) {
 
         int j = 0;
@@ -197,9 +188,7 @@ public class loginController {
 
             ActividadesCola = consultarActividadesCola(idusu);
             actividades = new ArrayList<Actividad>();
-            if (actividad.getActividads().isEmpty()) {
-                actividades = null;
-            }
+            
 
             while (ActividadesCola.getActividads().size() > j) {
                 act = ActividadesCola.getActividads().get(j);
@@ -236,6 +225,10 @@ public class loginController {
         }
     }
 
+    /**
+     * cambia el estado de la actividad pendiente a abierta,
+     * inicia la actividad y refresca el datatable
+     */
     public void cambiarEstado() {
 
 
@@ -252,13 +245,16 @@ public class loginController {
         }
         while (actividad.getActividads().size() > j) {
             act = actividad.getActividads().get(j);
-
             actividades.add(act);
             j++;
         }
+      
 
     }
 
+    /**
+     * cambia el estado de la actividad de abierta a pendiente y refresca el datatable
+     */
     public void cambiarEstadoPendiente() {
 
 
@@ -281,6 +277,9 @@ public class loginController {
 
     }
 
+    /**
+     * envia la actividad para finalizarla
+     */
     public void finalizaract() {
 
         System.out.println(act.getId());
@@ -298,6 +297,9 @@ public class loginController {
         }
     }
 
+    /**
+     * se toma la condicion, la sesion y la actividad y se cierra la actividad a dedo
+     */
     public void cerraractividad() {
 
         ses = new Sesion();
@@ -323,6 +325,12 @@ public class loginController {
 
     }
 
+    /**
+     *
+     * @param actividadx
+     * @return
+     * @throws DatatypeConfigurationException
+     */
     public String sombreado(Actividad actividadx) throws DatatypeConfigurationException {
         if (actividadx != null) {
             if (actividadx.getFechaCierre() != null) {
@@ -347,6 +355,12 @@ public class loginController {
         return " background-color: white;";
     }
 
+    /**
+     *
+     * @param actividadx
+     * @return
+     * @throws DatatypeConfigurationException
+     */
     public String sombreadoc(Actividad actividadx) throws DatatypeConfigurationException {
         if (actividadx != null) {
             if (actividadx.getFechaCierre() != null && actividadx.getFechaApertura() != null) {
@@ -370,8 +384,11 @@ public class loginController {
         return " background-color: white;";
     }
 
+    /**
+     * asiga al usuario actual la actividad seleccionada en la cola de actividades
+     */
     public void asignar() {
-
+      
         resul = consumirCola(act, idusu);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(resul.getEstatus()));
         ActividadesCola = consultarActividadesCola(idusu);
@@ -391,102 +408,258 @@ public class loginController {
 
     }
 
+    /**
+     *
+     * @return
+     */
     public TreeNode getSelectedNode() {
         return estact;
     }
 
+    /**
+     *
+     * @param selectedNode
+     */
     public void setSelectedNode(TreeNode selectedNode) {
         this.estact = selectedNode;
     }
 
+    /**
+     *
+     * @return
+     */
     public Usuario getIdusu() {
         return idusu;
     }
 
+    /**
+     *
+     * @param idusu
+     */
     public void setIdusu(Usuario idusu) {
         this.idusu = idusu;
     }
 
+    /**
+     *
+     * @return
+     */
     public Actividad getActivi() {
         return activi;
     }
 
+    /**
+     *
+     * @param activi
+     */
     public void setActivi(Actividad activi) {
         this.activi = activi;
     }
 
+    /**
+     *
+     * @return
+     */
     public List<Actividad> getActividades() {
         return actividades;
     }
 
+    /**
+     *
+     * @return
+     */
     public List<Grupo> getGrupos() {
         return grupos;
     }
 
+    /**
+     *
+     * @param grupos
+     */
     public void setGrupos(List<Grupo> grupos) {
         this.grupos = grupos;
     }
 
+    /**
+     *
+     * @param actividades
+     */
     public void setActividades(List<Actividad> actividades) {
         this.actividades = actividades;
     }
 
+    /**
+     *
+     * @return
+     */
     public Actividad getAct() {
         return act;
     }
 
+    /**
+     *
+     * @param act
+     */
     public void setAct(Actividad act) {
         this.act = act;
     }
 
+    /**
+     *
+     * @return
+     */
     public Actividad getAux() {
         return aux;
     }
 
+    /**
+     *
+     * @param aux
+     */
     public void setAux(Actividad aux) {
         this.aux = aux;
     }
 
+    
+    public boolean isBoton() {
+        return boton;
+    }
+
+    public void setBoton(boolean boton) {
+        this.boton = boton;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public int getIndice() {
+        return indice;
+    }
+
+    /**
+     *
+     * @param indice
+     */
+    public void setIndice(int indice) {
+        this.indice = indice;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public TreeNode getEstadoSeleccionado() {
+        return estadoSeleccionado;
+    }
+
+    /**
+     *
+     * @param estadoSeleccionado
+     */
+    public void setEstadoSeleccionado(TreeNode estadoSeleccionado) {
+        this.estadoSeleccionado = estadoSeleccionado;
+    }
+
+    /**
+     *
+     * @param mailboxes
+     */
+    public void setMailboxes(TreeNode mailboxes) {
+        this.mailboxes = mailboxes;
+    }
+
+    /**
+     *
+     * @param mails
+     */
+    public void setMails(List<Post> mails) {
+        this.mails = mails;
+    }
+
+    /**
+     *
+     * @return
+     */
     public TreeNode getMailboxes() {
         return mailboxes;
     }
 
+    /**
+     *
+     * @return
+     */
     public List<Post> getMails() {
         return mails;
     }
 
+    /**
+     *
+     * @return
+     */
     public Post getMail() {
         return mail;
     }
 
+    /**
+     *
+     * @return
+     */
     public TreeNode getEstact() {
         return estact;
     }
 
+    /**
+     *
+     * @param estact
+     */
     public void setEstact(TreeNode estact) {
         this.estact = estact;
     }
 
+    /**
+     *
+     * @param mail
+     */
     public void setMail(Post mail) {
         this.mail = mail;
     }
 
+    /**
+     *
+     * @return
+     */
     public TreeNode getMailbox() {
         return mailbox;
     }
 
+    /**
+     *
+     * @param mailbox
+     */
     public void setMailbox(TreeNode mailbox) {
         this.mailbox = mailbox;
     }
 
+    /**
+     *
+     * @return
+     */
     public List<String> getEstados() {
         return estados;
     }
 
+    /**
+     *
+     * @param estados
+     */
     public void setEstados(List<String> estados) {
         this.estados = estados;
     }
 
+    /**
+     *
+     */
     public void send() {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Mail Sent!"));
     }
