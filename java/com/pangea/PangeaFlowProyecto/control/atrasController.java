@@ -32,6 +32,16 @@ public class atrasController {
             }
         
     }
+    
+      public void atrasIntancia() {
+            try {
+                FacesContext contex = FacesContext.getCurrentInstance();
+                contex.getExternalContext().redirect("/PangeaFlowProyecto/faces/instanciaUsuario.xhtml");
+            } catch (Exception error) {
+                System.out.println("----------------------------Error---------------------------------" + error);
+            }
+        
+    }
 
 
     
