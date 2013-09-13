@@ -375,9 +375,9 @@ public class usuarioGrupoController {
         ExternalContext externalContext = context.getExternalContext();
         Object sessionInstancia = externalContext.getSession(true);
         HttpSession httpSession = (HttpSession) sessionInstancia;
+        httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
         httpSession.removeAttribute("IdUsuario");
         httpSession.removeAttribute("IdGrupo");
-        httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
         httpSession.setAttribute("IdUsuario", usuarioGrupoSeleccionado);
         httpSession.setAttribute("IdGrupo", grupoSeleccionado);
         
