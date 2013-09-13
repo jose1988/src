@@ -232,8 +232,6 @@ public class gestionActividadesController {
      */
     public void cambiarEstado(CloseEvent evento) {
 
-
-
         resul = iniciarActividad(act, sesion_actual);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(resul.getEstatus()));
         int j = 0;
