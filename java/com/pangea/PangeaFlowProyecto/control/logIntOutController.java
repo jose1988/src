@@ -146,37 +146,18 @@ public class logIntOutController implements Serializable {
                 System.out.println("----------------------------Error---------------------------------" + e);
             }
         } else {
+            String mensajeError;
+            if (User.compareTo("") == 0 || Contrasena.compareTo("") == 0) {
+                mensajeError = "Debe agregar el usuario y la contraseña";
+            } else {
+                mensajeError = envoltorio.getObservacion();
+            }
             FacesContext context = FacesContext.getCurrentInstance();
-            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Advertencia", envoltorio.getObservacion()));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia", mensajeError));
+
         }
     }
 
-    /**
-     * metodo para hacer el Cerrar Sesión
-     */
-//    public void logeoOut() {
-//        /**
-//         * objeto envoltorio que obtiene si el usuario puede acceser o
-//         * no.........
-//         */
-//        WrResultado envoltorioResult;
-//        usuarioLogeo = new Usuario();
-//        usuarioLogeo.setId(User);
-//        envoltorioResult = logOut(usuarioLogeo);
-//        System.out.println("nombre de usuario " + User);
-//        System.out.println("ESTADO     " + envoltorioResult.getEstatus());
-//        System.out.println("Observación     " + envoltorioResult.getObservacion());
-//        if (envoltorioResult.getEstatus().compareTo("OK") == 0) {
-//            try {
-//                FacesContext contex = FacesContext.getCurrentInstance();
-//                contex.getExternalContext().redirect("/PangeaFlowProyecto/faces/index.xhtml");
-//            } catch (Exception e) {
-//                System.out.println("----------------------------Error---------------------------------" + e);
-//            }
-//        } else {
-//            System.out.println("FALLO-------------------------------");
-//        }
-//    }
     /**
      * Servicio consumido de la capa de servicios para inicio de sesión
      */

@@ -77,7 +77,7 @@ public class instanciaUsuarioController {
      * Objetos de la clase List<Instancia> en donde se guardara  la lista de 
      * instancias que se cargan o se consultan en el serivicio
      */
-    private List<Instancia> instancias;
+    private List<Instancia> instancias, instanciasOtra;
     
     /*
      * Objetos de la clase Instancia donde se guardara los objetos de la variables
@@ -419,11 +419,18 @@ public class instanciaUsuarioController {
         if (instancia.getInstancias().isEmpty()) {
             instancias = null;
         }
-        else{
+        /*else{
             instancias=instancia.getInstancias();
-        }
-       
-          
+        }*/
+        
+        while (instancia.getInstancias().size()>j){
+            inst= instancia.getInstancias().get(j);
+            Long IdInstancia=inst.getId();
+            Date fecha=inst.getIdPeriodoGrupoProceso().getIdPeriodo().getFechaHasta().toGregorianCalendar().getTime();
+            instancias.add(inst);
+            j++;
+        } 
+        
     }
 
     /**
@@ -442,10 +449,22 @@ public class instanciaUsuarioController {
         if (instancia.getInstancias().isEmpty()) {
             instancias = null;
         }
-       else{
+       /*else{
             instancias=instancia.getInstancias();
+        }*/
+        
+        while (instancia.getInstancias().size()>j){
+            inst= instancia.getInstancias().get(j);
+            Long IdInstancia=inst.getId();
+            Date fecha=inst.getIdPeriodoGrupoProceso().getIdPeriodo().getFechaHasta().toGregorianCalendar().getTime();
+            instancias.add(inst);
+            j++;
         }
-          
+        
+        for(int k=0; k<instancias.size(); k++){
+            insta=instancias.get(k);
+            System.out.println("Periodooooooooo Fechaaaaaa: "+insta.getIdPeriodoGrupoProceso().getIdPeriodo().getFechaHasta());
+        }
     }
     
     /**
@@ -464,8 +483,8 @@ public class instanciaUsuarioController {
         ExternalContext externalContext = context.getExternalContext();
         Object sessionInstancia = externalContext.getSession(true);
         HttpSession httpSession = (HttpSession) sessionInstancia;
-        httpSession.removeAttribute("IdInstancia");
         httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+        httpSession.removeAttribute("IdInstancia");
         httpSession.setAttribute("IdInstancia", instActividad);
         
         try {
@@ -542,7 +561,8 @@ public class instanciaUsuarioController {
     public String estiloCerrada(Instancia instanciaPintar) throws DatatypeConfigurationException {
         
       if(instanciaPintar!=null){
-          if(instanciaPintar.getIdPeriodoGrupoProceso().getIdPeriodo().getFechaHasta()!=null){
+          int j=0;
+          if(instanciaPintar.getIdPeriodoGrupoProceso().getIdPeriodo().getFechaHasta()!=null && instanciaPintar.getFechaCierre()!=null){
             XMLGregorianCalendar cierre, hasta;
             
             cierre=instanciaPintar.getFechaCierre();
@@ -550,15 +570,12 @@ public class instanciaUsuarioController {
             
             Date fechainstancia=cierre.toGregorianCalendar().getTime();
             Date fechaperiodo=hasta.toGregorianCalendar().getTime();
-            
-              System.out.println("Referenciaaaaaa: "+instanciaPintar.getReferencia());
-              System.out.println("Fecha de Cierre: "+fechainstancia);
-              System.out.println("Fecha de Periodo: "+fechaperiodo);
           
-            if(fechaperiodo.after(fechainstancia)){
+            if(fechainstancia.after(fechaperiodo)){
                 return "background-color: #FF8888;";
             }
           }
+          j=j+1;
           return " background-color: #FFFFFF;";
           }
        return " background-color: #FFFFFF;";
@@ -663,6 +680,11 @@ public class instanciaUsuarioController {
     private WrResultado cerrarInstancia(com.pangea.capadeservicios.servicios.Instancia instanciaActual, com.pangea.capadeservicios.servicios.Sesion sesionActual) {
         com.pangea.capadeservicios.servicios.GestionDeInstancias port = service.getGestionDeInstanciasPort();
         return port.cerrarInstancia(instanciaActual, sesionActual);
+    }
+
+    private WrInstancia consultarInstancia(com.pangea.capadeservicios.servicios.Instancia instanciaActual) {
+        com.pangea.capadeservicios.servicios.GestionDeInstancias port = service.getGestionDeInstanciasPort();
+        return port.consultarInstancia(instanciaActual);
     }
 
 }

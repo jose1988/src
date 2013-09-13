@@ -193,6 +193,30 @@ public class actividadesUsuarioController {
     public void liberarActividadesUsuario() {
         WrResultado Envoltorio = liberarActividades(usuarioId);
         if (Envoltorio.getEstatus().compareTo("OK") == 0) {
+            int j = 0;
+            Actividad estadoActividad = new Actividad();
+            envoltorioAbiertas = consultarActividades(usuarioId, estadoActividad);
+            estadoActividad.setEstado("pendiente");
+            envoltorioPendientes = consultarActividades(usuarioId, estadoActividad);
+            actividades = new ArrayList<Actividad>();
+            if ((envoltorioAbiertas.getActividads().isEmpty() || envoltorioAbiertas.getActividads() == null) && (envoltorioPendientes.getActividads().isEmpty() || envoltorioPendientes.getActividads() == null)) {
+                actividades = null;
+            }
+            while (envoltorioAbiertas.getActividads().size() > j) {
+                act = envoltorioAbiertas.getActividads().get(j);
+                if (act.getIdInstancia().getIdPeriodoGrupoProceso().getIdGrupo().getId() == grupoId.getId()) {
+                    actividades.add(act);
+                }
+                j++;
+            }
+            j = 0;
+            while (envoltorioPendientes.getActividads().size() > j) {
+                act = envoltorioPendientes.getActividads().get(j);
+                if (act.getIdInstancia().getIdPeriodoGrupoProceso().getIdGrupo().getId() == grupoId.getId()) {
+                    actividades.add(act);
+                }
+                j++;
+            }
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Actividades Liberadas", "Se han liberado todas las actividades satisfactoriamente"));
         }
