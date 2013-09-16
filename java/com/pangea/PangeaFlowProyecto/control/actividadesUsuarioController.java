@@ -160,6 +160,7 @@ public class actividadesUsuarioController {
         if (Envoltorio.getEstatus().compareTo("OK") == 0) {
             int j = 0;
             Actividad estadoActividad = new Actividad();
+            estadoActividad.setEstado("abierta");
             envoltorioAbiertas = consultarActividades(usuarioId, estadoActividad);
             estadoActividad.setEstado("pendiente");
             envoltorioPendientes = consultarActividades(usuarioId, estadoActividad);
