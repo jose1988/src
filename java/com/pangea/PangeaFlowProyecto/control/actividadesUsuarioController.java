@@ -195,6 +195,7 @@ public class actividadesUsuarioController {
         if (Envoltorio.getEstatus().compareTo("OK") == 0) {
             int j = 0;
             Actividad estadoActividad = new Actividad();
+            estadoActividad.setEstado("abierta");
             envoltorioAbiertas = consultarActividades(usuarioId, estadoActividad);
             estadoActividad.setEstado("pendiente");
             envoltorioPendientes = consultarActividades(usuarioId, estadoActividad);
@@ -298,18 +299,55 @@ public class actividadesUsuarioController {
     }
 
     /**
+     * Método para listar las actividades cuando ya no entra al constructor
+     */
+    public void listarActividades() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        ExternalContext externalContext = context.getExternalContext();
+        Object session = externalContext.getSession(true);
+        HttpSession SesionAbierta = (HttpSession) session;
+        usuarioId = (Usuario) (SesionAbierta.getAttribute("IdUsuario"));
+        grupoId = (Grupo) (SesionAbierta.getAttribute("IdGrupo"));
+        int j = 0;
+        Actividad estadoActividad = new Actividad();
+        estadoActividad.setEstado("abierta");
+        envoltorioAbiertas = consultarActividades(usuarioId, estadoActividad);
+        estadoActividad.setEstado("pendiente");
+        envoltorioPendientes = consultarActividades(usuarioId, estadoActividad);
+        actividades = new ArrayList<Actividad>();
+        if ((envoltorioAbiertas.getActividads().isEmpty() || envoltorioAbiertas.getActividads() == null) && (envoltorioPendientes.getActividads().isEmpty() || envoltorioPendientes.getActividads() == null)) {
+            actividades = null;
+        }
+        while (envoltorioAbiertas.getActividads().size() > j) {
+            act = envoltorioAbiertas.getActividads().get(j);
+            if (act.getIdInstancia().getIdPeriodoGrupoProceso().getIdGrupo().getId() == grupoId.getId()) {
+                actividades.add(act);
+            }
+            j++;
+        }
+        j = 0;
+        while (envoltorioPendientes.getActividads().size() > j) {
+            act = envoltorioPendientes.getActividads().get(j);
+            if (act.getIdInstancia().getIdPeriodoGrupoProceso().getIdGrupo().getId() == grupoId.getId()) {
+                actividades.add(act);
+            }
+            j++;
+        }
+    }
+
+    /**
      *
      */
     public void Desactivado() {
 
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
-                "Su sesión se cerrara", "Ud ha estado inactivo mas de 3 minutos"));
+                "Su sesión se cerrara", "Ud ha estado inactivo mas de 4 minutos"));
     }
 
     /**
      * Método encargado de cerrar la sesión del usuario en la base de datos y a
      * nivel de variables de sesión por tener un tiempo de inactividad de
-     * 3minutos
+     * 4minutos
      */
     public void cerrarPorInactividad() {
         WrResultado result;
@@ -346,11 +384,6 @@ public class actividadesUsuarioController {
     private WrResultado logOut(com.pangea.capadeservicios.servicios.Sesion sesionActual) {
         com.pangea.capadeservicios.servicios.GestionDeControlDeUsuarios port = service_1.getGestionDeControlDeUsuariosPort();
         return port.logOut(sesionActual);
-    }
-
-    private WrActividad consultarActividad(com.pangea.capadeservicios.servicios.Actividad actividadActual) {
-        com.pangea.capadeservicios.servicios.GestionDeActividades port = service_2.getGestionDeActividadesPort();
-        return port.consultarActividad(actividadActual);
     }
 
     private WrActividad consultarActividades(com.pangea.capadeservicios.servicios.Usuario usuarioActual, com.pangea.capadeservicios.servicios.Actividad actividadActual) {
