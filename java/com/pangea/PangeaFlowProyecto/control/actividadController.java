@@ -232,6 +232,9 @@ public class actividadController {
             String fechaCadena = formateador.format(fechaDate);
             return fechaCadena;
         }
+        else{
+            System.out.println("----------------------------Error---------------------------------" );
+        }
         return "";
 
     }

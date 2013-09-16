@@ -594,6 +594,10 @@ public class instanciaUsuarioController {
             String fechaCadena = formateador.format(fechaDate);
             return fechaCadena;
         }
+        
+        else{
+            System.out.println("----------------------------Error---------------------------------" );
+        }
         return "";
 
     }
@@ -681,11 +685,6 @@ public class instanciaUsuarioController {
     private WrResultado cerrarInstancia(com.pangea.capadeservicios.servicios.Instancia instanciaActual, com.pangea.capadeservicios.servicios.Sesion sesionActual) {
         com.pangea.capadeservicios.servicios.GestionDeInstancias port = service.getGestionDeInstanciasPort();
         return port.cerrarInstancia(instanciaActual, sesionActual);
-    }
-
-    private WrInstancia consultarInstancia(com.pangea.capadeservicios.servicios.Instancia instanciaActual) {
-        com.pangea.capadeservicios.servicios.GestionDeInstancias port = service.getGestionDeInstanciasPort();
-        return port.consultarInstancia(instanciaActual);
     }
 
 }
