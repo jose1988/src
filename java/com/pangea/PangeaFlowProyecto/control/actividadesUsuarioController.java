@@ -64,8 +64,14 @@ public class actividadesUsuarioController {
      * Objeto de la clase Grupo donde se guardara el id del grupo para mostrar sus respectivas actividades
      */
     private Grupo grupoId;
-    WrActividad envoltorioAbiertas;
-    WrActividad envoltorioPendientes;
+    /*
+     * Obejto de la clase envoltorio de actividades que servira para guardar las actividades abiertas que se traen del servicio
+     */
+    private WrActividad envoltorioAbiertas;
+    /*
+     * Obejto de la clase envoltorio de actividades que servira para guardar las actividades pendientes que se traen del servicio
+     */
+    private WrActividad envoltorioPendientes;
 
     /**
      *
@@ -130,7 +136,7 @@ public class actividadesUsuarioController {
             }
             while (envoltorioAbiertas.getActividads().size() > j) {
                 act = envoltorioAbiertas.getActividads().get(j);
-                if (act.getIdInstancia().getIdPeriodoGrupoProceso().getIdGrupo().getId() == grupoId.getId()) {
+                if (act.getIdInstancia().getIdPeriodoGrupoProceso().getIdGrupo().getId() == grupoId.getId() && act.getIdInstancia().getEstado().compareTo("abierta")==0) {
                     actividades.add(act);
                 }
                 j++;
@@ -138,13 +144,11 @@ public class actividadesUsuarioController {
             j = 0;
             while (envoltorioPendientes.getActividads().size() > j) {
                 act = envoltorioPendientes.getActividads().get(j);
-                if (act.getIdInstancia().getIdPeriodoGrupoProceso().getIdGrupo().getId() == grupoId.getId()) {
+                if (act.getIdInstancia().getIdPeriodoGrupoProceso().getIdGrupo().getId() == grupoId.getId() && act.getIdInstancia().getEstado().compareTo("abierta")==0) {
                     actividades.add(act);
                 }
                 j++;
             }
-//            SesionAbierta.removeAttribute("IdUsuario");
-//            SesionAbierta.removeAttribute("IdGrupo");
         }
 
     }
@@ -170,7 +174,7 @@ public class actividadesUsuarioController {
             }
             while (envoltorioAbiertas.getActividads().size() > j) {
                 act = envoltorioAbiertas.getActividads().get(j);
-                if (act.getIdInstancia().getIdPeriodoGrupoProceso().getIdGrupo().getId() == grupoId.getId()) {
+                if (act.getIdInstancia().getIdPeriodoGrupoProceso().getIdGrupo().getId() == grupoId.getId() && act.getIdInstancia().getEstado().compareTo("abierta")==0) {
                     actividades.add(act);
                 }
                 j++;
@@ -178,13 +182,16 @@ public class actividadesUsuarioController {
             j = 0;
             while (envoltorioPendientes.getActividads().size() > j) {
                 act = envoltorioPendientes.getActividads().get(j);
-                if (act.getIdInstancia().getIdPeriodoGrupoProceso().getIdGrupo().getId() == grupoId.getId()) {
+                if (act.getIdInstancia().getIdPeriodoGrupoProceso().getIdGrupo().getId() == grupoId.getId() && act.getIdInstancia().getEstado().compareTo("abierta")==0) {
                     actividades.add(act);
                 }
                 j++;
             }
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Actividad Liberada", "Se ha liberado la actividad satisfactoriamente"));
+        }else {
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo ejecutar la acción"));
         }
     }
 
@@ -206,7 +213,7 @@ public class actividadesUsuarioController {
             }
             while (envoltorioAbiertas.getActividads().size() > j) {
                 act = envoltorioAbiertas.getActividads().get(j);
-                if (act.getIdInstancia().getIdPeriodoGrupoProceso().getIdGrupo().getId() == grupoId.getId()) {
+                if (act.getIdInstancia().getIdPeriodoGrupoProceso().getIdGrupo().getId() == grupoId.getId()&& act.getIdInstancia().getEstado().compareTo("abierta")==0) {
                     actividades.add(act);
                 }
                 j++;
@@ -214,13 +221,16 @@ public class actividadesUsuarioController {
             j = 0;
             while (envoltorioPendientes.getActividads().size() > j) {
                 act = envoltorioPendientes.getActividads().get(j);
-                if (act.getIdInstancia().getIdPeriodoGrupoProceso().getIdGrupo().getId() == grupoId.getId()) {
+                if (act.getIdInstancia().getIdPeriodoGrupoProceso().getIdGrupo().getId() == grupoId.getId()&& act.getIdInstancia().getEstado().compareTo("abierta")==0) {
                     actividades.add(act);
                 }
                 j++;
             }
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Actividades Liberadas", "Se han liberado todas las actividades satisfactoriamente"));
+        } else {
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo ejecutar la acción"));
         }
     }
 
@@ -321,7 +331,7 @@ public class actividadesUsuarioController {
         }
         while (envoltorioAbiertas.getActividads().size() > j) {
             act = envoltorioAbiertas.getActividads().get(j);
-            if (act.getIdInstancia().getIdPeriodoGrupoProceso().getIdGrupo().getId() == grupoId.getId()) {
+            if (act.getIdInstancia().getIdPeriodoGrupoProceso().getIdGrupo().getId() == grupoId.getId()&& act.getIdInstancia().getEstado().compareTo("abierta")==0) {
                 actividades.add(act);
             }
             j++;
@@ -329,7 +339,7 @@ public class actividadesUsuarioController {
         j = 0;
         while (envoltorioPendientes.getActividads().size() > j) {
             act = envoltorioPendientes.getActividads().get(j);
-            if (act.getIdInstancia().getIdPeriodoGrupoProceso().getIdGrupo().getId() == grupoId.getId()) {
+            if (act.getIdInstancia().getIdPeriodoGrupoProceso().getIdGrupo().getId() == grupoId.getId()&& act.getIdInstancia().getEstado().compareTo("abierta")==0) {
                 actividades.add(act);
             }
             j++;

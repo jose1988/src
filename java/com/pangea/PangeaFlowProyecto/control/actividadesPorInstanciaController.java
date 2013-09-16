@@ -253,7 +253,7 @@ public class actividadesPorInstanciaController {
      * Método encargado de mostrar la fecha en el formato dd/mm/yyyy
      *
      * @param fecha
-     * @return
+     * @return fecha en el formato dd/mm/yyyy
      */
     public String formatoFecha(XMLGregorianCalendar fecha) {
         if (fecha != null) {
@@ -270,7 +270,7 @@ public class actividadesPorInstanciaController {
      * Método encargado de sombrear las actividades en caso de que halla cerrado
      * la actividad luego de que caducara el periodo de tiempo asignado
      *
-     * @param actividadx
+     * @param actividadx objeto de la actividad a la cual se evaluara el periodo para sombrearse de un color determinado
      * @return el color del sombreado de la actividad
      * @throws DatatypeConfigurationException
      */
