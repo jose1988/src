@@ -419,17 +419,17 @@ public class instanciaUsuarioController {
         if (instancia.getInstancias().isEmpty()) {
             instancias = null;
         }
-        /*else{
+        else{
             instancias=instancia.getInstancias();
-        }*/
+        }
         
-        while (instancia.getInstancias().size()>j){
+       /* while (instancia.getInstancias().size()>j){
             inst= instancia.getInstancias().get(j);
             Long IdInstancia=inst.getId();
             Date fecha=inst.getIdPeriodoGrupoProceso().getIdPeriodo().getFechaHasta().toGregorianCalendar().getTime();
             instancias.add(inst);
             j++;
-        } 
+        } */
         
     }
 
@@ -449,22 +449,23 @@ public class instanciaUsuarioController {
         if (instancia.getInstancias().isEmpty()) {
             instancias = null;
         }
-       /*else{
+       else{
             instancias=instancia.getInstancias();
-        }*/
+        }
         
-        while (instancia.getInstancias().size()>j){
+        /*while (instancia.getInstancias().size()>j){
             inst= instancia.getInstancias().get(j);
             Long IdInstancia=inst.getId();
             Date fecha=inst.getIdPeriodoGrupoProceso().getIdPeriodo().getFechaHasta().toGregorianCalendar().getTime();
             instancias.add(inst);
             j++;
-        }
+        }*/
         
         for(int k=0; k<instancias.size(); k++){
             insta=instancias.get(k);
             System.out.println("Periodooooooooo Fechaaaaaa: "+insta.getIdPeriodoGrupoProceso().getIdPeriodo().getFechaHasta());
         }
+        
     }
     
     /**
