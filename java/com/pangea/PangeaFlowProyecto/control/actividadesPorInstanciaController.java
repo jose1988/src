@@ -199,18 +199,44 @@ public class actividadesPorInstanciaController {
     }
 
     /**
-     * Mensaje a mostrar si el usuario deja la cuenta sin usar luego de 3 min
+     * Método para listar las actividades cuando ya no entra al constructor
+     */
+    public void listarActividades() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        ExternalContext externalContext = context.getExternalContext();
+        Object session = externalContext.getSession(true);
+        HttpSession SesionAbierta = (HttpSession) session;
+        Instancia = (Instancia) (SesionAbierta.getAttribute("IdInstancia"));
+        int j = 0;
+        WrActividad Envoltorio, datosActividad;
+        Envoltorio = consultarActividadesPorInstancia(Instancia);
+        actividades = new ArrayList<Actividad>();
+        if (Envoltorio.getActividads().isEmpty()) {
+            actividades = null;
+        }
+        while (Envoltorio.getActividads().size() > j) {
+            datosActividad = consultarActividad(Envoltorio.getActividads().get(j));
+            if (datosActividad.getEstatus().compareTo("OK") == 0) {
+                act = datosActividad.getActividads().get(0);
+                actividades.add(act);
+            }
+            j++;
+        }
+    }
+
+    /**
+     * Mensaje a mostrar si el usuario deja la cuenta sin usar luego de 4 min
      */
     public void Desactivado() {
 
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
-                "Su sesión se cerrara", "Ud ha estado inactivo más de 3 minutos"));
+                "Su sesión se cerrara", "Ud ha estado inactivo más de 4 minutos"));
     }
 
     /**
      * Método encargado de cerrar la sesión del usuario en la base de datos y a
      * nivel de variables de sesión por tener un tiempo de inactividad de
-     * 3minutos
+     * 4minutos
      */
     public void cerrarPorInactividad() {
         WrResultado result;
