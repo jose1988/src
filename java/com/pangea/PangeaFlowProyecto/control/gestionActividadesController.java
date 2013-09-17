@@ -10,6 +10,7 @@ import com.pangea.capadeservicios.servicios.Bandeja;
 import com.pangea.capadeservicios.servicios.Actividad;
 import com.pangea.capadeservicios.servicios.Condicion;
 import com.pangea.capadeservicios.servicios.GestionDeActividades_Service;
+import com.pangea.capadeservicios.servicios.GestionDeControlDeUsuarios_Service;
 import com.pangea.capadeservicios.servicios.GestionDeGrupo_Service;
 import com.pangea.capadeservicios.servicios.Grupo;
 import com.pangea.capadeservicios.servicios.Mensajeria_Service;
@@ -18,6 +19,7 @@ import com.pangea.capadeservicios.servicios.WrActividad;
 import com.pangea.capadeservicios.servicios.WrBandeja;
 import com.pangea.capadeservicios.servicios.WrPost;
 import com.pangea.capadeservicios.servicios.WrResultado;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -46,6 +48,8 @@ import org.primefaces.model.TreeNode;
 @ManagedBean(name = "gestionActividades")
 @SessionScoped
 public class gestionActividadesController {
+    @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_15362/CapaDeServicios/GestionDeControlDeUsuarios.wsdl")
+    private GestionDeControlDeUsuarios_Service service_3;
 
     @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_15362/CapaDeServicios/GestionDeGrupo.wsdl")
     private GestionDeGrupo_Service service_2;
@@ -79,6 +83,8 @@ public class gestionActividadesController {
     WrActividad ActividadesCola;
     private Sesion sesion_actual;
     private boolean boton=false;
+    private Usuario usuarioLogueo;
+    private Sesion sesionLogueo;
 
     /**
      * enlista los estados, muestra por defecto las actividades el primer estado 
@@ -86,6 +92,11 @@ public class gestionActividadesController {
      */
     @PostConstruct
     public void init() {
+        
+        
+         if (verificarLogueo()) {
+            Redireccionar();
+        } else {
         estact = new DefaultTreeNode("root", null);
         idusu = new Usuario();
         FacesContext fc = FacesContext.getCurrentInstance();
@@ -135,7 +146,7 @@ public class gestionActividadesController {
             j++;
         }
 
-
+        }
     }
 
     /**
@@ -405,6 +416,73 @@ public class gestionActividadesController {
 
     }
 
+     /**
+     * Método para verificar si el usuario esta logueado
+     *
+     * @return un booleano si es true es por que si estaba logueado
+     */
+    public boolean verificarLogueo() {
+        boolean bandera = false, sesionBd = false;
+        try {
+            //codigo para guardar sesion y usuario logueado, sino existe redireccionamos a index.xhtml
+            FacesContext context = FacesContext.getCurrentInstance();
+            ExternalContext externalContext = context.getExternalContext();
+            Object session = externalContext.getSession(true);
+            HttpSession SesionAbierta = (HttpSession) session;
+            usuarioLogueo = (Usuario) (SesionAbierta.getAttribute("Usuario"));
+            sesionLogueo = (Sesion) (SesionAbierta.getAttribute("Sesion"));
+            sesionBd = logSesion(sesionLogueo);
+            if (usuarioLogueo == null || sesionLogueo == null || !sesionBd) {
+                bandera = true;
+            }
+        } catch (Exception e) {
+            bandera = true;
+        }
+        return bandera;
+    }
+     /**
+     * Método encargado de cerrar la sesión del usuario en la base de datos y a
+     * nivel de variables de sesión por tener un tiempo de inactividad de
+     * 4minutos
+     */
+    public void cerrarPorInactividad() {
+        WrResultado result;
+        result = logOut(sesionLogueo);
+        FacesContext context = FacesContext.getCurrentInstance();
+        ExternalContext externalContext = context.getExternalContext();
+        Object session = externalContext.getSession(true);
+        HttpSession SesionAbierta = (HttpSession) session;
+        SesionAbierta.invalidate();
+        Redireccionar();
+    }
+
+ /**
+     * Método para redireccionar a index.xhtml si el usuario no esta logueado
+     */
+    public void Redireccionar() {
+        try {
+            FacesContext contex = FacesContext.getCurrentInstance();
+            contex.getExternalContext().redirect("/PangeaFlowProyecto/faces/index.xhtml");
+        } catch (Exception error) {
+            System.out.println("----------------------------Error---------------------------------" + error);
+        }
+    }
+    /**
+     * Método encargado de mostrar la fecha en el formato dd/mm/yyyy
+     *
+     * @param fecha
+     * @return
+     */
+    public String formatoFecha(XMLGregorianCalendar fecha) {
+        if (fecha != null) {
+            Date fechaDate = fecha.toGregorianCalendar().getTime();
+            SimpleDateFormat formateador = new SimpleDateFormat("dd/MM/yyyy");
+            String fechaCadena = formateador.format(fechaDate);
+            return fechaCadena;
+        }
+        return "";
+    }
+    
     /**
      *
      * @return
@@ -703,4 +781,16 @@ public class gestionActividadesController {
         com.pangea.capadeservicios.servicios.GestionDeActividades port = service_1.getGestionDeActividadesPort();
         return port.consumirCola(actividadActual, usuarioActual);
     }
+
+    private boolean logSesion(com.pangea.capadeservicios.servicios.Sesion sesionActual) {
+        com.pangea.capadeservicios.servicios.GestionDeControlDeUsuarios port = service_3.getGestionDeControlDeUsuariosPort();
+        return port.logSesion(sesionActual);
+    }
+
+    private WrResultado logOut(com.pangea.capadeservicios.servicios.Sesion sesionActual) {
+        com.pangea.capadeservicios.servicios.GestionDeControlDeUsuarios port = service_3.getGestionDeControlDeUsuariosPort();
+        return port.logOut(sesionActual);
+    }
+    
+    
 }
