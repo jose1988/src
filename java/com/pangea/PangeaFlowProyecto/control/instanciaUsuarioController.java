@@ -423,20 +423,13 @@ public class instanciaUsuarioController {
             instancias=instancia.getInstancias();
         }
         
-       /* while (instancia.getInstancias().size()>j){
-            inst= instancia.getInstancias().get(j);
-            Long IdInstancia=inst.getId();
-            Date fecha=inst.getIdPeriodoGrupoProceso().getIdPeriodo().getFechaHasta().toGregorianCalendar().getTime();
-            instancias.add(inst);
-            j++;
-        } */
-        
     }
 
     /**
      * Método que recarga la información del arbol dependiendo del 
      * estado que se seleccione
-     * @param event
+     * @param event un onNodeSelect que indica si se ha seleccionado
+     * la opción abierta o cerrada
      */
     public void onNodeSelect(NodeSelectEvent event) {
         
@@ -451,19 +444,6 @@ public class instanciaUsuarioController {
         }
        else{
             instancias=instancia.getInstancias();
-        }
-        
-        /*while (instancia.getInstancias().size()>j){
-            inst= instancia.getInstancias().get(j);
-            Long IdInstancia=inst.getId();
-            Date fecha=inst.getIdPeriodoGrupoProceso().getIdPeriodo().getFechaHasta().toGregorianCalendar().getTime();
-            instancias.add(inst);
-            j++;
-        }*/
-        
-        for(int k=0; k<instancias.size(); k++){
-            insta=instancias.get(k);
-            System.out.println("Periodooooooooo Fechaaaaaa: "+insta.getIdPeriodoGrupoProceso().getIdPeriodo().getFechaHasta());
         }
         
     }
@@ -531,7 +511,8 @@ public class instanciaUsuarioController {
      * @param instanciaPintar parametro que indica la condición para determinar 
      * si se pinta la fila en rosa o blanco si se ha pasado la fecha de cerrar 
      * o no en las instancias que aun estan abiertas
-     * @return
+     * @return el color del sombreado de la instancia abierta
+     * @throws DatatypeConfigurationException
      */
     public String estiloAbierta(Instancia instanciaPintar) throws DatatypeConfigurationException {
         
@@ -555,9 +536,10 @@ public class instanciaUsuarioController {
      * Metodo que permite colocar el estilo de una fila mediante un color
      *
      * @param instanciaPintar parametro que indica la condición para determinar 
-     * si se pinta la fila en rosa o blanco si se ha pasado la fecha de periodo 
-     * o no en las instancias que aun estan cerradas
-     * @return
+     * si se pinta la fila en rosa o blanco si se paso la fecha de periodo 
+     * o no en las instancias que estan cerradas
+     * @return el color del sombreado de la instancia cerrada
+     * @throws DatatypeConfigurationException
      */
     public String estiloCerrada(Instancia instanciaPintar) throws DatatypeConfigurationException {
         
@@ -583,9 +565,10 @@ public class instanciaUsuarioController {
     }
     
     /**
-     * Método que cambia el formato de la fecha
+     * Método encargado de mostrar la fecha en el formato dd/mm/yyyy
+     *
      * @param fecha
-     * @return
+     * @return fecha en el formato dd/mm/yyyy
      */
     public String formatoFecha(XMLGregorianCalendar fecha) {
         if (fecha != null) {
@@ -649,7 +632,7 @@ public class instanciaUsuarioController {
     /**
      * Método encargado de cerrar la sesión del usuario en la base de datos 
      * y a nivel de variables de sesión por tener un tiempo de inactividad 
-     * de 3minutos
+     * de 4 minutos
      */
     public void cerrarPorInactividad() {
         WrResultado result;

@@ -221,9 +221,10 @@ public class actividadController {
     }
     
     /**
-     * Método que cambia el formato de la fecha
+     * Método encargado de mostrar la fecha en el formato dd/mm/yyyy
+     *
      * @param fecha
-     * @return
+     * @return fecha en el formato dd/mm/yyyy
      */
     public String formatoFecha(XMLGregorianCalendar fecha) {
         if (fecha != null) {
@@ -287,7 +288,7 @@ public class actividadController {
     /**
      * Método encargado de cerrar la sesión del usuario en la base de datos 
      * y a nivel de variables de sesión por tener un tiempo de inactividad 
-     * de 3minutos
+     * de 4 minutos
      */
     public void cerrarPorInactividad() {
         WrResultado result;

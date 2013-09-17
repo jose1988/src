@@ -324,7 +324,8 @@ public class usuarioGrupoController {
     /**
      * Método que es llamado al momento de cambiar de grupo y lista 
      * los usuarios que posee dicho grupo
-     * @param event
+     * @param event un TabChangeEvent que indica si se ha seleccionado
+     * otro grupo de la lista
      */
     public void onTabChange(TabChangeEvent event) {
        
@@ -449,7 +450,7 @@ public class usuarioGrupoController {
     /**
      * Método encargado de cerrar la sesión del usuario en la base de datos 
      * y a nivel de variables de sesión por tener un tiempo de inactividad 
-     * de 3minutos
+     * de 4 minutos
      */
     public void cerrarPorInactividad() {
         WrResultado result;
