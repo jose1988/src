@@ -96,7 +96,7 @@ public class gestionActividadesController {
         
          if (verificarLogueo()) {
             Redireccionar();
-        }  else {
+        } else {
         estact = new DefaultTreeNode("root", null);
         idusu = new Usuario();
         FacesContext fc = FacesContext.getCurrentInstance();
