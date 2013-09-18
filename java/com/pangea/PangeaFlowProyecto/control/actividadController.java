@@ -172,7 +172,7 @@ public class actividadController {
     }
     
     /**
-     * Metodo constructor que se incia al hacer la llamada a la pagina
+     * Metodo constructor que se incia al hacer la llamada a la página
      * instanciaUsuario.xhml
      */
     @PostConstruct
@@ -184,13 +184,14 @@ public class actividadController {
         activi= new Actividad(); 
         actividad=listarActividades("pendiente",false);
         actividades=new ArrayList<Actividad>();
-        if(actividad.isEmpty())
+        if(actividad.isEmpty()){
             actividades=null;
+        }
         while (actividad.size()>j){
             act= actividad.get(j);
             actividades.add(act);
             j++;
-        } 
+        }
     }
     
     /**
@@ -208,6 +209,7 @@ public class actividadController {
         Object session1 = externalContext.getSession(true);
         HttpSession httpSession = (HttpSession) session1;
         httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+        httpSession.removeAttribute("IdActividad");
         httpSession.setAttribute("IdActividad", idSesionActividad);
         
         try {
@@ -300,11 +302,6 @@ public class actividadController {
         SesionAbierta.invalidate();
         Redireccionar();
     }
-    
-    private java.util.List<com.pangea.capadeservicios.servicios.Actividad> listarActividades(java.lang.String estado, boolean borrado) {
-        com.pangea.capadeservicios.servicios.GestionDeActividades port = service_1.getGestionDeActividadesPort();
-        return port.listarActividades(estado, borrado);
-    }
 
     private WrResultado logOut(com.pangea.capadeservicios.servicios.Sesion sesionActual) {
         com.pangea.capadeservicios.servicios.GestionDeControlDeUsuarios port = service.getGestionDeControlDeUsuariosPort();
@@ -315,5 +312,11 @@ public class actividadController {
         com.pangea.capadeservicios.servicios.GestionDeControlDeUsuarios port = service.getGestionDeControlDeUsuariosPort();
         return port.logSesion(sesionActual);
     }
+
+    private java.util.List<com.pangea.capadeservicios.servicios.Actividad> listarActividades(java.lang.String estado, boolean borrado) {
+        com.pangea.capadeservicios.servicios.GestionDeActividades port = service_1.getGestionDeActividadesPort();
+        return port.listarActividades(estado, borrado);
+    }
+    
 
 }

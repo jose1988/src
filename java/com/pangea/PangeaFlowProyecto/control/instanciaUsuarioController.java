@@ -379,7 +379,7 @@ public class instanciaUsuarioController {
     }
     
     /**
-     * Metodo constructor que se incia al hacer la llamada a la pagina
+     * Metodo constructor que se incia al hacer la llamada a la página
      * instanciaUsuario.xhml
      */
     @PostConstruct

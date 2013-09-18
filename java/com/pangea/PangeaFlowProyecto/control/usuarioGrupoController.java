@@ -289,7 +289,7 @@ public class usuarioGrupoController {
     }
 
     /**
-     * Método constructor que se incia al hacer la llamada a la pagina
+     * Método constructor que se incia al hacer la llamada a la página
      * usuarioGrupo.xhml
      */
     @PostConstruct
