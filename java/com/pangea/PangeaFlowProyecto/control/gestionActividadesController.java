@@ -85,6 +85,8 @@ public class gestionActividadesController {
     private boolean boton=false;
     private Usuario usuarioLogueo;
     private Sesion sesionLogueo;
+    private long UT;
+    private String equivalencia;
 
     /**
      * enlista los estados, muestra por defecto las actividades el primer estado 
@@ -341,24 +343,86 @@ public class gestionActividadesController {
      * @return
      * @throws DatatypeConfigurationException
      */
-    public String sombreado(Actividad actividadx) throws DatatypeConfigurationException {
-        if (actividadx != null) {
-            if (actividadx.getFechaCierre() != null) {
+    public String sombreado(Actividad actividadxx) throws DatatypeConfigurationException {
+        if (actividadxx != null) {
+          WrActividad actividadx=consultarActividad(actividadxx);
+            if (actividadx.getActividads().get(0).getFechaApertura() != null) {
                 XMLGregorianCalendar FC1;
                 XMLGregorianCalendar FA1;
-                FC1 = actividadx.getFechaCierre();
-                Date fc = FC1.toGregorianCalendar().getTime();
-                Date fecha = new Date();
-                if (fc.before(fecha)) {
-                    return "background-color:  #FF8888";
-                } else if (actividadx.getFechaAlerta() != null) {
-                    FA1 = actividadx.getFechaAlerta();
-                    Date fa = FA1.toGregorianCalendar().getTime();
-                    if (fa.before(fecha)) {
-                        return "background-color: orange;";
-                    }
-                    return "background-color: white";
+                XMLGregorianCalendar FAA;
+                FC1 = actividadx.getActividads().get(0).getFechaApertura();
+                GregorianCalendar gregorianCalendar = new GregorianCalendar();
+                DatatypeFactory datatypeFactory = DatatypeFactory.newInstance();
+                FA1=datatypeFactory.newXMLGregorianCalendar(gregorianCalendar);
+                long duracion = actividadx.getActividads().get(0).getDuracion().longValue();
+                equivalencia=actividadx.getActividads().get(0).getIdEquivalenciasTiempo().getNombre();
+                UT=actividadx.getActividads().get(0).getIdEquivalenciasTiempo().getMinutos();
+                long f = FC1.toGregorianCalendar().getTimeInMillis();
+                long f2 = FA1.toGregorianCalendar().getTimeInMillis();
+                long resta = f2 - f;
+               
+                if("Minuto".equals(equivalencia)){
+                   long minutos = resta / (60 * 1000);
+                            if (minutos>duracion) {
+                           return "background-color:  #FF8888";
+                       } else if (actividadx.getActividads().get(0).getFechaAlerta() != null) {
+                           FAA = actividadx.getActividads().get(0).getFechaAlerta();
+                           long f3 = FAA.toGregorianCalendar().getTimeInMillis();
+                           long resta2=f2-f3;
+                           if (resta2>resta) {
+                               return "background-color: orange;";
+                           }
+                           return "background-color: white";
+                       }
                 }
+                
+                
+                if("Hora".equals(equivalencia)){
+                    long horas = resta / (60 * 60 * 1000);
+                            if (horas>duracion) {
+                           return "background-color:  #FF8888";
+                       } else if (actividadx.getActividads().get(0).getFechaAlerta() != null) {
+                           FAA = actividadx.getActividads().get(0).getFechaAlerta();
+                           long f3 = FAA.toGregorianCalendar().getTimeInMillis();
+                           long resta2=f2-f3;
+                           if (resta2>resta) {
+                               return "background-color: orange;";
+                           }
+                           return "background-color: white";
+                       }
+                }
+                if("Dia".equals(equivalencia)){
+                  long dias = resta / (24 * 60 * 60 * 1000);
+                    if (dias>duracion) {
+                           return "background-color:  #FF8888";
+                       } else if (actividadx.getActividads().get(0).getFechaAlerta() != null) {
+                           FAA = actividadx.getActividads().get(0).getFechaAlerta();
+                           long f3 = FAA.toGregorianCalendar().getTimeInMillis();
+                           long resta2=f2-f3;
+                           if (resta2>resta) {
+                               return "background-color: orange;";
+                           }
+                           return "background-color: white";
+                       }
+                }
+                if("Semana".equals(equivalencia)){
+                    long semanas = resta / (7 * 24 * 60 * 60 * 1000);
+                    if (semanas>duracion) {
+                           return "background-color:  #FF8888";
+                       } else if (actividadx.getActividads().get(0).getFechaAlerta() != null) {
+                           FAA = actividadx.getActividads().get(0).getFechaAlerta();
+                           long f3 = FAA.toGregorianCalendar().getTimeInMillis();
+                           long resta2=f2-f3;
+                           if (resta2>resta) {
+                               return "background-color: orange;";
+                           }
+                           return "background-color: white";
+                       }
+                }
+                
+                
+                
+               
             }
             return " background-color: white;";
         }
@@ -371,23 +435,48 @@ public class gestionActividadesController {
      * @return
      * @throws DatatypeConfigurationException
      */
-    public String sombreadoc(Actividad actividadx) throws DatatypeConfigurationException {
-        if (actividadx != null) {
-            if (actividadx.getFechaCierre() != null && actividadx.getFechaApertura() != null) {
+    public String sombreadoc(Actividad actividadxx) throws DatatypeConfigurationException {
+        if (actividadxx != null) {
+             WrActividad actividadx=consultarActividad(actividadxx);
+            if (actividadx.getActividads().get(0).getFechaCierre() != null && actividadx.getActividads().get(0).getFechaApertura() != null) {
                 XMLGregorianCalendar FC1;
                 XMLGregorianCalendar FA1;
-                FC1 = actividadx.getFechaCierre();
-                FA1 = actividadx.getFechaApertura();
-                long duracion = actividadx.getDuracion().longValue();
-
+                FC1 = actividadx.getActividads().get(0).getFechaCierre();
+                FA1 = actividadx.getActividads().get(0).getFechaApertura();
+                long duracion = actividadx.getActividads().get(0).getDuracion().longValue();
+                equivalencia=actividadx.getActividads().get(0).getIdEquivalenciasTiempo().getNombre();
+                UT=actividadx.getActividads().get(0).getIdEquivalenciasTiempo().getMinutos();
                 long f = FC1.toGregorianCalendar().getTimeInMillis();
                 long f2 = FA1.toGregorianCalendar().getTimeInMillis();
                 long resta = f - f2;
-                long dias = resta / (24 * 60 * 60 * 1000);
-
-                if (dias > duracion) {
+                
+                
+                if("Minuto".equals(equivalencia)){
+                   long minutos = resta / (60 * 1000);
+                     if (minutos > duracion) {
                     return "background-color:  #FF8888;";
+                   } 
                 }
+                if("Hora".equals(equivalencia)){
+                    long horas = resta / (60 * 60 * 1000);
+                     if (horas > duracion) {
+                    return "background-color:  #FF8888;";
+                   }
+                }
+                if("Dia".equals(equivalencia)){
+                  long dias = resta / (24 * 60 * 60 * 1000);
+                     if (dias > duracion) {
+                    return "background-color:  #FF8888;";
+                   }
+                }
+                if("Semana".equals(equivalencia)){
+                    long semanas = resta / (7 * 24 * 60 * 60 * 1000);
+                     if (semanas > duracion) {
+                    return "background-color:  #FF8888;";
+                   }
+                }
+
+               
             }
             return " background-color: white";
         }
@@ -790,6 +879,11 @@ public class gestionActividadesController {
     private WrResultado logOut(com.pangea.capadeservicios.servicios.Sesion sesionActual) {
         com.pangea.capadeservicios.servicios.GestionDeControlDeUsuarios port = service_3.getGestionDeControlDeUsuariosPort();
         return port.logOut(sesionActual);
+    }
+
+    private WrActividad consultarActividad(com.pangea.capadeservicios.servicios.Actividad actividadActual) {
+        com.pangea.capadeservicios.servicios.GestionDeActividades port = service_1.getGestionDeActividadesPort();
+        return port.consultarActividad(actividadActual);
     }
     
     
