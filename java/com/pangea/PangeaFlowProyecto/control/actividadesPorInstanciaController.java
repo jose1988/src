@@ -59,38 +59,6 @@ public class actividadesPorInstanciaController {
     Instancia Instancia;
 
     /**
-     *
-     * @return
-     */
-    public Actividad getAct() {
-        return act;
-    }
-
-    /**
-     *
-     * @param act
-     */
-    public void setAct(Actividad act) {
-        this.act = act;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public List<Actividad> getActividades() {
-        return actividades;
-    }
-
-    /**
-     *
-     * @param Actividades
-     */
-    public void setActividades(List<Actividad> Actividades) {
-        this.actividades = Actividades;
-    }
-
-    /**
      * Método constructor que se incia al hacer la llamada a la pagina
      * actividadesPorInstancia.xhml donde se muestra las actividades de una
      * determinada instancia
@@ -125,6 +93,38 @@ public class actividadesPorInstanciaController {
             }
         }
         // SesionAbierta.removeAttribute("IdInstancia");
+    }
+
+    /**
+     *
+     * @return
+     */
+    public Actividad getAct() {
+        return act;
+    }
+
+    /**
+     *
+     * @param act
+     */
+    public void setAct(Actividad act) {
+        this.act = act;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public List<Actividad> getActividades() {
+        return actividades;
+    }
+
+    /**
+     *
+     * @param Actividades
+     */
+    public void setActividades(List<Actividad> Actividades) {
+        this.actividades = Actividades;
     }
 
     /**
@@ -270,7 +270,8 @@ public class actividadesPorInstanciaController {
      * Método encargado de sombrear las actividades en caso de que halla cerrado
      * la actividad luego de que caducara el periodo de tiempo asignado
      *
-     * @param actividadx objeto de la actividad a la cual se evaluara el periodo para sombrearse de un color determinado
+     * @param actividadx objeto de la actividad a la cual se evaluara el periodo
+     * para sombrearse de un color determinado
      * @return el color del sombreado de la actividad
      * @throws DatatypeConfigurationException
      */

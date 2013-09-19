@@ -1,5 +1,4 @@
 package com.pangea.PangeaFlowProyecto.control;
-
 import com.pangea.capadeservicios.servicios.Actividad;
 import com.pangea.capadeservicios.servicios.GestionDeActividades_Service;
 import com.pangea.capadeservicios.servicios.GestionDeControlDeUsuarios_Service;
@@ -74,6 +73,54 @@ public class actividadesUsuarioController {
     private WrActividad envoltorioPendientes;
 
     /**
+     * Método constructor que se inicia al hacer la llamada a la pagina
+     * actividadesPorUsuario.xhml donde se muestra las actividades de acuerdo a
+     * un usuario y al grupo al que pertenecen
+     */
+    @PostConstruct
+    public void init() {
+        if (verificarLogueo()) {
+            Redireccionar();
+        } else if (verificarUsuarioId()) {
+            redireccionarUsuarioGrupo();
+        } else {
+            //codigo para guardar la lista de actividades por Instancia
+            int j = 0;
+            Actividad estadoActividad = new Actividad();
+            estadoActividad.setEstado("abierta");
+            FacesContext context = FacesContext.getCurrentInstance();
+            ExternalContext externalContext = context.getExternalContext();
+            Object session = externalContext.getSession(true);
+            HttpSession SesionAbierta = (HttpSession) session;
+            usuarioId = (Usuario) (SesionAbierta.getAttribute("IdUsuario"));
+            grupoId = (Grupo) (SesionAbierta.getAttribute("IdGrupo"));
+            envoltorioAbiertas = consultarActividades(usuarioId, estadoActividad);
+            estadoActividad.setEstado("pendiente");
+            envoltorioPendientes = consultarActividades(usuarioId, estadoActividad);
+            actividades = new ArrayList<Actividad>();
+            if ((envoltorioAbiertas.getActividads().isEmpty() || envoltorioAbiertas.getActividads() == null) && (envoltorioPendientes.getActividads().isEmpty() || envoltorioPendientes.getActividads() == null)) {
+                actividades = null;
+            }
+            while (envoltorioAbiertas.getActividads().size() > j) {
+                act = envoltorioAbiertas.getActividads().get(j);
+                if (act.getIdInstancia().getIdPeriodoGrupoProceso().getIdGrupo().getId() == grupoId.getId() && act.getIdInstancia().getEstado().compareTo("abierta") == 0) {
+                    actividades.add(act);
+                }
+                j++;
+            }
+            j = 0;
+            while (envoltorioPendientes.getActividads().size() > j) {
+                act = envoltorioPendientes.getActividads().get(j);
+                if (act.getIdInstancia().getIdPeriodoGrupoProceso().getIdGrupo().getId() == grupoId.getId() && act.getIdInstancia().getEstado().compareTo("abierta") == 0) {
+                    actividades.add(act);
+                }
+                j++;
+            }
+        }
+
+    }
+
+    /**
      *
      * @return
      */
@@ -106,54 +153,6 @@ public class actividadesUsuarioController {
     }
 
     /**
-     * Método constructor que se inicia al hacer la llamada a la pagina
-     * actividadesPorUsuario.xhml donde se muestra las actividades de acuerdo a
-     * un usuario y al grupo al que pertenecen
-     */
-    @PostConstruct
-    public void init() {
-        if (verificarLogueo()) {
-            Redireccionar();
-        } else if (verificarUsuarioId()) {
-            redireccionarUsuarioGrupo();
-        } else {
-            //codigo para guardar la lista de actividades por Instancia
-            int j = 0;
-            Actividad estadoActividad = new Actividad();
-            estadoActividad.setEstado("abierta");
-            FacesContext context = FacesContext.getCurrentInstance();
-            ExternalContext externalContext = context.getExternalContext();
-            Object session = externalContext.getSession(true);
-            HttpSession SesionAbierta = (HttpSession) session;
-            usuarioId = (Usuario) (SesionAbierta.getAttribute("IdUsuario"));
-            grupoId = (Grupo) (SesionAbierta.getAttribute("IdGrupo"));
-            envoltorioAbiertas = consultarActividades(usuarioId, estadoActividad);
-            estadoActividad.setEstado("pendiente");
-            envoltorioPendientes = consultarActividades(usuarioId, estadoActividad);
-            actividades = new ArrayList<Actividad>();
-            if ((envoltorioAbiertas.getActividads().isEmpty() || envoltorioAbiertas.getActividads() == null) && (envoltorioPendientes.getActividads().isEmpty() || envoltorioPendientes.getActividads() == null)) {
-                actividades = null;
-            }
-            while (envoltorioAbiertas.getActividads().size() > j) {
-                act = envoltorioAbiertas.getActividads().get(j);
-                if (act.getIdInstancia().getIdPeriodoGrupoProceso().getIdGrupo().getId() == grupoId.getId() && act.getIdInstancia().getEstado().compareTo("abierta")==0) {
-                    actividades.add(act);
-                }
-                j++;
-            }
-            j = 0;
-            while (envoltorioPendientes.getActividads().size() > j) {
-                act = envoltorioPendientes.getActividads().get(j);
-                if (act.getIdInstancia().getIdPeriodoGrupoProceso().getIdGrupo().getId() == grupoId.getId() && act.getIdInstancia().getEstado().compareTo("abierta")==0) {
-                    actividades.add(act);
-                }
-                j++;
-            }
-        }
-
-    }
-
-    /**
      * Método en el cual se libera una actividad especifica y se agrega a la
      * cola
      */
@@ -174,7 +173,7 @@ public class actividadesUsuarioController {
             }
             while (envoltorioAbiertas.getActividads().size() > j) {
                 act = envoltorioAbiertas.getActividads().get(j);
-                if (act.getIdInstancia().getIdPeriodoGrupoProceso().getIdGrupo().getId() == grupoId.getId() && act.getIdInstancia().getEstado().compareTo("abierta")==0) {
+                if (act.getIdInstancia().getIdPeriodoGrupoProceso().getIdGrupo().getId() == grupoId.getId() && act.getIdInstancia().getEstado().compareTo("abierta") == 0) {
                     actividades.add(act);
                 }
                 j++;
@@ -182,14 +181,14 @@ public class actividadesUsuarioController {
             j = 0;
             while (envoltorioPendientes.getActividads().size() > j) {
                 act = envoltorioPendientes.getActividads().get(j);
-                if (act.getIdInstancia().getIdPeriodoGrupoProceso().getIdGrupo().getId() == grupoId.getId() && act.getIdInstancia().getEstado().compareTo("abierta")==0) {
+                if (act.getIdInstancia().getIdPeriodoGrupoProceso().getIdGrupo().getId() == grupoId.getId() && act.getIdInstancia().getEstado().compareTo("abierta") == 0) {
                     actividades.add(act);
                 }
                 j++;
             }
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Actividad Liberada", "Se ha liberado la actividad satisfactoriamente"));
-        }else {
+        } else {
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "No se pudo ejecutar la acción"));
         }
@@ -213,7 +212,7 @@ public class actividadesUsuarioController {
             }
             while (envoltorioAbiertas.getActividads().size() > j) {
                 act = envoltorioAbiertas.getActividads().get(j);
-                if (act.getIdInstancia().getIdPeriodoGrupoProceso().getIdGrupo().getId() == grupoId.getId()&& act.getIdInstancia().getEstado().compareTo("abierta")==0) {
+                if (act.getIdInstancia().getIdPeriodoGrupoProceso().getIdGrupo().getId() == grupoId.getId() && act.getIdInstancia().getEstado().compareTo("abierta") == 0) {
                     actividades.add(act);
                 }
                 j++;
@@ -221,7 +220,7 @@ public class actividadesUsuarioController {
             j = 0;
             while (envoltorioPendientes.getActividads().size() > j) {
                 act = envoltorioPendientes.getActividads().get(j);
-                if (act.getIdInstancia().getIdPeriodoGrupoProceso().getIdGrupo().getId() == grupoId.getId()&& act.getIdInstancia().getEstado().compareTo("abierta")==0) {
+                if (act.getIdInstancia().getIdPeriodoGrupoProceso().getIdGrupo().getId() == grupoId.getId() && act.getIdInstancia().getEstado().compareTo("abierta") == 0) {
                     actividades.add(act);
                 }
                 j++;
@@ -331,7 +330,7 @@ public class actividadesUsuarioController {
         }
         while (envoltorioAbiertas.getActividads().size() > j) {
             act = envoltorioAbiertas.getActividads().get(j);
-            if (act.getIdInstancia().getIdPeriodoGrupoProceso().getIdGrupo().getId() == grupoId.getId()&& act.getIdInstancia().getEstado().compareTo("abierta")==0) {
+            if (act.getIdInstancia().getIdPeriodoGrupoProceso().getIdGrupo().getId() == grupoId.getId() && act.getIdInstancia().getEstado().compareTo("abierta") == 0) {
                 actividades.add(act);
             }
             j++;
@@ -339,7 +338,7 @@ public class actividadesUsuarioController {
         j = 0;
         while (envoltorioPendientes.getActividads().size() > j) {
             act = envoltorioPendientes.getActividads().get(j);
-            if (act.getIdInstancia().getIdPeriodoGrupoProceso().getIdGrupo().getId() == grupoId.getId()&& act.getIdInstancia().getEstado().compareTo("abierta")==0) {
+            if (act.getIdInstancia().getIdPeriodoGrupoProceso().getIdGrupo().getId() == grupoId.getId() && act.getIdInstancia().getEstado().compareTo("abierta") == 0) {
                 actividades.add(act);
             }
             j++;

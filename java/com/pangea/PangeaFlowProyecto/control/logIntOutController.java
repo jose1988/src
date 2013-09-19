@@ -1,7 +1,4 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.pangea.PangeaFlowProyecto.control;
 
 import com.pangea.capadeservicios.servicios.GestionDeControlDeUsuarios_Service;
@@ -10,19 +7,15 @@ import com.pangea.capadeservicios.servicios.Sesion;
 import com.pangea.capadeservicios.servicios.Usuario;
 import com.pangea.capadeservicios.servicios.WrResultado;
 import com.pangea.capadeservicios.servicios.WrSesion;
-import com.sun.org.apache.xerces.internal.jaxp.datatype.XMLGregorianCalendarImpl;
-import java.io.IOException;
 import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
-import java.util.Date;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
-import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.ws.WebServiceRef;
 
 /**
@@ -60,38 +53,6 @@ public class logIntOutController implements Serializable {
      * servicio
      */
     private Sesion sesionUsuario;
-
-    /**
-     *
-     * @return
-     */
-    public String getUser() {
-        return User;
-    }
-
-    /**
-     *
-     * @param User
-     */
-    public void setUser(String User) {
-        this.User = User;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public String getContrasena() {
-        return Contrasena;
-    }
-
-    /**
-     *
-     * @param Contrasena
-     */
-    public void setContrasena(String Contrasena) {
-        this.Contrasena = Contrasena;
-    }
 
     /**
      * Método para hacer el Inicio de Sesión Nota: De acuerdo a la dirección MAC
@@ -156,6 +117,38 @@ public class logIntOutController implements Serializable {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia", mensajeError));
 
         }
+    }
+
+    /**
+     *
+     * @return
+     */
+    public String getUser() {
+        return User;
+    }
+
+    /**
+     *
+     * @param User
+     */
+    public void setUser(String User) {
+        this.User = User;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public String getContrasena() {
+        return Contrasena;
+    }
+
+    /**
+     *
+     * @param Contrasena
+     */
+    public void setContrasena(String Contrasena) {
+        this.Contrasena = Contrasena;
     }
 
     /**
