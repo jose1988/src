@@ -1,4 +1,3 @@
-
 package com.pangea.PangeaFlowProyecto.control;
 
 import com.pangea.capadeservicios.servicios.GestionDeControlDeUsuarios_Service;
@@ -10,6 +9,7 @@ import com.pangea.capadeservicios.servicios.WrSesion;
 import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -53,6 +53,17 @@ public class logIntOutController implements Serializable {
      * servicio
      */
     private Sesion sesionUsuario;
+
+    /**
+     * Método constructor que se incia al hacer la llamada a la pagina
+     * index.xhtml donde se verifica si el usuario esta logueado
+     */
+    @PostConstruct
+    public void init() {
+        if (verificarLogueo()) {
+            Redireccionar();
+        }
+    }
 
     /**
      * Método para hacer el Inicio de Sesión Nota: De acuerdo a la dirección MAC
@@ -117,6 +128,47 @@ public class logIntOutController implements Serializable {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia", mensajeError));
 
         }
+
+
+    }
+
+    /**
+     * Método para verificar si el usuario esta logueado
+     *
+     * @return un booleano si es true es por que si estaba logueado
+     */
+    public boolean verificarLogueo() {
+        boolean bandera = true, sesionBd = false;
+        try {
+            //Codigo para guardar sesion y usuario logueado, sino existe redireccionamos a index.xhtml
+            FacesContext context = FacesContext.getCurrentInstance();
+            ExternalContext externalContext = context.getExternalContext();
+            Object session = externalContext.getSession(true);
+            HttpSession SesionAbierta = (HttpSession) session;
+            Usuario usuarioLogueo = (Usuario) (SesionAbierta.getAttribute("Usuario"));
+            Sesion sesionLogueo = (Sesion) (SesionAbierta.getAttribute("Sesion"));
+            sesionBd = logSesion(sesionLogueo);
+            if (usuarioLogueo == null || sesionLogueo == null || !sesionBd) {
+                bandera = false;
+            }
+        } catch (Exception e) {
+            bandera = false;
+        }
+
+        return bandera;
+    }
+
+    /**
+     * Método para redireccionar a actividadgrupousuario.xhtml si el usuario
+     * esta logueado
+     */
+    public void Redireccionar() {
+        try {
+            FacesContext contex = FacesContext.getCurrentInstance();
+            contex.getExternalContext().redirect("/PangeaFlowProyecto/faces/actividadgrupousuario.xhtml");
+        } catch (Exception error) {
+            System.out.println("----------------------------Error---------------------------------" + error);
+        }
     }
 
     /**
@@ -164,8 +216,8 @@ public class logIntOutController implements Serializable {
         return port.buscarUsuario(usuarioActual);
     }
 
-    private WrResultado logOut(com.pangea.capadeservicios.servicios.Sesion sesionActual) {
+    private boolean logSesion(com.pangea.capadeservicios.servicios.Sesion sesionActual) {
         com.pangea.capadeservicios.servicios.GestionDeControlDeUsuarios port = service.getGestionDeControlDeUsuariosPort();
-        return port.logOut(sesionActual);
+        return port.logSesion(sesionActual);
     }
 }

@@ -60,7 +60,7 @@ public class actividadesPorInstanciaController {
 
     /**
      * Método constructor que se incia al hacer la llamada a la pagina
-     * actividadesPorInstancia.xhml donde se muestra las actividades de una
+     * actividadesPorInstancia.xhtml donde se muestra las actividades de una
      * determinada instancia
      */
     @PostConstruct

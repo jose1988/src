@@ -74,7 +74,7 @@ public class actividadesUsuarioController {
 
     /**
      * Método constructor que se inicia al hacer la llamada a la pagina
-     * actividadesPorUsuario.xhml donde se muestra las actividades de acuerdo a
+     * actividadesPorUsuario.xhtml donde se muestra las actividades de acuerdo a
      * un usuario y al grupo al que pertenecen
      */
     @PostConstruct
@@ -236,7 +236,7 @@ public class actividadesUsuarioController {
     /**
      * Método para verificar si el usuario esta logueado
      *
-     * @return un booleano si es true es por que si estaba logueado
+     * @return un booleano si es true es por que no estaba logueado
      */
     public boolean verificarLogueo() {
         boolean bandera = false, sesionBd = false;
