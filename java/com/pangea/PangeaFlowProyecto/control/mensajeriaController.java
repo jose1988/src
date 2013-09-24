@@ -95,13 +95,14 @@ public class mensajeriaController {
         }
         int j=0;  
         idban=new Bandeja();
+        mails = new ArrayList<Post>();
         estadoSeleccionado = mailboxes.getChildren().get(0);
         mailboxes.getChildren().get(0).setSelected(true);
         idban =new Bandeja();
         idban.setId(bande.getBandejas().get(0).getId());
         bandej=consultarMensajes(idusu, idban);
          while (bandej.getPosts().size()>j){
-         mails = new ArrayList<Post>();
+         
          mail=bandej.getPosts().get(j);
          mails.add(mail);
          j++;
@@ -116,7 +117,13 @@ public class mensajeriaController {
 
         } else {
             idban =new Bandeja();
-            idban.setNombre(event.getTreeNode().toString());
+            int y=0;
+            while(bande.getBandejas().get(y)!=null){
+                if(bande.getBandejas().get(y).getNombre().equals(event.getTreeNode().toString())){
+                    idban.setId(bande.getBandejas().get(y).getId());
+                }
+                y++;
+            }
             bandejas=consultarMensajes(idusu, idban);
              if (bandejas.getPosts().isEmpty()) {
                 mails = null;
