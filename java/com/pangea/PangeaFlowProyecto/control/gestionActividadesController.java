@@ -128,8 +128,7 @@ public class gestionActividadesController {
         grupos = this.gruposUsuario(idusu);
         estadoSeleccionado = estact.getChildren().get(0);
         indice = 0;
-        estact.getChildren().get(0).setSelected(true);
-        int j = 0;
+        estact.getChildren().get(0).setSelected(true);   int j = 0;
         activi = new Actividad();
         activi.setEstado(estados.get(j));
         actividad = consultarActividades(idusu, activi);
