@@ -259,9 +259,8 @@ public class gestionActividadesController {
             actividades.add(act);
             j++;
         }
-      
-
-    }
+   
+}
 
     /**
      * cambia el estado de la actividad de abierta a pendiente y refresca el datatable

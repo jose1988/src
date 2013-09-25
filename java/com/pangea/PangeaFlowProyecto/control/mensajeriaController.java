@@ -63,6 +63,8 @@ public class mensajeriaController {
     private TreeNode estadoSeleccionado;
     private WrPost bandejas;
     private Sesion sesion_actual;
+    private String resultado;
+    private WrResultado reliminar;
    
 
     @PostConstruct
@@ -118,28 +120,61 @@ public class mensajeriaController {
         } else {
             idban =new Bandeja();
             int y=0;
-            while(bande.getBandejas().get(y)!=null){
+            while(bande.getBandejas().size()>y){
                 if(bande.getBandejas().get(y).getNombre().equals(event.getTreeNode().toString())){
                     idban.setId(bande.getBandejas().get(y).getId());
                 }
                 y++;
             }
             bandejas=consultarMensajes(idusu, idban);
+            mails = null;
+            mails = new ArrayList<Post>();
+            
              if (bandejas.getPosts().isEmpty()) {
                 mails = null;
             }else{
               while (bandejas.getPosts().size()>j){
-              mails = new ArrayList<Post>();
-              mail=bandej.getPosts().get(j);
+              
+              mail=bandejas.getPosts().get(j);
              mails.add(mail);
               j++;
              }
            }
         }
     }
-    public String sombreado(Post mail){
+    public void mensajeelimimar() {
+
+        reliminar=eliminarMensaje(mail,idusu);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(reliminar.getEstatus()));
+        int j = 0;
+          bandejas=consultarMensajes(idusu, idban);
+            mails = null;
+            mails = new ArrayList<Post>();
+            
+             if (bandejas.getPosts().isEmpty()) {
+                mails = null;
+            }else{
+              while (bandejas.getPosts().size()>j){
+              
+              mail=bandejas.getPosts().get(j);
+             mails.add(mail);
+              j++;
+             }
+
+         }
+    }
+    public String sombreado(Post correo){
         
-      return "background-color:  #FF8888;";  
+        if(correo!=null){
+      resultado=consultarLeido(correo,idusu);
+      if(resultado!=null){
+        if("No Leido".equals(resultado)){
+           return "background-color:  #81F7F3;";   
+        }
+      }
+      return "background-color:  #FFFFFF;";  
+      }
+    return "background-color:  #FFFFFF;"; 
     }
        /**
      * Método para verificar si el usuario esta logueado
@@ -308,6 +343,17 @@ public class mensajeriaController {
         return port.logOut(sesionActual);
     }
 
+    private String consultarLeido(com.pangea.capadeservicios.servicios.Post mensajeActual, com.pangea.capadeservicios.servicios.Usuario usuarioActual) {
+        com.pangea.capadeservicios.servicios.Mensajeria port = service.getMensajeriaPort();
+        return port.consultarLeido(mensajeActual, usuarioActual);
+    }
+
+    private WrResultado eliminarMensaje(com.pangea.capadeservicios.servicios.Post mensajeActual, com.pangea.capadeservicios.servicios.Usuario usuarioActual) {
+        com.pangea.capadeservicios.servicios.Mensajeria port = service.getMensajeriaPort();
+        return port.eliminarMensaje(mensajeActual, usuarioActual);
+    }
+
+   
     
  
 }
