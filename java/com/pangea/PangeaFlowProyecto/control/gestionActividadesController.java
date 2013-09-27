@@ -31,6 +31,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.servlet.http.HttpSession;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
@@ -48,9 +49,9 @@ import org.primefaces.model.TreeNode;
 @ManagedBean(name = "gestionActividades")
 @SessionScoped
 public class gestionActividadesController {
+
     @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_15362/CapaDeServicios/GestionDeControlDeUsuarios.wsdl")
     private GestionDeControlDeUsuarios_Service service_3;
-
     @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_15362/CapaDeServicios/GestionDeGrupo.wsdl")
     private GestionDeGrupo_Service service_2;
     @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_15362/CapaDeServicios/GestionDeActividades.wsdl")
@@ -82,78 +83,119 @@ public class gestionActividadesController {
     private Grupo grupoSeleccionado;
     WrActividad ActividadesCola;
     private Sesion sesion_actual;
-    private boolean boton=false;
+    private boolean boton = false;
     private Usuario usuarioLogueo;
     private Sesion sesionLogueo;
     private long UT;
     private String equivalencia;
 
     /**
-     * enlista los estados, muestra por defecto las actividades el primer estado 
+     * enlista los estados, muestra por defecto las actividades el primer estado
      * que conigue las actividades y del primer grupo de consigue.
      */
     @PostConstruct
     public void init() {
-        
-        
-         if (verificarLogueo()) {
+
+
+        if (verificarLogueo()) {
             Redireccionar();
         } else {
-        estact = new DefaultTreeNode("root", null);
-        idusu = new Usuario();
-        FacesContext fc = FacesContext.getCurrentInstance();
-        ExternalContext ec = fc.getExternalContext();
-        HttpSession sesion = (HttpSession) ec.getSession(true);
-        sesion_actual = (Sesion) (sesion.getAttribute("Sesion"));
-        idusu = (Usuario) (sesion.getAttribute("Usuario"));
-        String icono;
-        // bande=consultarBandejas(idusu);
-        estados = buscarEstados();
-        int i = 0;
-        while (estados.size() > i) {
-            if ("abierta".equals(estados.get(i))) {
-                icono = "s";
-            } else if ("pendiente".equals(estados.get(i))) {
-                icono = "i";
-            } else if ("cerrada".equals(estados.get(i))) {
-                icono = "t";
-            } else {
-                icono = "j";
+            estact = new DefaultTreeNode("root", null);
+            idusu = new Usuario();
+            FacesContext fc = FacesContext.getCurrentInstance();
+            ExternalContext ec = fc.getExternalContext();
+            HttpSession sesion = (HttpSession) ec.getSession(true);
+            sesion_actual = (Sesion) (sesion.getAttribute("Sesion"));
+            idusu = (Usuario) (sesion.getAttribute("Usuario"));
+            String icono;
+            // bande=consultarBandejas(idusu);
+            estados = buscarEstados();
+            int i = 0;
+            while (estados.size() > i) {
+                if ("abierta".equals(estados.get(i))) {
+                    icono = "s";
+                } else if ("pendiente".equals(estados.get(i))) {
+                    icono = "i";
+                } else if ("cerrada".equals(estados.get(i))) {
+                    icono = "t";
+                } else {
+                    icono = "j";
+                }
+                TreeNode inbox = new DefaultTreeNode(icono, estados.get(i), estact);
+                i++;
             }
-            TreeNode inbox = new DefaultTreeNode(icono, estados.get(i), estact);
-            i++;
-        }
 
-        TreeNode inbox = new DefaultTreeNode("j", "Cola de Actividades", estact);
-        grupos = this.gruposUsuario(idusu);
-        estadoSeleccionado = estact.getChildren().get(0);
-        indice = 0;
-        estact.getChildren().get(0).setSelected(true);   int j = 0;
-        activi = new Actividad();
-        activi.setEstado(estados.get(j));
+            TreeNode inbox = new DefaultTreeNode("j", "Cola de Actividades", estact);
+            grupos = this.gruposUsuario(idusu);
+            estadoSeleccionado = estact.getChildren().get(0);
+            indice = 0;
+            estact.getChildren().get(0).setSelected(true);
+            int j = 0;
+            activi = new Actividad();
+            activi.setEstado(estados.get(j));
+            actividad = consultarActividades(idusu, activi);
+            actividades = new ArrayList<Actividad>();
+            grupoSeleccionado = grupos.get(0);
+            if (actividad.getActividads().isEmpty()) {
+                actividades = null;
+            }
+            while (actividad.getActividads().size() > j) {
+                act = actividad.getActividads().get(j);
+                if (act.getIdInstancia().getIdPeriodoGrupoProceso().getIdGrupo().getId().compareTo(grupoSeleccionado.getId()) != 0) {
+                } else {
+                    actividades.add(act);
+                }
+
+                j++;
+            }
+
+        }
+    }
+
+    public Grupo getGrupoSeleccionado() {
+        return grupoSeleccionado;
+    }
+
+    public void botonActivado(String boton) {
+        
+        activi.setEstado(estadoSeleccionado.getData().toString());
         actividad = consultarActividades(idusu, activi);
         actividades = new ArrayList<Actividad>();
-        grupoSeleccionado = grupos.get(0);
         if (actividad.getActividads().isEmpty()) {
             actividades = null;
         }
+        Grupo g = new Grupo();
+       
+        for (int i = 0; i < grupos.size(); i++) {
+            if (grupos.get(i).getNombre().compareTo(boton) == 0) {
+                g = grupos.get(i);
+                indice = i;
+            }
+
+        }
+
+        int j = 0;
+
         while (actividad.getActividads().size() > j) {
             act = actividad.getActividads().get(j);
-            if (act.getIdInstancia().getIdPeriodoGrupoProceso().getIdGrupo().getId().compareTo(grupoSeleccionado.getId()) != 0) {
-            } else {
+            if (act.getIdInstancia().getIdPeriodoGrupoProceso().getIdGrupo().getId().compareTo(g.getId()) == 0) {
                 actividades.add(act);
             }
 
             j++;
         }
 
-        }
+
+
+
+
     }
 
     /**
      *
-     * Cambio de pestaña de los grupo, enlista las actividades por el grupo seleccionado
-     * y refresca el datatable
+     * Cambio de pestaña de los grupo, enlista las actividades por el grupo
+     * seleccionado y refresca el datatable
+     *
      * @param event
      */
     public void onTabChange(TabChangeEvent event) {
@@ -190,8 +232,9 @@ public class gestionActividadesController {
     }
 
     /**
-     * enlista las actividades por el estado seleccionado y el grupo actual 
+     * enlista las actividades por el estado seleccionado y el grupo actual
      * refresca el datatable
+     *
      * @param event
      */
     public void onNodeSelect(NodeSelectEvent event) {
@@ -201,7 +244,7 @@ public class gestionActividadesController {
 
             ActividadesCola = consultarActividadesCola(idusu);
             actividades = new ArrayList<Actividad>();
-            
+
 
             while (ActividadesCola.getActividads().size() > j) {
                 act = ActividadesCola.getActividads().get(j);
@@ -239,8 +282,8 @@ public class gestionActividadesController {
     }
 
     /**
-     * cambia el estado de la actividad pendiente a abierta,
-     * inicia la actividad y refresca el datatable
+     * cambia el estado de la actividad pendiente a abierta, inicia la actividad
+     * y refresca el datatable
      */
     public void cambiarEstado(CloseEvent evento) {
 
@@ -259,11 +302,12 @@ public class gestionActividadesController {
             actividades.add(act);
             j++;
         }
-   
-}
+
+    }
 
     /**
-     * cambia el estado de la actividad de abierta a pendiente y refresca el datatable
+     * cambia el estado de la actividad de abierta a pendiente y refresca el
+     * datatable
      */
     public void cambiarEstadoPendiente() {
 
@@ -308,7 +352,8 @@ public class gestionActividadesController {
     }
 
     /**
-     * se toma la condicion, la sesion y la actividad y se cierra la actividad a dedo
+     * se toma la condicion, la sesion y la actividad y se cierra la actividad a
+     * dedo
      */
     public void cerraractividad() {
 
@@ -317,7 +362,7 @@ public class gestionActividadesController {
         cond = new Condicion();
         cond.setEstado("activa");
         resul = finalizarActividad(act, ses, cond);
-        
+
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(resul.getEstatus()));
         int j = 0;
         activi = new Actividad();
@@ -343,7 +388,7 @@ public class gestionActividadesController {
      */
     public String sombreado(Actividad actividadxx) throws DatatypeConfigurationException {
         if (actividadxx != null) {
-          WrActividad actividadx=consultarActividad(actividadxx);
+            WrActividad actividadx = consultarActividad(actividadxx);
             if (actividadx.getActividads().get(0).getFechaApertura() != null) {
                 XMLGregorianCalendar FC1;
                 XMLGregorianCalendar FA1;
@@ -351,76 +396,76 @@ public class gestionActividadesController {
                 FC1 = actividadx.getActividads().get(0).getFechaApertura();
                 GregorianCalendar gregorianCalendar = new GregorianCalendar();
                 DatatypeFactory datatypeFactory = DatatypeFactory.newInstance();
-                FA1=datatypeFactory.newXMLGregorianCalendar(gregorianCalendar);
+                FA1 = datatypeFactory.newXMLGregorianCalendar(gregorianCalendar);
                 long duracion = actividadx.getActividads().get(0).getDuracion().longValue();
-                equivalencia=actividadx.getActividads().get(0).getIdEquivalenciasTiempo().getNombre();
-                UT=actividadx.getActividads().get(0).getIdEquivalenciasTiempo().getMinutos();
+                equivalencia = actividadx.getActividads().get(0).getIdEquivalenciasTiempo().getNombre();
+                UT = actividadx.getActividads().get(0).getIdEquivalenciasTiempo().getMinutos();
                 long f = FC1.toGregorianCalendar().getTimeInMillis();
                 long f2 = FA1.toGregorianCalendar().getTimeInMillis();
                 long resta = f2 - f;
-               
-                if("Minuto".equals(equivalencia)){
-                   long minutos = resta / (60 * 1000);
-                            if (minutos>duracion) {
-                           return "background-color:  #FF8888";
-                       } else if (actividadx.getActividads().get(0).getFechaAlerta() != null) {
-                           FAA = actividadx.getActividads().get(0).getFechaAlerta();
-                           long f3 = FAA.toGregorianCalendar().getTimeInMillis();
-                           long resta2=f2-f3;
-                           if (resta2>resta) {
-                               return "background-color: orange;";
-                           }
-                           return "background-color: white";
-                       }
+
+                if ("Minuto".equals(equivalencia)) {
+                    long minutos = resta / (60 * 1000);
+                    if (minutos > duracion) {
+                        return "background-color:  #FF8888";
+                    } else if (actividadx.getActividads().get(0).getFechaAlerta() != null) {
+                        FAA = actividadx.getActividads().get(0).getFechaAlerta();
+                        long f3 = FAA.toGregorianCalendar().getTimeInMillis();
+                        long resta2 = f2 - f3;
+                        if (resta2 > resta) {
+                            return "background-color: orange;";
+                        }
+                        return "background-color: white";
+                    }
                 }
-                
-                
-                if("Hora".equals(equivalencia)){
+
+
+                if ("Hora".equals(equivalencia)) {
                     long horas = resta / (60 * 60 * 1000);
-                            if (horas>duracion) {
-                           return "background-color:  #FF8888";
-                       } else if (actividadx.getActividads().get(0).getFechaAlerta() != null) {
-                           FAA = actividadx.getActividads().get(0).getFechaAlerta();
-                           long f3 = FAA.toGregorianCalendar().getTimeInMillis();
-                           long resta2=f2-f3;
-                           if (resta2>resta) {
-                               return "background-color: orange;";
-                           }
-                           return "background-color: white";
-                       }
+                    if (horas > duracion) {
+                        return "background-color:  #FF8888";
+                    } else if (actividadx.getActividads().get(0).getFechaAlerta() != null) {
+                        FAA = actividadx.getActividads().get(0).getFechaAlerta();
+                        long f3 = FAA.toGregorianCalendar().getTimeInMillis();
+                        long resta2 = f2 - f3;
+                        if (resta2 > resta) {
+                            return "background-color: orange;";
+                        }
+                        return "background-color: white";
+                    }
                 }
-                if("Dia".equals(equivalencia)){
-                  long dias = resta / (24 * 60 * 60 * 1000);
-                    if (dias>duracion) {
-                           return "background-color:  #FF8888";
-                       } else if (actividadx.getActividads().get(0).getFechaAlerta() != null) {
-                           FAA = actividadx.getActividads().get(0).getFechaAlerta();
-                           long f3 = FAA.toGregorianCalendar().getTimeInMillis();
-                           long resta2=f2-f3;
-                           if (resta2>resta) {
-                               return "background-color: orange;";
-                           }
-                           return "background-color: white";
-                       }
+                if ("Dia".equals(equivalencia)) {
+                    long dias = resta / (24 * 60 * 60 * 1000);
+                    if (dias > duracion) {
+                        return "background-color:  #FF8888";
+                    } else if (actividadx.getActividads().get(0).getFechaAlerta() != null) {
+                        FAA = actividadx.getActividads().get(0).getFechaAlerta();
+                        long f3 = FAA.toGregorianCalendar().getTimeInMillis();
+                        long resta2 = f2 - f3;
+                        if (resta2 > resta) {
+                            return "background-color: orange;";
+                        }
+                        return "background-color: white";
+                    }
                 }
-                if("Semana".equals(equivalencia)){
+                if ("Semana".equals(equivalencia)) {
                     long semanas = resta / (7 * 24 * 60 * 60 * 1000);
-                    if (semanas>duracion) {
-                           return "background-color:  #FF8888";
-                       } else if (actividadx.getActividads().get(0).getFechaAlerta() != null) {
-                           FAA = actividadx.getActividads().get(0).getFechaAlerta();
-                           long f3 = FAA.toGregorianCalendar().getTimeInMillis();
-                           long resta2=f2-f3;
-                           if (resta2>resta) {
-                               return "background-color: orange;";
-                           }
-                           return "background-color: white";
-                       }
+                    if (semanas > duracion) {
+                        return "background-color:  #FF8888";
+                    } else if (actividadx.getActividads().get(0).getFechaAlerta() != null) {
+                        FAA = actividadx.getActividads().get(0).getFechaAlerta();
+                        long f3 = FAA.toGregorianCalendar().getTimeInMillis();
+                        long resta2 = f2 - f3;
+                        if (resta2 > resta) {
+                            return "background-color: orange;";
+                        }
+                        return "background-color: white";
+                    }
                 }
-                
-                
-                
-               
+
+
+
+
             }
             return " background-color: white;";
         }
@@ -435,46 +480,46 @@ public class gestionActividadesController {
      */
     public String sombreadoc(Actividad actividadxx) throws DatatypeConfigurationException {
         if (actividadxx != null) {
-             WrActividad actividadx=consultarActividad(actividadxx);
+            WrActividad actividadx = consultarActividad(actividadxx);
             if (actividadx.getActividads().get(0).getFechaCierre() != null && actividadx.getActividads().get(0).getFechaApertura() != null) {
                 XMLGregorianCalendar FC1;
                 XMLGregorianCalendar FA1;
                 FC1 = actividadx.getActividads().get(0).getFechaCierre();
                 FA1 = actividadx.getActividads().get(0).getFechaApertura();
                 long duracion = actividadx.getActividads().get(0).getDuracion().longValue();
-                equivalencia=actividadx.getActividads().get(0).getIdEquivalenciasTiempo().getNombre();
-                UT=actividadx.getActividads().get(0).getIdEquivalenciasTiempo().getMinutos();
+                equivalencia = actividadx.getActividads().get(0).getIdEquivalenciasTiempo().getNombre();
+                UT = actividadx.getActividads().get(0).getIdEquivalenciasTiempo().getMinutos();
                 long f = FC1.toGregorianCalendar().getTimeInMillis();
                 long f2 = FA1.toGregorianCalendar().getTimeInMillis();
                 long resta = f - f2;
-                
-                
-                if("Minuto".equals(equivalencia)){
-                   long minutos = resta / (60 * 1000);
-                     if (minutos > duracion) {
-                    return "background-color:  #FF8888;";
-                   } 
+
+
+                if ("Minuto".equals(equivalencia)) {
+                    long minutos = resta / (60 * 1000);
+                    if (minutos > duracion) {
+                        return "background-color:  #FF8888;";
+                    }
                 }
-                if("Hora".equals(equivalencia)){
+                if ("Hora".equals(equivalencia)) {
                     long horas = resta / (60 * 60 * 1000);
-                     if (horas > duracion) {
-                    return "background-color:  #FF8888;";
-                   }
+                    if (horas > duracion) {
+                        return "background-color:  #FF8888;";
+                    }
                 }
-                if("Dia".equals(equivalencia)){
-                  long dias = resta / (24 * 60 * 60 * 1000);
-                     if (dias > duracion) {
-                    return "background-color:  #FF8888;";
-                   }
+                if ("Dia".equals(equivalencia)) {
+                    long dias = resta / (24 * 60 * 60 * 1000);
+                    if (dias > duracion) {
+                        return "background-color:  #FF8888;";
+                    }
                 }
-                if("Semana".equals(equivalencia)){
+                if ("Semana".equals(equivalencia)) {
                     long semanas = resta / (7 * 24 * 60 * 60 * 1000);
-                     if (semanas > duracion) {
-                    return "background-color:  #FF8888;";
-                   }
+                    if (semanas > duracion) {
+                        return "background-color:  #FF8888;";
+                    }
                 }
 
-               
+
             }
             return " background-color: white";
         }
@@ -482,16 +527,17 @@ public class gestionActividadesController {
     }
 
     /**
-     * asiga al usuario actual la actividad seleccionada en la cola de actividades
+     * asiga al usuario actual la actividad seleccionada en la cola de
+     * actividades
      */
     public void asignar(CloseEvent evento) {
-      
+
         resul = consumirCola(act, idusu);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(resul.getEstatus()));
         ActividadesCola = consultarActividadesCola(idusu);
         int j = 0;
         actividades = new ArrayList<Actividad>();
-        
+
 
         while (ActividadesCola.getActividads().size() > j) {
             act = ActividadesCola.getActividads().get(j);
@@ -503,7 +549,7 @@ public class gestionActividadesController {
 
     }
 
-     /**
+    /**
      * Método para verificar si el usuario esta logueado
      *
      * @return un booleano si es true es por que si estaba logueado
@@ -527,7 +573,8 @@ public class gestionActividadesController {
         }
         return bandera;
     }
-     /**
+
+    /**
      * Método encargado de cerrar la sesión del usuario en la base de datos y a
      * nivel de variables de sesión por tener un tiempo de inactividad de
      * 4minutos
@@ -543,7 +590,7 @@ public class gestionActividadesController {
         Redireccionar();
     }
 
- /**
+    /**
      * Método para redireccionar a index.xhtml si el usuario no esta logueado
      */
     public void Redireccionar() {
@@ -554,6 +601,7 @@ public class gestionActividadesController {
             System.out.println("----------------------------Error---------------------------------" + error);
         }
     }
+
     /**
      * Método encargado de mostrar la fecha en el formato dd/mm/yyyy
      *
@@ -569,7 +617,7 @@ public class gestionActividadesController {
         }
         return "";
     }
-    
+
     /**
      *
      * @return
@@ -682,7 +730,6 @@ public class gestionActividadesController {
         this.aux = aux;
     }
 
-    
     public boolean isBoton() {
         return boton;
     }
@@ -826,9 +873,6 @@ public class gestionActividadesController {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Mail Sent!"));
     }
 
-  
-
-
     private WrActividad consultarActividades(com.pangea.capadeservicios.servicios.Usuario usuarioActual, com.pangea.capadeservicios.servicios.Actividad actividadActual) {
         com.pangea.capadeservicios.servicios.GestionDeActividades port = service_1.getGestionDeActividadesPort();
         return port.consultarActividades(usuarioActual, actividadActual);
@@ -883,6 +927,4 @@ public class gestionActividadesController {
         com.pangea.capadeservicios.servicios.GestionDeActividades port = service_1.getGestionDeActividadesPort();
         return port.consultarActividad(actividadActual);
     }
-    
-    
 }
