@@ -10,30 +10,6 @@
 <message name="helloResponse">
 <part name="parameters" element="tns:helloResponse"/>
 </message>
-<message name="listarPolitica">
-<part name="parameters" element="tns:listarPolitica"/>
-</message>
-<message name="listarPoliticaResponse">
-<part name="parameters" element="tns:listarPoliticaResponse"/>
-</message>
-<message name="insertarPolitica">
-<part name="parameters" element="tns:insertarPolitica"/>
-</message>
-<message name="insertarPoliticaResponse">
-<part name="parameters" element="tns:insertarPoliticaResponse"/>
-</message>
-<message name="editarPolitica">
-<part name="parameters" element="tns:editarPolitica"/>
-</message>
-<message name="editarPoliticaResponse">
-<part name="parameters" element="tns:editarPoliticaResponse"/>
-</message>
-<message name="eliminarPolitica">
-<part name="parameters" element="tns:eliminarPolitica"/>
-</message>
-<message name="eliminarPoliticaResponse">
-<part name="parameters" element="tns:eliminarPoliticaResponse"/>
-</message>
 <message name="contarPolitica">
 <part name="parameters" element="tns:contarPolitica"/>
 </message>
@@ -51,22 +27,6 @@
 <input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDepolitica/helloRequest" message="tns:hello"/>
 <output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDepolitica/helloResponse" message="tns:helloResponse"/>
 </operation>
-<operation name="listarPolitica">
-<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDepolitica/listarPoliticaRequest" message="tns:listarPolitica"/>
-<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDepolitica/listarPoliticaResponse" message="tns:listarPoliticaResponse"/>
-</operation>
-<operation name="insertarPolitica">
-<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDepolitica/insertarPoliticaRequest" message="tns:insertarPolitica"/>
-<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDepolitica/insertarPoliticaResponse" message="tns:insertarPoliticaResponse"/>
-</operation>
-<operation name="editarPolitica">
-<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDepolitica/editarPoliticaRequest" message="tns:editarPolitica"/>
-<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDepolitica/editarPoliticaResponse" message="tns:editarPoliticaResponse"/>
-</operation>
-<operation name="eliminarPolitica">
-<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDepolitica/eliminarPoliticaRequest" message="tns:eliminarPolitica"/>
-<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDepolitica/eliminarPoliticaResponse" message="tns:eliminarPoliticaResponse"/>
-</operation>
 <operation name="contarPolitica">
 <input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDepolitica/contarPoliticaRequest" message="tns:contarPolitica"/>
 <output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDepolitica/contarPoliticaResponse" message="tns:contarPoliticaResponse"/>
@@ -79,42 +39,6 @@
 <binding name="GestionDepoliticaPortBinding" type="tns:GestionDepolitica">
 <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
 <operation name="hello">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="listarPolitica">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="insertarPolitica">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="editarPolitica">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="eliminarPolitica">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>
