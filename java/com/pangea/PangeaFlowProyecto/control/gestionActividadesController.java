@@ -49,7 +49,6 @@ import org.primefaces.model.TreeNode;
  */
 @ManagedBean(name = "gestionActividades")
 @SessionScoped
-
 public class gestionActividadesController  implements Serializable {
     private static final long serialVersionUID = 1L;
 
