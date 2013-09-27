@@ -19,6 +19,7 @@ import com.pangea.capadeservicios.servicios.WrActividad;
 import com.pangea.capadeservicios.servicios.WrBandeja;
 import com.pangea.capadeservicios.servicios.WrPost;
 import com.pangea.capadeservicios.servicios.WrResultado;
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -48,7 +49,9 @@ import org.primefaces.model.TreeNode;
  */
 @ManagedBean(name = "gestionActividades")
 @SessionScoped
-public class gestionActividadesController {
+
+public class gestionActividadesController  implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_15362/CapaDeServicios/GestionDeControlDeUsuarios.wsdl")
     private GestionDeControlDeUsuarios_Service service_3;

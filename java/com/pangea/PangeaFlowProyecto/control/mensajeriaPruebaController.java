@@ -63,25 +63,10 @@ public class mensajeriaPruebaController {
     private TreeNode estadoSeleccionado;
     private WrPost bandejas;
     private Sesion sesion_actual;
-    private String arbol, nomb;
-    private List<Bandeja> band;
+    private String resultado;
+    private WrResultado reliminar, remodificar, reliminarbandeja;
+    private String nomb;
 
-    public List<Bandeja> getBand() {
-        return band;
-    }
-
-    public void setBand(List<Bandeja> band) {
-        this.band = band;
-    }
-    
-     public List<WrBandeja> getBan() {
-        return ban;
-    }
-
-    public void setBan(List<WrBandeja> ban) {
-        this.ban = ban;
-    }
-    
     public String getNomb() {
         return nomb;
     }
@@ -89,30 +74,14 @@ public class mensajeriaPruebaController {
     public void setNomb(String nomb) {
         this.nomb = nomb;
     }
-
-     public Bandeja getModificar() {
-        return modificar;
-    }
-
-    public void setModificar(Bandeja modificar) {
-        this.modificar = modificar;
-    }
-    
-    public String getArbol() {
-        return arbol;
-    }
-
-    public void setArbol(String arbol) {
-        this.arbol = arbol;
-    }
    
 
     @PostConstruct
     public void init() {
+        this.nomb="";
          if (verificarLogueo()) {
             Redireccionar();
         } else {
-        
         mailboxes = new DefaultTreeNode("root", null);
         idusu = new Usuario();
         FacesContext fc = FacesContext.getCurrentInstance();
@@ -121,17 +90,8 @@ public class mensajeriaPruebaController {
         sesion_actual = (Sesion) (sesion.getAttribute("Sesion"));
         idusu = (Usuario) (sesion.getAttribute("Usuario"));
         bande=consultarBandejas(idusu);
-        
-        band = new ArrayList<Bandeja>();
-        if (bande.getBandejas().isEmpty()) {
-            band = null;
-        }
-        else{
-            band=bande.getBandejas();
-        }
-        
         int i=0;
-        String icono;
+         String icono;
         while (bande.getBandejas().size()>i){
             if("Enviados".equals(bande.getBandejas().get(i).getNombre())){
              icono="s"; 
@@ -143,15 +103,6 @@ public class mensajeriaPruebaController {
             icono="j";
             }
         TreeNode inbox = new DefaultTreeNode(icono, bande.getBandejas().get(i).getNombre(), mailboxes);
-        
-        if(icono=="j"){
-            icono="m";
-            arbol="Modificar";
-            TreeNode modificar= new DefaultTreeNode(icono,arbol,inbox);
-            icono="e";
-            arbol="Eliminar";
-            TreeNode eliminar= new DefaultTreeNode(icono,arbol,inbox);
-        }
        i++;
         }
         int j=0;  
@@ -178,9 +129,8 @@ public class mensajeriaPruebaController {
 
         } else {
             idban =new Bandeja();
-            modificar= new Bandeja();
             int y=0;
-            while(bande.getBandejas().get(y)!=null){
+            while(bande.getBandejas().size()>y){
                 if(bande.getBandejas().get(y).getNombre().equals(event.getTreeNode().toString())){
                     idban.setId(bande.getBandejas().get(y).getId());
                     modificar=idban;
@@ -188,12 +138,15 @@ public class mensajeriaPruebaController {
                 y++;
             }
             bandejas=consultarMensajes(idusu, idban);
+            mails = null;
+            mails = new ArrayList<Post>();
+            
              if (bandejas.getPosts().isEmpty()) {
                 mails = null;
             }else{
               while (bandejas.getPosts().size()>j){
-              mails = new ArrayList<Post>();
-              mail=bandej.getPosts().get(j);
+              
+              mail=bandejas.getPosts().get(j);
              mails.add(mail);
               j++;
              }
@@ -207,13 +160,132 @@ public class mensajeriaPruebaController {
         
         System.out.println("Id de bandeja: "+modificar.getId());
         System.out.println("Nombre nuevo de bandeja: "+modificar.getNombre());
-        //modificarBandeja(modificar, idusu);
+        
+        remodificar=modificarBandeja(modificar, idusu);
+        
+        mailboxes = new DefaultTreeNode("root", null);
+       
+        bande=consultarBandejas(idusu);
+        int i=0;
+        String icono;
+        while (bande.getBandejas().size()>i){
+            if("Enviados".equals(bande.getBandejas().get(i).getNombre())){
+             icono="s"; 
+            }else if("Papelera".equals(bande.getBandejas().get(i).getNombre())){
+             icono="t"; 
+            }else if("Recibidos".equals(bande.getBandejas().get(i).getNombre())){
+             icono="i"; 
+            }else{
+            icono="j";
+            }
+        TreeNode inbox = new DefaultTreeNode(icono, bande.getBandejas().get(i).getNombre(), mailboxes);
+       i++;
+        }
+        int j=0;  
+        idban=new Bandeja();
+        mails = new ArrayList<Post>();
+        estadoSeleccionado = mailboxes.getChildren().get(0);
+        mailboxes.getChildren().get(0).setSelected(true);
+        idban =new Bandeja();
+        idban.setId(bande.getBandejas().get(0).getId());
+        bandej=consultarMensajes(idusu, idban);
+         while (bandej.getPosts().size()>j){
+         
+         mail=bandej.getPosts().get(j);
+         mails.add(mail);
+         j++;
+        }
+         
+         Redireccionando();
         
     }
     
-    public String sombreado(Post mail){
+    public void eliminarBand(){
         
-      return "background-color:  #FF8888;";  
+        System.out.println("Id de bandeja: "+modificar.getId());
+        
+        reliminarbandeja=eliminarBandeja(modificar);
+        
+        mailboxes = new DefaultTreeNode("root", null);
+       
+        bande=consultarBandejas(idusu);
+        int i=0;
+        String icono;
+        while (bande.getBandejas().size()>i){
+            if("Enviados".equals(bande.getBandejas().get(i).getNombre())){
+             icono="s"; 
+            }else if("Papelera".equals(bande.getBandejas().get(i).getNombre())){
+             icono="t"; 
+            }else if("Recibidos".equals(bande.getBandejas().get(i).getNombre())){
+             icono="i"; 
+            }else{
+            icono="j";
+            }
+        TreeNode inbox = new DefaultTreeNode(icono, bande.getBandejas().get(i).getNombre(), mailboxes);
+       i++;
+        }
+        int j=0;  
+        idban=new Bandeja();
+        mails = new ArrayList<Post>();
+        estadoSeleccionado = mailboxes.getChildren().get(0);
+        mailboxes.getChildren().get(0).setSelected(true);
+        idban =new Bandeja();
+        idban.setId(bande.getBandejas().get(0).getId());
+        bandej=consultarMensajes(idusu, idban);
+         while (bandej.getPosts().size()>j){
+         
+         mail=bandej.getPosts().get(j);
+         mails.add(mail);
+         j++;
+        }
+         
+         Redireccionando();
+        
+    }
+    
+    public void Redireccionando() {
+        this.nomb="";
+        try {
+            FacesContext contex = FacesContext.getCurrentInstance();
+            contex.getExternalContext().redirect("/PangeaFlowProyecto/faces/mensajeriaPrueba.xhtml");
+        } catch (Exception error) {
+            System.out.println("----------------------------Error---------------------------------" + error);
+        }
+    }
+    
+    public void mensajeelimimar() {
+
+        reliminar=eliminarMensaje(mail,idusu);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(reliminar.getEstatus()));
+        int j = 0;
+          bandejas=consultarMensajes(idusu, idban);
+            mails = null;
+            mails = new ArrayList<Post>();
+            
+             if (bandejas.getPosts().isEmpty()) {
+                mails = null;
+            }else{
+              while (bandejas.getPosts().size()>j){
+              
+              mail=bandejas.getPosts().get(j);
+             mails.add(mail);
+              j++;
+             }
+
+         }
+    }
+    public String sombreado(Post correo){
+        
+        if(correo!=null){
+      resultado=consultarLeido(correo,idusu);
+      if(resultado!=null){
+        if("No Leido".equals(resultado)){
+           return "background-color:  #81F7F3;";   
+        }
+      }
+      return "background-color:  #FFFFFF;";  
+      }
+    return "background-color:  #FFFFFF;"; 
     }
        /**
      * Método para verificar si el usuario esta logueado
@@ -382,9 +454,27 @@ public class mensajeriaPruebaController {
         return port.logOut(sesionActual);
     }
 
+    private String consultarLeido(com.pangea.capadeservicios.servicios.Post mensajeActual, com.pangea.capadeservicios.servicios.Usuario usuarioActual) {
+        com.pangea.capadeservicios.servicios.Mensajeria port = service.getMensajeriaPort();
+        return port.consultarLeido(mensajeActual, usuarioActual);
+    }
+
+    private WrResultado eliminarMensaje(com.pangea.capadeservicios.servicios.Post mensajeActual, com.pangea.capadeservicios.servicios.Usuario usuarioActual) {
+        com.pangea.capadeservicios.servicios.Mensajeria port = service.getMensajeriaPort();
+        return port.eliminarMensaje(mensajeActual, usuarioActual);
+    }
+
     private WrResultado modificarBandeja(com.pangea.capadeservicios.servicios.Bandeja carpetaActual, com.pangea.capadeservicios.servicios.Usuario usuarioActual) {
         com.pangea.capadeservicios.servicios.Mensajeria port = service.getMensajeriaPort();
         return port.modificarBandeja(carpetaActual, usuarioActual);
     }
+
+    private WrResultado eliminarBandeja(com.pangea.capadeservicios.servicios.Bandeja bandejaActual) {
+        com.pangea.capadeservicios.servicios.Mensajeria port = service.getMensajeriaPort();
+        return port.eliminarBandeja(bandejaActual);
+    }
+
+   
+    
  
 }
