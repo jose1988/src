@@ -90,6 +90,9 @@ public class gestionActividadesController  implements Serializable {
     private Sesion sesionLogueo;
     private long UT;
     private String equivalencia;
+    private String GrupoPanel;
+
+  
 
     /**
      * enlista los estados, muestra por defecto las actividades el primer estado
@@ -158,7 +161,7 @@ public class gestionActividadesController  implements Serializable {
         return grupoSeleccionado;
     }
 
-    public void botonActivado(String boton) {
+    public void botonActivado() {
         
         activi.setEstado(estadoSeleccionado.getData().toString());
         actividad = consultarActividades(idusu, activi);
@@ -169,7 +172,7 @@ public class gestionActividadesController  implements Serializable {
         Grupo g = new Grupo();
        
         for (int i = 0; i < grupos.size(); i++) {
-            if (grupos.get(i).getNombre().compareTo(boton) == 0) {
+            if (grupos.get(i).getNombre().compareTo(GrupoPanel) == 0) {
                 g = grupos.get(i);
                 indice = i;
             }
@@ -866,6 +869,13 @@ public class gestionActividadesController  implements Serializable {
      */
     public void setEstados(List<String> estados) {
         this.estados = estados;
+    }
+      public String getGrupoPanel() {
+        return GrupoPanel;
+    }
+
+    public void setGrupoPanel(String GrupoPanel) {
+        this.GrupoPanel = GrupoPanel;
     }
 
     /**

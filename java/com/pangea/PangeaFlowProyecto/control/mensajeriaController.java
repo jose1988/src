@@ -16,7 +16,7 @@ import com.pangea.capadeservicios.servicios.WrBandeja;
 import com.pangea.capadeservicios.servicios.WrPost;
 import com.pangea.capadeservicios.servicios.WrResultado;
 
-import java.awt.Button;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
