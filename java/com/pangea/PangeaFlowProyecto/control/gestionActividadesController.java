@@ -116,6 +116,7 @@ public class gestionActividadesController  implements Serializable {
             // bande=consultarBandejas(idusu);
             estados = buscarEstados();
             int i = 0;
+        
             while (estados.size() > i) {
                 if ("abierta".equals(estados.get(i))) {
                     icono = "s";

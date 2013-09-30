@@ -82,6 +82,7 @@ public class mensajeriaController {
         bande=consultarBandejas(idusu);
         int i=0;
          String icono;
+          TreeNode inbox = new DefaultTreeNode("j", "Redactar Mensaje", mailboxes);
         while (bande.getBandejas().size()>i){
             if("Enviados".equals(bande.getBandejas().get(i).getNombre())){
              icono="s"; 
@@ -92,7 +93,7 @@ public class mensajeriaController {
             }else{
             icono="j";
             }
-        TreeNode inbox = new DefaultTreeNode(icono, bande.getBandejas().get(i).getNombre(), mailboxes);
+        inbox = new DefaultTreeNode(icono, bande.getBandejas().get(i).getNombre(), mailboxes);
        i++;
         }
         int j=0;  
