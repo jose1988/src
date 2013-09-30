@@ -126,10 +126,10 @@ public class mensajeriaController {
             int j = 0;
             idban = new Bandeja();
             mails = new ArrayList<Post>();
-            estadoSeleccionado = mailboxes.getChildren().get(0);
-            mailboxes.getChildren().get(0).setSelected(true);
+            estadoSeleccionado = mailboxes.getChildren().get(1);
+            mailboxes.getChildren().get(1).setSelected(true);
             idban = new Bandeja();
-            idban.setId(bande.getBandejas().get(0).getId());
+            idban.setId(bande.getBandejas().get(1).getId());
             bandej = consultarMensajes(idusu, idban);
             while (bandej.getPosts().size() > j) {
 
