@@ -49,9 +49,9 @@ import org.primefaces.model.TreeNode;
  */
 @ManagedBean(name = "gestionActividades")
 @SessionScoped
-public class gestionActividadesController  implements Serializable {
-    private static final long serialVersionUID = 1L;
+public class gestionActividadesController implements Serializable {
 
+    private static final long serialVersionUID = 1L;
     @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_15362/CapaDeServicios/GestionDeControlDeUsuarios.wsdl")
     private GestionDeControlDeUsuarios_Service service_3;
     @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_15362/CapaDeServicios/GestionDeGrupo.wsdl")
@@ -92,8 +92,6 @@ public class gestionActividadesController  implements Serializable {
     private String equivalencia;
     private String GrupoPanel;
 
-  
-
     /**
      * enlista los estados, muestra por defecto las actividades el primer estado
      * que conigue las actividades y del primer grupo de consigue.
@@ -116,7 +114,7 @@ public class gestionActividadesController  implements Serializable {
             // bande=consultarBandejas(idusu);
             estados = buscarEstados();
             int i = 0;
-        
+
             while (estados.size() > i) {
                 if ("abierta".equals(estados.get(i))) {
                     icono = "s";
@@ -142,6 +140,7 @@ public class gestionActividadesController  implements Serializable {
             actividad = consultarActividades(idusu, activi);
             actividades = new ArrayList<Actividad>();
             grupoSeleccionado = grupos.get(0);
+            GrupoPanel = grupoSeleccionado.getNombre();
             if (actividad.getActividads().isEmpty()) {
                 actividades = null;
             }
@@ -163,7 +162,7 @@ public class gestionActividadesController  implements Serializable {
     }
 
     public void botonActivado() {
-        
+
         activi.setEstado(estadoSeleccionado.getData().toString());
         actividad = consultarActividades(idusu, activi);
         actividades = new ArrayList<Actividad>();
@@ -171,7 +170,7 @@ public class gestionActividadesController  implements Serializable {
             actividades = null;
         }
         Grupo g = new Grupo();
-       
+
         for (int i = 0; i < grupos.size(); i++) {
             if (grupos.get(i).getNombre().compareTo(GrupoPanel) == 0) {
                 g = grupos.get(i);
@@ -564,12 +563,12 @@ public class gestionActividadesController  implements Serializable {
         boolean bandera = false, sesionBd = false;
         try {
             //codigo para guardar sesion y usuario logueado, sino existe redireccionamos a index.xhtml
-            FacesContext context = FacesContext.getCurrentInstance();
-            ExternalContext externalContext = context.getExternalContext();
-            Object session = externalContext.getSession(true);
-            HttpSession SesionAbierta = (HttpSession) session;
-            usuarioLogueo = (Usuario) (SesionAbierta.getAttribute("Usuario"));
-            sesionLogueo = (Sesion) (SesionAbierta.getAttribute("Sesion"));
+            FacesContext fc = FacesContext.getCurrentInstance();
+            ExternalContext ec = fc.getExternalContext();
+
+            HttpSession sesionAbierta = (HttpSession) ec.getSession(true);
+            usuarioLogueo = (Usuario) (sesionAbierta.getAttribute("Usuario"));
+            sesionLogueo = (Sesion) (sesionAbierta.getAttribute("Sesion"));
             sesionBd = logSesion(sesionLogueo);
             if (usuarioLogueo == null || sesionLogueo == null || !sesionBd) {
                 bandera = true;
@@ -588,10 +587,10 @@ public class gestionActividadesController  implements Serializable {
     public void cerrarPorInactividad() {
         WrResultado result;
         result = logOut(sesionLogueo);
-        FacesContext context = FacesContext.getCurrentInstance();
-        ExternalContext externalContext = context.getExternalContext();
-        Object session = externalContext.getSession(true);
-        HttpSession SesionAbierta = (HttpSession) session;
+         FacesContext fc = FacesContext.getCurrentInstance();
+        ExternalContext ec = fc.getExternalContext();
+
+        HttpSession SesionAbierta = (HttpSession) ec.getSession(true);
         SesionAbierta.invalidate();
         Redireccionar();
     }
@@ -871,7 +870,8 @@ public class gestionActividadesController  implements Serializable {
     public void setEstados(List<String> estados) {
         this.estados = estados;
     }
-      public String getGrupoPanel() {
+
+    public String getGrupoPanel() {
         return GrupoPanel;
     }
 

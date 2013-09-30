@@ -23,9 +23,8 @@ import javax.xml.ws.WebServiceRef;
  */
 @ManagedBean(name = "logIntOutController")
 @SessionScoped
-public class logIntOutController implements Serializable {
+public class logIntOutController implements Serializable{
 
-    private static final long serialVersionUID = 1L;
     @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_15362/CapaDeServicios/GestionDeUsuarios.wsdl")
     private GestionDeUsuarios_Service service_1;
     @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_15362/CapaDeServicios/GestionDeControlDeUsuarios.wsdl")
@@ -103,14 +102,13 @@ public class logIntOutController implements Serializable {
         if (envoltorio.getEstatus().compareTo("OK") == 0) {
             usuarioSesion = buscarUsuario(usuarioLogeo);
             //Se Crea la sesión llamada usuarioSesion junto con el objeto usuario
-            FacesContext context = FacesContext.getCurrentInstance();
-            ExternalContext externalContext = context.getExternalContext();
-            Object session = externalContext.getSession(true);
-            HttpSession httpSession = (HttpSession) session;
-            httpSession.invalidate();
-            httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-            httpSession.setAttribute("Usuario", usuarioSesion);
-            httpSession.setAttribute("Sesion", envoltorio.getSesions().get(0));
+            FacesContext fc = FacesContext.getCurrentInstance();
+            ExternalContext ec = fc.getExternalContext();
+            HttpSession Sesion = (HttpSession) ec.getSession(true);
+            Sesion.invalidate();
+            Sesion = (HttpSession) ec.getSession(true);
+            Sesion.setAttribute("Usuario", usuarioSesion);
+            Sesion.setAttribute("Sesion", envoltorio.getSesions().get(0));
             try {
                 FacesContext contex = FacesContext.getCurrentInstance();
                 contex.getExternalContext().redirect("/PangeaFlowProyecto/faces/actividadgrupousuario.xhtml");
@@ -140,11 +138,9 @@ public class logIntOutController implements Serializable {
     public boolean verificarLogueo() {
         boolean bandera = true, sesionBd = false;
         try {
-            //Codigo para guardar sesion y usuario logueado, sino existe redireccionamos a index.xhtml
-            FacesContext context = FacesContext.getCurrentInstance();
-            ExternalContext externalContext = context.getExternalContext();
-            Object session = externalContext.getSession(true);
-            HttpSession SesionAbierta = (HttpSession) session;
+            FacesContext fc = FacesContext.getCurrentInstance();
+            ExternalContext ec = fc.getExternalContext();
+            HttpSession SesionAbierta = (HttpSession) ec.getSession(true);
             Usuario usuarioLogueo = (Usuario) (SesionAbierta.getAttribute("Usuario"));
             Sesion sesionLogueo = (Sesion) (SesionAbierta.getAttribute("Sesion"));
             sesionBd = logSesion(sesionLogueo);
