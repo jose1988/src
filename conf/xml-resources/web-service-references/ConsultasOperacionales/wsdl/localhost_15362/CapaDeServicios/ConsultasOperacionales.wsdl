@@ -4,24 +4,6 @@
 <xsd:import namespace="http://servicios.capadeservicios.pangea.com/" schemaLocation="http://localhost:15362/CapaDeServicios/ConsultasOperacionales?xsd=1"/>
 </xsd:schema>
 </types>
-<message name="ConsultarOrganizacion">
-<part name="parameters" element="tns:ConsultarOrganizacion"/>
-</message>
-<message name="ConsultarOrganizacionResponse">
-<part name="parameters" element="tns:ConsultarOrganizacionResponse"/>
-</message>
-<message name="ConsultarGrupos">
-<part name="parameters" element="tns:ConsultarGrupos"/>
-</message>
-<message name="ConsultarGruposResponse">
-<part name="parameters" element="tns:ConsultarGruposResponse"/>
-</message>
-<message name="ConsultarEquivalencias">
-<part name="parameters" element="tns:ConsultarEquivalencias"/>
-</message>
-<message name="ConsultarEquivalenciasResponse">
-<part name="parameters" element="tns:ConsultarEquivalenciasResponse"/>
-</message>
 <message name="ConsultarEquivalencia">
 <part name="parameters" element="tns:ConsultarEquivalencia"/>
 </message>
@@ -40,19 +22,25 @@
 <message name="ConsultarPrioridadResponse">
 <part name="parameters" element="tns:ConsultarPrioridadResponse"/>
 </message>
+<message name="ConsultarOrganizacion">
+<part name="parameters" element="tns:ConsultarOrganizacion"/>
+</message>
+<message name="ConsultarOrganizacionResponse">
+<part name="parameters" element="tns:ConsultarOrganizacionResponse"/>
+</message>
+<message name="ConsultarGrupos">
+<part name="parameters" element="tns:ConsultarGrupos"/>
+</message>
+<message name="ConsultarGruposResponse">
+<part name="parameters" element="tns:ConsultarGruposResponse"/>
+</message>
+<message name="ConsultarEquivalencias">
+<part name="parameters" element="tns:ConsultarEquivalencias"/>
+</message>
+<message name="ConsultarEquivalenciasResponse">
+<part name="parameters" element="tns:ConsultarEquivalenciasResponse"/>
+</message>
 <portType name="ConsultasOperacionales">
-<operation name="ConsultarOrganizacion">
-<input wsam:Action="http://servicios.capadeservicios.pangea.com/ConsultasOperacionales/ConsultarOrganizacionRequest" message="tns:ConsultarOrganizacion"/>
-<output wsam:Action="http://servicios.capadeservicios.pangea.com/ConsultasOperacionales/ConsultarOrganizacionResponse" message="tns:ConsultarOrganizacionResponse"/>
-</operation>
-<operation name="ConsultarGrupos">
-<input wsam:Action="http://servicios.capadeservicios.pangea.com/ConsultasOperacionales/ConsultarGruposRequest" message="tns:ConsultarGrupos"/>
-<output wsam:Action="http://servicios.capadeservicios.pangea.com/ConsultasOperacionales/ConsultarGruposResponse" message="tns:ConsultarGruposResponse"/>
-</operation>
-<operation name="ConsultarEquivalencias">
-<input wsam:Action="http://servicios.capadeservicios.pangea.com/ConsultasOperacionales/ConsultarEquivalenciasRequest" message="tns:ConsultarEquivalencias"/>
-<output wsam:Action="http://servicios.capadeservicios.pangea.com/ConsultasOperacionales/ConsultarEquivalenciasResponse" message="tns:ConsultarEquivalenciasResponse"/>
-</operation>
 <operation name="ConsultarEquivalencia">
 <input wsam:Action="http://servicios.capadeservicios.pangea.com/ConsultasOperacionales/ConsultarEquivalenciaRequest" message="tns:ConsultarEquivalencia"/>
 <output wsam:Action="http://servicios.capadeservicios.pangea.com/ConsultasOperacionales/ConsultarEquivalenciaResponse" message="tns:ConsultarEquivalenciaResponse"/>
@@ -65,36 +53,21 @@
 <input wsam:Action="http://servicios.capadeservicios.pangea.com/ConsultasOperacionales/ConsultarPrioridadRequest" message="tns:ConsultarPrioridad"/>
 <output wsam:Action="http://servicios.capadeservicios.pangea.com/ConsultasOperacionales/ConsultarPrioridadResponse" message="tns:ConsultarPrioridadResponse"/>
 </operation>
+<operation name="ConsultarOrganizacion">
+<input wsam:Action="http://servicios.capadeservicios.pangea.com/ConsultasOperacionales/ConsultarOrganizacionRequest" message="tns:ConsultarOrganizacion"/>
+<output wsam:Action="http://servicios.capadeservicios.pangea.com/ConsultasOperacionales/ConsultarOrganizacionResponse" message="tns:ConsultarOrganizacionResponse"/>
+</operation>
+<operation name="ConsultarGrupos">
+<input wsam:Action="http://servicios.capadeservicios.pangea.com/ConsultasOperacionales/ConsultarGruposRequest" message="tns:ConsultarGrupos"/>
+<output wsam:Action="http://servicios.capadeservicios.pangea.com/ConsultasOperacionales/ConsultarGruposResponse" message="tns:ConsultarGruposResponse"/>
+</operation>
+<operation name="ConsultarEquivalencias">
+<input wsam:Action="http://servicios.capadeservicios.pangea.com/ConsultasOperacionales/ConsultarEquivalenciasRequest" message="tns:ConsultarEquivalencias"/>
+<output wsam:Action="http://servicios.capadeservicios.pangea.com/ConsultasOperacionales/ConsultarEquivalenciasResponse" message="tns:ConsultarEquivalenciasResponse"/>
+</operation>
 </portType>
 <binding name="ConsultasOperacionalesPortBinding" type="tns:ConsultasOperacionales">
 <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
-<operation name="ConsultarOrganizacion">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="ConsultarGrupos">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="ConsultarEquivalencias">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
 <operation name="ConsultarEquivalencia">
 <soap:operation soapAction=""/>
 <input>
@@ -114,6 +87,33 @@
 </output>
 </operation>
 <operation name="ConsultarPrioridad">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="ConsultarOrganizacion">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="ConsultarGrupos">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="ConsultarEquivalencias">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>

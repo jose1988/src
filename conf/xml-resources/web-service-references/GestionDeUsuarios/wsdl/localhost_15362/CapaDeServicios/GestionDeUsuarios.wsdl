@@ -4,12 +4,6 @@
 <xsd:import namespace="http://servicios.capadeservicios.pangea.com/" schemaLocation="http://localhost:15362/CapaDeServicios/GestionDeUsuarios?xsd=1"/>
 </xsd:schema>
 </types>
-<message name="hello">
-<part name="parameters" element="tns:hello"/>
-</message>
-<message name="helloResponse">
-<part name="parameters" element="tns:helloResponse"/>
-</message>
 <message name="listarUsuarios">
 <part name="parameters" element="tns:listarUsuarios"/>
 </message>
@@ -28,11 +22,13 @@
 <message name="contarUsuarioResponse">
 <part name="parameters" element="tns:contarUsuarioResponse"/>
 </message>
+<message name="hello">
+<part name="parameters" element="tns:hello"/>
+</message>
+<message name="helloResponse">
+<part name="parameters" element="tns:helloResponse"/>
+</message>
 <portType name="GestionDeUsuarios">
-<operation name="hello">
-<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeUsuarios/helloRequest" message="tns:hello"/>
-<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeUsuarios/helloResponse" message="tns:helloResponse"/>
-</operation>
 <operation name="listarUsuarios">
 <input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeUsuarios/listarUsuariosRequest" message="tns:listarUsuarios"/>
 <output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeUsuarios/listarUsuariosResponse" message="tns:listarUsuariosResponse"/>
@@ -45,18 +41,13 @@
 <input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeUsuarios/contarUsuarioRequest" message="tns:contarUsuario"/>
 <output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeUsuarios/contarUsuarioResponse" message="tns:contarUsuarioResponse"/>
 </operation>
+<operation name="hello">
+<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeUsuarios/helloRequest" message="tns:hello"/>
+<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeUsuarios/helloResponse" message="tns:helloResponse"/>
+</operation>
 </portType>
 <binding name="GestionDeUsuariosPortBinding" type="tns:GestionDeUsuarios">
 <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
-<operation name="hello">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
 <operation name="listarUsuarios">
 <soap:operation soapAction=""/>
 <input>
@@ -76,6 +67,15 @@
 </output>
 </operation>
 <operation name="contarUsuario">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="hello">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>

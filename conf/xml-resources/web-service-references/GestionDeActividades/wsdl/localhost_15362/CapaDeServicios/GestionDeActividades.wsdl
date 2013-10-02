@@ -4,24 +4,6 @@
 <xsd:import namespace="http://servicios.capadeservicios.pangea.com/" schemaLocation="http://localhost:15362/CapaDeServicios/GestionDeActividades?xsd=1"/>
 </xsd:schema>
 </types>
-<message name="ConsultarActividadesCola">
-<part name="parameters" element="tns:ConsultarActividadesCola"/>
-</message>
-<message name="ConsultarActividadesColaResponse">
-<part name="parameters" element="tns:ConsultarActividadesColaResponse"/>
-</message>
-<message name="condicionesTransiciones">
-<part name="parameters" element="tns:condicionesTransiciones"/>
-</message>
-<message name="condicionesTransicionesResponse">
-<part name="parameters" element="tns:condicionesTransicionesResponse"/>
-</message>
-<message name="buscarEstados">
-<part name="parameters" element="tns:buscarEstados"/>
-</message>
-<message name="buscarEstadosResponse">
-<part name="parameters" element="tns:buscarEstadosResponse"/>
-</message>
 <message name="listarActividades">
 <part name="parameters" element="tns:listarActividades"/>
 </message>
@@ -94,11 +76,29 @@
 <message name="IngresarActividadResponse">
 <part name="parameters" element="tns:IngresarActividadResponse"/>
 </message>
+<message name="ConsultarActividadesCola">
+<part name="parameters" element="tns:ConsultarActividadesCola"/>
+</message>
+<message name="ConsultarActividadesColaResponse">
+<part name="parameters" element="tns:ConsultarActividadesColaResponse"/>
+</message>
+<message name="condicionesTransiciones">
+<part name="parameters" element="tns:condicionesTransiciones"/>
+</message>
+<message name="condicionesTransicionesResponse">
+<part name="parameters" element="tns:condicionesTransicionesResponse"/>
+</message>
 <message name="pendienteActividad">
 <part name="parameters" element="tns:pendienteActividad"/>
 </message>
 <message name="pendienteActividadResponse">
 <part name="parameters" element="tns:pendienteActividadResponse"/>
+</message>
+<message name="buscarEstados">
+<part name="parameters" element="tns:buscarEstados"/>
+</message>
+<message name="buscarEstadosResponse">
+<part name="parameters" element="tns:buscarEstadosResponse"/>
 </message>
 <message name="ConsumirCola">
 <part name="parameters" element="tns:ConsumirCola"/>
@@ -107,18 +107,6 @@
 <part name="parameters" element="tns:ConsumirColaResponse"/>
 </message>
 <portType name="GestionDeActividades">
-<operation name="ConsultarActividadesCola">
-<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeActividades/ConsultarActividadesColaRequest" message="tns:ConsultarActividadesCola"/>
-<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeActividades/ConsultarActividadesColaResponse" message="tns:ConsultarActividadesColaResponse"/>
-</operation>
-<operation name="condicionesTransiciones">
-<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeActividades/condicionesTransicionesRequest" message="tns:condicionesTransiciones"/>
-<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeActividades/condicionesTransicionesResponse" message="tns:condicionesTransicionesResponse"/>
-</operation>
-<operation name="buscarEstados">
-<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeActividades/buscarEstadosRequest" message="tns:buscarEstados"/>
-<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeActividades/buscarEstadosResponse" message="tns:buscarEstadosResponse"/>
-</operation>
 <operation name="listarActividades">
 <input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeActividades/listarActividadesRequest" message="tns:listarActividades"/>
 <output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeActividades/listarActividadesResponse" message="tns:listarActividadesResponse"/>
@@ -167,9 +155,21 @@
 <input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeActividades/IngresarActividadRequest" message="tns:IngresarActividad"/>
 <output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeActividades/IngresarActividadResponse" message="tns:IngresarActividadResponse"/>
 </operation>
+<operation name="ConsultarActividadesCola">
+<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeActividades/ConsultarActividadesColaRequest" message="tns:ConsultarActividadesCola"/>
+<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeActividades/ConsultarActividadesColaResponse" message="tns:ConsultarActividadesColaResponse"/>
+</operation>
+<operation name="condicionesTransiciones">
+<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeActividades/condicionesTransicionesRequest" message="tns:condicionesTransiciones"/>
+<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeActividades/condicionesTransicionesResponse" message="tns:condicionesTransicionesResponse"/>
+</operation>
 <operation name="pendienteActividad">
 <input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeActividades/pendienteActividadRequest" message="tns:pendienteActividad"/>
 <output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeActividades/pendienteActividadResponse" message="tns:pendienteActividadResponse"/>
+</operation>
+<operation name="buscarEstados">
+<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeActividades/buscarEstadosRequest" message="tns:buscarEstados"/>
+<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeActividades/buscarEstadosResponse" message="tns:buscarEstadosResponse"/>
 </operation>
 <operation name="ConsumirCola">
 <input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeActividades/ConsumirColaRequest" message="tns:ConsumirCola"/>
@@ -178,33 +178,6 @@
 </portType>
 <binding name="GestionDeActividadesPortBinding" type="tns:GestionDeActividades">
 <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
-<operation name="ConsultarActividadesCola">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="condicionesTransiciones">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="buscarEstados">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
 <operation name="listarActividades">
 <soap:operation soapAction=""/>
 <input>
@@ -313,7 +286,34 @@
 <soap:body use="literal"/>
 </output>
 </operation>
+<operation name="ConsultarActividadesCola">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="condicionesTransiciones">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
 <operation name="pendienteActividad">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="buscarEstados">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>

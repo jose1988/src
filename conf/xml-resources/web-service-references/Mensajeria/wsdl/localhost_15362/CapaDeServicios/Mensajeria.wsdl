@@ -4,12 +4,6 @@
 <xsd:import namespace="http://servicios.capadeservicios.pangea.com/" schemaLocation="http://localhost:15362/CapaDeServicios/Mensajeria?xsd=1"/>
 </xsd:schema>
 </types>
-<message name="ConsultarMensajesTemporalesEnviados">
-<part name="parameters" element="tns:ConsultarMensajesTemporalesEnviados"/>
-</message>
-<message name="ConsultarMensajesTemporalesEnviadosResponse">
-<part name="parameters" element="tns:ConsultarMensajesTemporalesEnviadosResponse"/>
-</message>
 <message name="ConsultarBandejas">
 <part name="parameters" element="tns:ConsultarBandejas"/>
 </message>
@@ -22,23 +16,17 @@
 <message name="ConsultarMensajeResponse">
 <part name="parameters" element="tns:ConsultarMensajeResponse"/>
 </message>
+<message name="consultarLeido">
+<part name="parameters" element="tns:consultarLeido"/>
+</message>
+<message name="consultarLeidoResponse">
+<part name="parameters" element="tns:consultarLeidoResponse"/>
+</message>
 <message name="ConsultarMensajes">
 <part name="parameters" element="tns:ConsultarMensajes"/>
 </message>
 <message name="ConsultarMensajesResponse">
 <part name="parameters" element="tns:ConsultarMensajesResponse"/>
-</message>
-<message name="ModificarBandeja">
-<part name="parameters" element="tns:ModificarBandeja"/>
-</message>
-<message name="ModificarBandejaResponse">
-<part name="parameters" element="tns:ModificarBandejaResponse"/>
-</message>
-<message name="EliminarMensaje">
-<part name="parameters" element="tns:EliminarMensaje"/>
-</message>
-<message name="EliminarMensajeResponse">
-<part name="parameters" element="tns:EliminarMensajeResponse"/>
 </message>
 <message name="EliminarBandeja">
 <part name="parameters" element="tns:EliminarBandeja"/>
@@ -46,11 +34,35 @@
 <message name="EliminarBandejaResponse">
 <part name="parameters" element="tns:EliminarBandejaResponse"/>
 </message>
+<message name="EliminarMensaje">
+<part name="parameters" element="tns:EliminarMensaje"/>
+</message>
+<message name="EliminarMensajeResponse">
+<part name="parameters" element="tns:EliminarMensajeResponse"/>
+</message>
+<message name="ModificarBandeja">
+<part name="parameters" element="tns:ModificarBandeja"/>
+</message>
+<message name="ModificarBandejaResponse">
+<part name="parameters" element="tns:ModificarBandejaResponse"/>
+</message>
 <message name="EnviarMensaje">
 <part name="parameters" element="tns:EnviarMensaje"/>
 </message>
 <message name="EnviarMensajeResponse">
 <part name="parameters" element="tns:EnviarMensajeResponse"/>
+</message>
+<message name="ConsultarMensajeTemporales">
+<part name="parameters" element="tns:ConsultarMensajeTemporales"/>
+</message>
+<message name="ConsultarMensajeTemporalesResponse">
+<part name="parameters" element="tns:ConsultarMensajeTemporalesResponse"/>
+</message>
+<message name="EliminarMensajeTemporal">
+<part name="parameters" element="tns:EliminarMensajeTemporal"/>
+</message>
+<message name="EliminarMensajeTemporalResponse">
+<part name="parameters" element="tns:EliminarMensajeTemporalResponse"/>
 </message>
 <message name="CrearBandeja">
 <part name="parameters" element="tns:CrearBandeja"/>
@@ -70,29 +82,13 @@
 <message name="EnviarPostResponse">
 <part name="parameters" element="tns:EnviarPostResponse"/>
 </message>
-<message name="ConsultarMensajeTemporales">
-<part name="parameters" element="tns:ConsultarMensajeTemporales"/>
+<message name="ConsultarMensajesTemporalesEnviados">
+<part name="parameters" element="tns:ConsultarMensajesTemporalesEnviados"/>
 </message>
-<message name="ConsultarMensajeTemporalesResponse">
-<part name="parameters" element="tns:ConsultarMensajeTemporalesResponse"/>
-</message>
-<message name="EliminarMensajeTemporal">
-<part name="parameters" element="tns:EliminarMensajeTemporal"/>
-</message>
-<message name="EliminarMensajeTemporalResponse">
-<part name="parameters" element="tns:EliminarMensajeTemporalResponse"/>
-</message>
-<message name="consultarLeido">
-<part name="parameters" element="tns:consultarLeido"/>
-</message>
-<message name="consultarLeidoResponse">
-<part name="parameters" element="tns:consultarLeidoResponse"/>
+<message name="ConsultarMensajesTemporalesEnviadosResponse">
+<part name="parameters" element="tns:ConsultarMensajesTemporalesEnviadosResponse"/>
 </message>
 <portType name="Mensajeria">
-<operation name="ConsultarMensajesTemporalesEnviados">
-<input wsam:Action="http://servicios.capadeservicios.pangea.com/Mensajeria/ConsultarMensajesTemporalesEnviadosRequest" message="tns:ConsultarMensajesTemporalesEnviados"/>
-<output wsam:Action="http://servicios.capadeservicios.pangea.com/Mensajeria/ConsultarMensajesTemporalesEnviadosResponse" message="tns:ConsultarMensajesTemporalesEnviadosResponse"/>
-</operation>
 <operation name="ConsultarBandejas">
 <input wsam:Action="http://servicios.capadeservicios.pangea.com/Mensajeria/ConsultarBandejasRequest" message="tns:ConsultarBandejas"/>
 <output wsam:Action="http://servicios.capadeservicios.pangea.com/Mensajeria/ConsultarBandejasResponse" message="tns:ConsultarBandejasResponse"/>
@@ -101,25 +97,37 @@
 <input wsam:Action="http://servicios.capadeservicios.pangea.com/Mensajeria/ConsultarMensajeRequest" message="tns:ConsultarMensaje"/>
 <output wsam:Action="http://servicios.capadeservicios.pangea.com/Mensajeria/ConsultarMensajeResponse" message="tns:ConsultarMensajeResponse"/>
 </operation>
+<operation name="consultarLeido">
+<input wsam:Action="http://servicios.capadeservicios.pangea.com/Mensajeria/consultarLeidoRequest" message="tns:consultarLeido"/>
+<output wsam:Action="http://servicios.capadeservicios.pangea.com/Mensajeria/consultarLeidoResponse" message="tns:consultarLeidoResponse"/>
+</operation>
 <operation name="ConsultarMensajes">
 <input wsam:Action="http://servicios.capadeservicios.pangea.com/Mensajeria/ConsultarMensajesRequest" message="tns:ConsultarMensajes"/>
 <output wsam:Action="http://servicios.capadeservicios.pangea.com/Mensajeria/ConsultarMensajesResponse" message="tns:ConsultarMensajesResponse"/>
-</operation>
-<operation name="ModificarBandeja">
-<input wsam:Action="http://servicios.capadeservicios.pangea.com/Mensajeria/ModificarBandejaRequest" message="tns:ModificarBandeja"/>
-<output wsam:Action="http://servicios.capadeservicios.pangea.com/Mensajeria/ModificarBandejaResponse" message="tns:ModificarBandejaResponse"/>
-</operation>
-<operation name="EliminarMensaje">
-<input wsam:Action="http://servicios.capadeservicios.pangea.com/Mensajeria/EliminarMensajeRequest" message="tns:EliminarMensaje"/>
-<output wsam:Action="http://servicios.capadeservicios.pangea.com/Mensajeria/EliminarMensajeResponse" message="tns:EliminarMensajeResponse"/>
 </operation>
 <operation name="EliminarBandeja">
 <input wsam:Action="http://servicios.capadeservicios.pangea.com/Mensajeria/EliminarBandejaRequest" message="tns:EliminarBandeja"/>
 <output wsam:Action="http://servicios.capadeservicios.pangea.com/Mensajeria/EliminarBandejaResponse" message="tns:EliminarBandejaResponse"/>
 </operation>
+<operation name="EliminarMensaje">
+<input wsam:Action="http://servicios.capadeservicios.pangea.com/Mensajeria/EliminarMensajeRequest" message="tns:EliminarMensaje"/>
+<output wsam:Action="http://servicios.capadeservicios.pangea.com/Mensajeria/EliminarMensajeResponse" message="tns:EliminarMensajeResponse"/>
+</operation>
+<operation name="ModificarBandeja">
+<input wsam:Action="http://servicios.capadeservicios.pangea.com/Mensajeria/ModificarBandejaRequest" message="tns:ModificarBandeja"/>
+<output wsam:Action="http://servicios.capadeservicios.pangea.com/Mensajeria/ModificarBandejaResponse" message="tns:ModificarBandejaResponse"/>
+</operation>
 <operation name="EnviarMensaje">
 <input wsam:Action="http://servicios.capadeservicios.pangea.com/Mensajeria/EnviarMensajeRequest" message="tns:EnviarMensaje"/>
 <output wsam:Action="http://servicios.capadeservicios.pangea.com/Mensajeria/EnviarMensajeResponse" message="tns:EnviarMensajeResponse"/>
+</operation>
+<operation name="ConsultarMensajeTemporales">
+<input wsam:Action="http://servicios.capadeservicios.pangea.com/Mensajeria/ConsultarMensajeTemporalesRequest" message="tns:ConsultarMensajeTemporales"/>
+<output wsam:Action="http://servicios.capadeservicios.pangea.com/Mensajeria/ConsultarMensajeTemporalesResponse" message="tns:ConsultarMensajeTemporalesResponse"/>
+</operation>
+<operation name="EliminarMensajeTemporal">
+<input wsam:Action="http://servicios.capadeservicios.pangea.com/Mensajeria/EliminarMensajeTemporalRequest" message="tns:EliminarMensajeTemporal"/>
+<output wsam:Action="http://servicios.capadeservicios.pangea.com/Mensajeria/EliminarMensajeTemporalResponse" message="tns:EliminarMensajeTemporalResponse"/>
 </operation>
 <operation name="CrearBandeja">
 <input wsam:Action="http://servicios.capadeservicios.pangea.com/Mensajeria/CrearBandejaRequest" message="tns:CrearBandeja"/>
@@ -133,30 +141,13 @@
 <input wsam:Action="http://servicios.capadeservicios.pangea.com/Mensajeria/EnviarPostRequest" message="tns:EnviarPost"/>
 <output wsam:Action="http://servicios.capadeservicios.pangea.com/Mensajeria/EnviarPostResponse" message="tns:EnviarPostResponse"/>
 </operation>
-<operation name="ConsultarMensajeTemporales">
-<input wsam:Action="http://servicios.capadeservicios.pangea.com/Mensajeria/ConsultarMensajeTemporalesRequest" message="tns:ConsultarMensajeTemporales"/>
-<output wsam:Action="http://servicios.capadeservicios.pangea.com/Mensajeria/ConsultarMensajeTemporalesResponse" message="tns:ConsultarMensajeTemporalesResponse"/>
-</operation>
-<operation name="EliminarMensajeTemporal">
-<input wsam:Action="http://servicios.capadeservicios.pangea.com/Mensajeria/EliminarMensajeTemporalRequest" message="tns:EliminarMensajeTemporal"/>
-<output wsam:Action="http://servicios.capadeservicios.pangea.com/Mensajeria/EliminarMensajeTemporalResponse" message="tns:EliminarMensajeTemporalResponse"/>
-</operation>
-<operation name="consultarLeido">
-<input wsam:Action="http://servicios.capadeservicios.pangea.com/Mensajeria/consultarLeidoRequest" message="tns:consultarLeido"/>
-<output wsam:Action="http://servicios.capadeservicios.pangea.com/Mensajeria/consultarLeidoResponse" message="tns:consultarLeidoResponse"/>
+<operation name="ConsultarMensajesTemporalesEnviados">
+<input wsam:Action="http://servicios.capadeservicios.pangea.com/Mensajeria/ConsultarMensajesTemporalesEnviadosRequest" message="tns:ConsultarMensajesTemporalesEnviados"/>
+<output wsam:Action="http://servicios.capadeservicios.pangea.com/Mensajeria/ConsultarMensajesTemporalesEnviadosResponse" message="tns:ConsultarMensajesTemporalesEnviadosResponse"/>
 </operation>
 </portType>
 <binding name="MensajeriaPortBinding" type="tns:Mensajeria">
 <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
-<operation name="ConsultarMensajesTemporalesEnviados">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
 <operation name="ConsultarBandejas">
 <soap:operation soapAction=""/>
 <input>
@@ -175,25 +166,16 @@
 <soap:body use="literal"/>
 </output>
 </operation>
+<operation name="consultarLeido">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
 <operation name="ConsultarMensajes">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="ModificarBandeja">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="EliminarMensaje">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>
@@ -211,7 +193,43 @@
 <soap:body use="literal"/>
 </output>
 </operation>
+<operation name="EliminarMensaje">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="ModificarBandeja">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
 <operation name="EnviarMensaje">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="ConsultarMensajeTemporales">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="EliminarMensajeTemporal">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>
@@ -247,25 +265,7 @@
 <soap:body use="literal"/>
 </output>
 </operation>
-<operation name="ConsultarMensajeTemporales">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="EliminarMensajeTemporal">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="consultarLeido">
+<operation name="ConsultarMensajesTemporalesEnviados">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>

@@ -4,24 +4,6 @@
 <xsd:import namespace="http://servicios.capadeservicios.pangea.com/" schemaLocation="http://localhost:15362/CapaDeServicios/GestionDeInstancias?xsd=1"/>
 </xsd:schema>
 </types>
-<message name="ConsultarPeriodosDisponibles">
-<part name="parameters" element="tns:ConsultarPeriodosDisponibles"/>
-</message>
-<message name="ConsultarPeriodosDisponiblesResponse">
-<part name="parameters" element="tns:ConsultarPeriodosDisponiblesResponse"/>
-</message>
-<message name="ConsultarProcesosDisponibles">
-<part name="parameters" element="tns:ConsultarProcesosDisponibles"/>
-</message>
-<message name="ConsultarProcesosDisponiblesResponse">
-<part name="parameters" element="tns:ConsultarProcesosDisponiblesResponse"/>
-</message>
-<message name="ObtenerTareasIniciales">
-<part name="parameters" element="tns:ObtenerTareasIniciales"/>
-</message>
-<message name="ObtenerTareasInicialesResponse">
-<part name="parameters" element="tns:ObtenerTareasInicialesResponse"/>
-</message>
 <message name="CerrarInstancia">
 <part name="parameters" element="tns:CerrarInstancia"/>
 </message>
@@ -46,17 +28,35 @@
 <message name="ConsultarPeriodoResponse">
 <part name="parameters" element="tns:ConsultarPeriodoResponse"/>
 </message>
+<message name="ConsultarPeriodosDisponibles">
+<part name="parameters" element="tns:ConsultarPeriodosDisponibles"/>
+</message>
+<message name="ConsultarPeriodosDisponiblesResponse">
+<part name="parameters" element="tns:ConsultarPeriodosDisponiblesResponse"/>
+</message>
 <message name="ConsultarProceso">
 <part name="parameters" element="tns:ConsultarProceso"/>
 </message>
 <message name="ConsultarProcesoResponse">
 <part name="parameters" element="tns:ConsultarProcesoResponse"/>
 </message>
+<message name="ConsultarProcesosDisponibles">
+<part name="parameters" element="tns:ConsultarProcesosDisponibles"/>
+</message>
+<message name="ConsultarProcesosDisponiblesResponse">
+<part name="parameters" element="tns:ConsultarProcesosDisponiblesResponse"/>
+</message>
 <message name="CrearInstancia">
 <part name="parameters" element="tns:CrearInstancia"/>
 </message>
 <message name="CrearInstanciaResponse">
 <part name="parameters" element="tns:CrearInstanciaResponse"/>
+</message>
+<message name="ObtenerTareasIniciales">
+<part name="parameters" element="tns:ObtenerTareasIniciales"/>
+</message>
+<message name="ObtenerTareasInicialesResponse">
+<part name="parameters" element="tns:ObtenerTareasInicialesResponse"/>
 </message>
 <message name="buscarEstados">
 <part name="parameters" element="tns:buscarEstados"/>
@@ -77,18 +77,6 @@
 <part name="parameters" element="tns:ConsultarActividadesPorInstanciaResponse"/>
 </message>
 <portType name="GestionDeInstancias">
-<operation name="ConsultarPeriodosDisponibles">
-<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeInstancias/ConsultarPeriodosDisponiblesRequest" message="tns:ConsultarPeriodosDisponibles"/>
-<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeInstancias/ConsultarPeriodosDisponiblesResponse" message="tns:ConsultarPeriodosDisponiblesResponse"/>
-</operation>
-<operation name="ConsultarProcesosDisponibles">
-<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeInstancias/ConsultarProcesosDisponiblesRequest" message="tns:ConsultarProcesosDisponibles"/>
-<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeInstancias/ConsultarProcesosDisponiblesResponse" message="tns:ConsultarProcesosDisponiblesResponse"/>
-</operation>
-<operation name="ObtenerTareasIniciales">
-<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeInstancias/ObtenerTareasInicialesRequest" message="tns:ObtenerTareasIniciales"/>
-<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeInstancias/ObtenerTareasInicialesResponse" message="tns:ObtenerTareasInicialesResponse"/>
-</operation>
 <operation name="CerrarInstancia">
 <input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeInstancias/CerrarInstanciaRequest" message="tns:CerrarInstancia"/>
 <output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeInstancias/CerrarInstanciaResponse" message="tns:CerrarInstanciaResponse"/>
@@ -105,13 +93,25 @@
 <input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeInstancias/ConsultarPeriodoRequest" message="tns:ConsultarPeriodo"/>
 <output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeInstancias/ConsultarPeriodoResponse" message="tns:ConsultarPeriodoResponse"/>
 </operation>
+<operation name="ConsultarPeriodosDisponibles">
+<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeInstancias/ConsultarPeriodosDisponiblesRequest" message="tns:ConsultarPeriodosDisponibles"/>
+<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeInstancias/ConsultarPeriodosDisponiblesResponse" message="tns:ConsultarPeriodosDisponiblesResponse"/>
+</operation>
 <operation name="ConsultarProceso">
 <input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeInstancias/ConsultarProcesoRequest" message="tns:ConsultarProceso"/>
 <output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeInstancias/ConsultarProcesoResponse" message="tns:ConsultarProcesoResponse"/>
 </operation>
+<operation name="ConsultarProcesosDisponibles">
+<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeInstancias/ConsultarProcesosDisponiblesRequest" message="tns:ConsultarProcesosDisponibles"/>
+<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeInstancias/ConsultarProcesosDisponiblesResponse" message="tns:ConsultarProcesosDisponiblesResponse"/>
+</operation>
 <operation name="CrearInstancia">
 <input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeInstancias/CrearInstanciaRequest" message="tns:CrearInstancia"/>
 <output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeInstancias/CrearInstanciaResponse" message="tns:CrearInstanciaResponse"/>
+</operation>
+<operation name="ObtenerTareasIniciales">
+<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeInstancias/ObtenerTareasInicialesRequest" message="tns:ObtenerTareasIniciales"/>
+<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeInstancias/ObtenerTareasInicialesResponse" message="tns:ObtenerTareasInicialesResponse"/>
 </operation>
 <operation name="buscarEstados">
 <input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeInstancias/buscarEstadosRequest" message="tns:buscarEstados"/>
@@ -128,33 +128,6 @@
 </portType>
 <binding name="GestionDeInstanciasPortBinding" type="tns:GestionDeInstancias">
 <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
-<operation name="ConsultarPeriodosDisponibles">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="ConsultarProcesosDisponibles">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="ObtenerTareasIniciales">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
 <operation name="CerrarInstancia">
 <soap:operation soapAction=""/>
 <input>
@@ -191,6 +164,15 @@
 <soap:body use="literal"/>
 </output>
 </operation>
+<operation name="ConsultarPeriodosDisponibles">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
 <operation name="ConsultarProceso">
 <soap:operation soapAction=""/>
 <input>
@@ -200,7 +182,25 @@
 <soap:body use="literal"/>
 </output>
 </operation>
+<operation name="ConsultarProcesosDisponibles">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
 <operation name="CrearInstancia">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="ObtenerTareasIniciales">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>

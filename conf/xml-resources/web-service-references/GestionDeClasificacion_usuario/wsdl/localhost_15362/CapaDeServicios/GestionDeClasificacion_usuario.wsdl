@@ -4,31 +4,31 @@
 <xsd:import namespace="http://servicios.capadeservicios.pangea.com/" schemaLocation="http://localhost:15362/CapaDeServicios/GestionDeClasificacion_usuario?xsd=1"/>
 </xsd:schema>
 </types>
-<message name="hello">
-<part name="parameters" element="tns:hello"/>
-</message>
-<message name="helloResponse">
-<part name="parameters" element="tns:helloResponse"/>
-</message>
 <message name="contarClasificacion_usuario">
 <part name="parameters" element="tns:contarClasificacion_usuario"/>
 </message>
 <message name="contarClasificacion_usuarioResponse">
 <part name="parameters" element="tns:contarClasificacion_usuarioResponse"/>
 </message>
+<message name="hello">
+<part name="parameters" element="tns:hello"/>
+</message>
+<message name="helloResponse">
+<part name="parameters" element="tns:helloResponse"/>
+</message>
 <portType name="GestionDeClasificacion_usuario">
-<operation name="hello">
-<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeClasificacion_usuario/helloRequest" message="tns:hello"/>
-<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeClasificacion_usuario/helloResponse" message="tns:helloResponse"/>
-</operation>
 <operation name="contarClasificacion_usuario">
 <input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeClasificacion_usuario/contarClasificacion_usuarioRequest" message="tns:contarClasificacion_usuario"/>
 <output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeClasificacion_usuario/contarClasificacion_usuarioResponse" message="tns:contarClasificacion_usuarioResponse"/>
 </operation>
+<operation name="hello">
+<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeClasificacion_usuario/helloRequest" message="tns:hello"/>
+<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeClasificacion_usuario/helloResponse" message="tns:helloResponse"/>
+</operation>
 </portType>
 <binding name="GestionDeClasificacion_usuarioPortBinding" type="tns:GestionDeClasificacion_usuario">
 <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
-<operation name="hello">
+<operation name="contarClasificacion_usuario">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>
@@ -37,7 +37,7 @@
 <soap:body use="literal"/>
 </output>
 </operation>
-<operation name="contarClasificacion_usuario">
+<operation name="hello">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>

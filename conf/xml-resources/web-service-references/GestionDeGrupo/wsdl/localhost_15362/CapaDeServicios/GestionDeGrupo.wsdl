@@ -4,17 +4,17 @@
 <xsd:import namespace="http://servicios.capadeservicios.pangea.com/" schemaLocation="http://localhost:15362/CapaDeServicios/GestionDeGrupo?xsd=1"/>
 </xsd:schema>
 </types>
-<message name="hello">
-<part name="parameters" element="tns:hello"/>
+<message name="listarRolesPorGrupo">
+<part name="parameters" element="tns:listarRolesPorGrupo"/>
 </message>
-<message name="helloResponse">
-<part name="parameters" element="tns:helloResponse"/>
+<message name="listarRolesPorGrupoResponse">
+<part name="parameters" element="tns:listarRolesPorGrupoResponse"/>
 </message>
-<message name="listarGrupos">
-<part name="parameters" element="tns:listarGrupos"/>
+<message name="listarUsuariosPorGrupoYRol">
+<part name="parameters" element="tns:listarUsuariosPorGrupoYRol"/>
 </message>
-<message name="listarGruposResponse">
-<part name="parameters" element="tns:listarGruposResponse"/>
+<message name="listarUsuariosPorGrupoYRolResponse">
+<part name="parameters" element="tns:listarUsuariosPorGrupoYRolResponse"/>
 </message>
 <message name="gruposUsuario">
 <part name="parameters" element="tns:gruposUsuario"/>
@@ -28,6 +28,18 @@
 <message name="listarUsuariosGrupoResponse">
 <part name="parameters" element="tns:listarUsuariosGrupoResponse"/>
 </message>
+<message name="listarGrupos">
+<part name="parameters" element="tns:listarGrupos"/>
+</message>
+<message name="listarGruposResponse">
+<part name="parameters" element="tns:listarGruposResponse"/>
+</message>
+<message name="hello">
+<part name="parameters" element="tns:hello"/>
+</message>
+<message name="helloResponse">
+<part name="parameters" element="tns:helloResponse"/>
+</message>
 <message name="contarGrupo">
 <part name="parameters" element="tns:contarGrupo"/>
 </message>
@@ -35,13 +47,13 @@
 <part name="parameters" element="tns:contarGrupoResponse"/>
 </message>
 <portType name="GestionDeGrupo">
-<operation name="hello">
-<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeGrupo/helloRequest" message="tns:hello"/>
-<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeGrupo/helloResponse" message="tns:helloResponse"/>
+<operation name="listarRolesPorGrupo">
+<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeGrupo/listarRolesPorGrupoRequest" message="tns:listarRolesPorGrupo"/>
+<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeGrupo/listarRolesPorGrupoResponse" message="tns:listarRolesPorGrupoResponse"/>
 </operation>
-<operation name="listarGrupos">
-<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeGrupo/listarGruposRequest" message="tns:listarGrupos"/>
-<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeGrupo/listarGruposResponse" message="tns:listarGruposResponse"/>
+<operation name="listarUsuariosPorGrupoYRol">
+<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeGrupo/listarUsuariosPorGrupoYRolRequest" message="tns:listarUsuariosPorGrupoYRol"/>
+<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeGrupo/listarUsuariosPorGrupoYRolResponse" message="tns:listarUsuariosPorGrupoYRolResponse"/>
 </operation>
 <operation name="gruposUsuario">
 <input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeGrupo/gruposUsuarioRequest" message="tns:gruposUsuario"/>
@@ -51,6 +63,14 @@
 <input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeGrupo/listarUsuariosGrupoRequest" message="tns:listarUsuariosGrupo"/>
 <output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeGrupo/listarUsuariosGrupoResponse" message="tns:listarUsuariosGrupoResponse"/>
 </operation>
+<operation name="listarGrupos">
+<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeGrupo/listarGruposRequest" message="tns:listarGrupos"/>
+<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeGrupo/listarGruposResponse" message="tns:listarGruposResponse"/>
+</operation>
+<operation name="hello">
+<input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeGrupo/helloRequest" message="tns:hello"/>
+<output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeGrupo/helloResponse" message="tns:helloResponse"/>
+</operation>
 <operation name="contarGrupo">
 <input wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeGrupo/contarGrupoRequest" message="tns:contarGrupo"/>
 <output wsam:Action="http://servicios.capadeservicios.pangea.com/GestionDeGrupo/contarGrupoResponse" message="tns:contarGrupoResponse"/>
@@ -58,7 +78,7 @@
 </portType>
 <binding name="GestionDeGrupoPortBinding" type="tns:GestionDeGrupo">
 <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
-<operation name="hello">
+<operation name="listarRolesPorGrupo">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>
@@ -67,7 +87,7 @@
 <soap:body use="literal"/>
 </output>
 </operation>
-<operation name="listarGrupos">
+<operation name="listarUsuariosPorGrupoYRol">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>
@@ -86,6 +106,24 @@
 </output>
 </operation>
 <operation name="listarUsuariosGrupo">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="listarGrupos">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="hello">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>
