@@ -364,10 +364,8 @@ public class mensajeriaController implements Serializable {
      * Método en el cual se realiza el envio del mensaje
      */
     public void Envio() {
-        usuarioLogueo = new Usuario();
-        usuarioLogueo.setId("thunder");
         Post mensaje = new Post();
-        mensaje.setDe(usuarioLogueo);
+        mensaje.setDe(idusu);
         mensaje.setPara(Para);
         mensaje.setAsunto(Asunto);
         mensaje.setTexto(Cuerpo);
