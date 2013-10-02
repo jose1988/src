@@ -12,6 +12,7 @@ import com.pangea.capadeservicios.servicios.Grupo;
 import com.pangea.capadeservicios.servicios.Sesion;
 import com.pangea.capadeservicios.servicios.UsuarioGrupoRol;
 import com.pangea.capadeservicios.servicios.WrResultado;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -28,7 +29,9 @@ import org.primefaces.event.TabChangeEvent;
  */
 @ManagedBean(name = "usuarioGrupoController")
 @SessionScoped
-public class usuarioGrupoController {
+public class usuarioGrupoController implements Serializable {
+
+    private static final long serialVersionUID = 1L;
     @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_15362/CapaDeServicios/GestionDeControlDeUsuarios.wsdl")
     private GestionDeControlDeUsuarios_Service service_1;
     @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_15362/CapaDeServicios/GestionDeUsuarios.wsdl")
@@ -94,7 +97,7 @@ public class usuarioGrupoController {
      * Objeto de tipo String en donde se guarda el id del usuario que inicio sesión
      */
     private String usuario;
-    
+    private String grupoPanel;
     
     /**
      *
@@ -287,6 +290,14 @@ public class usuarioGrupoController {
     public void setGrupos(List<Grupo> grupos) {
         this.grupos = grupos;
     }
+    
+    public String getGrupoPanel() {
+        return grupoPanel;
+    }
+
+    public void setGrupoPanel(String GrupoPanel) {
+        this.grupoPanel = GrupoPanel;
+    }
 
     /**
      * Método constructor que se incia al hacer la llamada a la página
@@ -299,6 +310,7 @@ public class usuarioGrupoController {
         grupoSeleccionado = new Grupo();
         grupos=listarGrupos();
         grupoSeleccionado = grupos.get(0);
+        grupoPanel=grupoSeleccionado.getNombre();
         grupo = new ArrayList<UsuarioGrupoRol>();
         grupo=listarUsuariosGrupo(grupoSeleccionado,false);
         
@@ -327,28 +339,29 @@ public class usuarioGrupoController {
      * @param event un TabChangeEvent que indica si se ha seleccionado
      * otro grupo de la lista
      */
-    public void onTabChange(TabChangeEvent event) {
+    public void botonActivado() {
        
-        Grupo gSeleccionado = (Grupo) event.getData();
-        grupoSeleccionado = gSeleccionado;
+       
         
         //Carga la información de la tabla usuario_grupo_rol dependiendo del grupo
-        grupo = new ArrayList<UsuarioGrupoRol>();
+      
+        
+        Grupo g = new Grupo();
+        for (int i = 0; i < grupos.size(); i++) {
+            if (grupos.get(i).getNombre().compareTo(grupoPanel) == 0) {
+                g = grupos.get(i);
+                indice = i;
+                grupoSeleccionado=g;
+            }
+        }
+          grupo = new ArrayList<UsuarioGrupoRol>();
+       
         grupo=listarUsuariosGrupo(grupoSeleccionado,false);
         grupoUsuarios=new ArrayList<UsuarioGrupoRol>();
         
         if(grupo.isEmpty()){
             grupoUsuarios=null;
         }
-        
-        Grupo g = new Grupo();
-        for (int i = 0; i < grupos.size(); i++) {
-            if (grupos.get(i).getNombre().compareTo(gSeleccionado.getNombre()) == 0) {
-                g = grupos.get(i);
-                indice = i;
-            }
-        }
-        
         int j=0;
         while(grupo.size() > j){
             grup=grupo.get(j);
