@@ -18,6 +18,7 @@ import com.pangea.capadeservicios.servicios.UsuarioGrupoRol;
 import com.pangea.capadeservicios.servicios.WrBandeja;
 import com.pangea.capadeservicios.servicios.WrPost;
 import com.pangea.capadeservicios.servicios.WrResultado;
+import java.io.Serializable;
 
 
 import java.text.SimpleDateFormat;
@@ -42,8 +43,9 @@ import org.primefaces.model.TreeNode;
  */
 @ManagedBean(name = "mensajeriaController")
 @SessionScoped
-public class mensajeriaController {
+public class mensajeriaController implements Serializable {
 
+    private static final long serialVersionUID = 1L;
     @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_15362/CapaDeServicios/GestionDeGrupo.wsdl")
     private GestionDeGrupo_Service service_2;
     @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_15362/CapaDeServicios/GestionDeControlDeUsuarios.wsdl")
@@ -357,7 +359,6 @@ public class mensajeriaController {
     public void send() {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Mail Sent!"));
     }
-
 
     /**
      * Método en el cual se realiza el envio del mensaje

@@ -268,7 +268,7 @@ public class gestionActividadesController implements Serializable {
             }
             Grupo g = new Grupo();
             for (int i = 0; i < grupos.size(); i++) {
-                if (grupos.get(i).getNombre().compareTo(grupoSeleccionado.getNombre()) == 0) {
+                if (grupos.get(i).getNombre().compareTo(GrupoPanel) == 0) {
                     g = grupos.get(i);
                     indice = i;
                 }
