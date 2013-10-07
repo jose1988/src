@@ -17,6 +17,8 @@ import com.pangea.capadeservicios.servicios.UsuarioGrupoRol;
 import com.pangea.capadeservicios.servicios.WrBandeja;
 import com.pangea.capadeservicios.servicios.WrPost;
 import com.pangea.capadeservicios.servicios.WrResultado;
+import com.pangea.capadeservicios.servicios.WrRol;
+import com.pangea.capadeservicios.servicios.WrUsuarioGrupoRol;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -69,13 +71,11 @@ public class mensajeriaController implements Serializable {
     private Sesion sesion_actual;
     private String resultado;
     private WrResultado reliminar, creando, modificando, eliminando;
-    
     /**
-     * Cadena que guarda el nombre de la bandeja que se va a crear o que se
-     * va a modificar
+     * Cadena que guarda el nombre de la bandeja que se va a crear o que se va a
+     * modificar
      */
     private String nombre;
-
     /**
      * Cadena que guarda los contactos a los cuales se les enviara el mensaje
      */
@@ -109,7 +109,7 @@ public class mensajeriaController implements Serializable {
         if (verificarLogueo()) {
             Redireccionar();
         } else {
-            
+
             mailboxes = new DefaultTreeNode("root", null);
             idusu = new Usuario();
             FacesContext fc = FacesContext.getCurrentInstance();
@@ -120,7 +120,7 @@ public class mensajeriaController implements Serializable {
             bande = consultarBandejas(idusu);
             int i = 0;
             String icono;
-            
+
             TreeNode inbox = new DefaultTreeNode("k", "Redactar Mensaje", mailboxes);
             while (bande.getBandejas().size() > i) {
                 if ("Enviados".equals(bande.getBandejas().get(i).getNombre())) {
@@ -136,7 +136,7 @@ public class mensajeriaController implements Serializable {
                 i++;
             }
             inbox = new DefaultTreeNode("k", "Crear Bandeja", mailboxes);
-            
+
             int j = 0;
             idban = new Bandeja();
             mails = new ArrayList<Post>();
@@ -145,7 +145,7 @@ public class mensajeriaController implements Serializable {
             idban = new Bandeja();
             idban.setId(bande.getBandejas().get(0).getId());
             bandej = consultarMensajes(idusu, idban);
-            
+
             while (bandej.getPosts().size() > j) {
                 mail = bandej.getPosts().get(j);
                 mails.add(mail);
@@ -157,28 +157,41 @@ public class mensajeriaController implements Serializable {
             List<Grupo> Grupos = listarGrupos();
             TreeNode nodosGrupos[] = new TreeNode[Grupos.size()];
             for (int ii = 0; ii < Grupos.size(); ii++) {
-                List< Rol> Roles = listarRolesPorGrupo(Grupos.get(ii), false);
-                TreeNode nodosRoles[] = new TreeNode[Roles.size()];
-                if (Roles.size() > 0) {
-                    nodosGrupos[ii] = new DefaultTreeNode(Grupos.get(ii).getNombre() + "@grupo", root);
-                    for (int jj = 0; jj < Roles.size(); jj++) {
-                        List< UsuarioGrupoRol> Usuarios = listarUsuariosPorGrupoYRol(Grupos.get(ii), Roles.get(jj));
-                        if (Usuarios.size() > 0) {
-                            nodosRoles[jj] = new DefaultTreeNode(Roles.get(jj).getNombre() + "@rol", nodosGrupos[ii]);
-                            TreeNode nodosUsuarios[] = new TreeNode[Usuarios.size()];
-                            for (int k = 0; k < Usuarios.size(); k++) {
-                                nodosUsuarios[k] = new DefaultTreeNode(Usuarios.get(k).getIdUsuario().getId() + "@usuario", nodosRoles[jj]);
+                WrRol resultadoRol = listarRolesPorGrupo(Grupos.get(ii), false);
+                if (resultadoRol.getEstatus().compareTo("OK") == 0) {
+                    List< Rol> Roles = resultadoRol.getRols();
+                    TreeNode nodosRoles[] = new TreeNode[Roles.size()];
+                    if (Roles.size() > 0) {
+                        nodosGrupos[ii] = new DefaultTreeNode(Grupos.get(ii).getNombre() + "@grupo", root);
+                        for (int jj = 0; jj < Roles.size(); jj++) {
+                            WrUsuarioGrupoRol resultadoLista = listarUsuariosPorGrupoYRol(Grupos.get(ii), Roles.get(jj));
+                            if (resultadoLista.getEstatus().compareTo("OK") == 0) {
+                                List< UsuarioGrupoRol> Usuarios = resultadoLista.getUsuarioGrupoRols();
+                                if (Usuarios.size() > 0) {
+                                    nodosRoles[jj] = new DefaultTreeNode(Roles.get(jj).getNombre() + "@rol", nodosGrupos[ii]);
+                                    TreeNode nodosUsuarios[] = new TreeNode[Usuarios.size()];
+                                    for (int k = 0; k < Usuarios.size(); k++) {
+                                        nodosUsuarios[k] = new DefaultTreeNode(Usuarios.get(k).getIdUsuario().getId() + "@usuario", nodosRoles[jj]);
+                                    }
+                                }
+                            } else {
+                                System.out.println("No se pudo mostrar el rol debido a que " + resultadoLista.getObservacion());
                             }
+
                         }
                     }
+                } else {
+                    System.out.println("No se pudo mostrar el usuario debido a que " + resultadoRol.getObservacion());
                 }
+
             }
         }
     }
 
     /**
-     * Método que recarga la información del arbol dependiendo del 
-     * estado que se seleccione
+     * Método que recarga la información del arbol dependiendo del estado que se
+     * seleccione
+     *
      * @param event un onNodeSelect que indica que opción se ha seleccionado
      */
     public void onNodeSelect(NodeSelectEvent event) {
@@ -194,9 +207,9 @@ public class mensajeriaController implements Serializable {
             while (bande.getBandejas().size() > y) {
                 if (bande.getBandejas().get(y).getNombre().equals(event.getTreeNode().toString())) {
                     idban.setId(bande.getBandejas().get(y).getId());
-                    crear=idban;
-                    modificar=idban;
-                    eliminar=idban;
+                    crear = idban;
+                    modificar = idban;
+                    eliminar = idban;
                 }
                 y++;
             }
@@ -355,7 +368,7 @@ public class mensajeriaController implements Serializable {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Advertencia", envoltorio.getObservacion()));
         }
     }
-    
+
     /**
      * Método llamado al seleccionar un contacto para agregarlo en el campo de
      * texto "Para"
@@ -369,161 +382,161 @@ public class mensajeriaController implements Serializable {
             Para = Para + event.getTreeNode().toString() + ";";
         }
     }
-    
-   /**
-    * Método que crea una nueva bandeja
-    */
-    public void crearBand(){
-        
+
+    /**
+     * Método que crea una nueva bandeja
+     */
+    public void crearBand() {
+
         crear.setIdUsuario(idusu);
         crear.setNombre(nombre);
-        
-        System.out.println("Nombre de la bandeja creada: "+crear.getNombre());
-        System.out.println("Nombre de la bandeja creada: "+crear.getIdUsuario().getId());
 
-        creando=crearBandeja(crear);
-        
+        System.out.println("Nombre de la bandeja creada: " + crear.getNombre());
+        System.out.println("Nombre de la bandeja creada: " + crear.getIdUsuario().getId());
+
+        creando = crearBandeja(crear);
+
         //Cargo de nuevo el árbol de bandejas
         mailboxes = new DefaultTreeNode("root", null);
-        bande=consultarBandejas(idusu);
+        bande = consultarBandejas(idusu);
         TreeNode inbox = new DefaultTreeNode("k", "Redactar Mensaje", mailboxes);
-        int i=0;
+        int i = 0;
         String icono;
-        while (bande.getBandejas().size()>i){
-            if("Enviados".equals(bande.getBandejas().get(i).getNombre())){
-                icono="s"; 
-            }else if("Papelera".equals(bande.getBandejas().get(i).getNombre())){
-                icono="t"; 
-            }else if("Recibidos".equals(bande.getBandejas().get(i).getNombre())){
-                icono="i"; 
-            }else{
-                icono="j";
+        while (bande.getBandejas().size() > i) {
+            if ("Enviados".equals(bande.getBandejas().get(i).getNombre())) {
+                icono = "s";
+            } else if ("Papelera".equals(bande.getBandejas().get(i).getNombre())) {
+                icono = "t";
+            } else if ("Recibidos".equals(bande.getBandejas().get(i).getNombre())) {
+                icono = "i";
+            } else {
+                icono = "j";
             }
             inbox = new DefaultTreeNode(icono, bande.getBandejas().get(i).getNombre(), mailboxes);
             i++;
         }
         inbox = new DefaultTreeNode("k", "Crear Bandeja", mailboxes);
-        int j=0;  
-        idban=new Bandeja();
+        int j = 0;
+        idban = new Bandeja();
         mails = new ArrayList<Post>();
         estadoSeleccionado = mailboxes.getChildren().get(1);
         mailboxes.getChildren().get(1).setSelected(true);
-        idban =new Bandeja();
+        idban = new Bandeja();
         idban.setId(bande.getBandejas().get(0).getId());
-        bandej=consultarMensajes(idusu, idban);
-        
-        while (bandej.getPosts().size()>j){
-            mail=bandej.getPosts().get(j);
+        bandej = consultarMensajes(idusu, idban);
+
+        while (bandej.getPosts().size() > j) {
+            mail = bandej.getPosts().get(j);
             mails.add(mail);
             j++;
         }
-        
+
         Redireccionando();
     }
-   
-   /**
-    * Método que modifica el nombre de la bandeja seleccionada
-    */
-    public void modificarBand(){
-        
+
+    /**
+     * Método que modifica el nombre de la bandeja seleccionada
+     */
+    public void modificarBand() {
+
         modificar.setNombre(nombre);
-        
-        System.out.println("Id de bandeja: "+modificar.getId());
-        System.out.println("Nombre nuevo de bandeja: "+modificar.getNombre());
-        
-        modificando=modificarBandeja(modificar, idusu);
-        
+
+        System.out.println("Id de bandeja: " + modificar.getId());
+        System.out.println("Nombre nuevo de bandeja: " + modificar.getNombre());
+
+        modificando = modificarBandeja(modificar, idusu);
+
         //Cargo de nuevo el árbol de bandejas
         mailboxes = new DefaultTreeNode("root", null);
-        bande=consultarBandejas(idusu);
+        bande = consultarBandejas(idusu);
         TreeNode inbox = new DefaultTreeNode("k", "Redactar Mensaje", mailboxes);
-        int i=0;
+        int i = 0;
         String icono;
-        while (bande.getBandejas().size()>i){
-            if("Enviados".equals(bande.getBandejas().get(i).getNombre())){
-                icono="s"; 
-            }else if("Papelera".equals(bande.getBandejas().get(i).getNombre())){
-                icono="t"; 
-            }else if("Recibidos".equals(bande.getBandejas().get(i).getNombre())){
-                icono="i"; 
-            }else{
-                icono="j";
+        while (bande.getBandejas().size() > i) {
+            if ("Enviados".equals(bande.getBandejas().get(i).getNombre())) {
+                icono = "s";
+            } else if ("Papelera".equals(bande.getBandejas().get(i).getNombre())) {
+                icono = "t";
+            } else if ("Recibidos".equals(bande.getBandejas().get(i).getNombre())) {
+                icono = "i";
+            } else {
+                icono = "j";
             }
             inbox = new DefaultTreeNode(icono, bande.getBandejas().get(i).getNombre(), mailboxes);
             i++;
         }
         inbox = new DefaultTreeNode("k", "Crear Bandeja", mailboxes);
-        int j=0;  
-        idban=new Bandeja();
+        int j = 0;
+        idban = new Bandeja();
         mails = new ArrayList<Post>();
         estadoSeleccionado = mailboxes.getChildren().get(1);
         mailboxes.getChildren().get(1).setSelected(true);
-        idban =new Bandeja();
+        idban = new Bandeja();
         idban.setId(bande.getBandejas().get(0).getId());
-        bandej=consultarMensajes(idusu, idban);
-        
-        while (bandej.getPosts().size()>j){
-            mail=bandej.getPosts().get(j);
+        bandej = consultarMensajes(idusu, idban);
+
+        while (bandej.getPosts().size() > j) {
+            mail = bandej.getPosts().get(j);
             mails.add(mail);
             j++;
         }
-        
-        Redireccionando();   
+
+        Redireccionando();
     }
-   
-   /**
+
+    /**
      * Método que elimina la bandeja seleccionada
      */
-    public void eliminarBand(){
-        
-        System.out.println("Id de bandeja: "+eliminar.getId());
-        
-        eliminando=eliminarBandeja(eliminar);
-        
+    public void eliminarBand() {
+
+        System.out.println("Id de bandeja: " + eliminar.getId());
+
+        eliminando = eliminarBandeja(eliminar);
+
         //Cargo de nuevo el árbol de bandejas
         mailboxes = new DefaultTreeNode("root", null);
-        bande=consultarBandejas(idusu);
+        bande = consultarBandejas(idusu);
         TreeNode inbox = new DefaultTreeNode("k", "Redactar Mensaje", mailboxes);
-        int i=0;
+        int i = 0;
         String icono;
-        while (bande.getBandejas().size()>i){
-            if("Enviados".equals(bande.getBandejas().get(i).getNombre())){
-                icono="s"; 
-            }else if("Papelera".equals(bande.getBandejas().get(i).getNombre())){
-                icono="t"; 
-            }else if("Recibidos".equals(bande.getBandejas().get(i).getNombre())){
-                icono="i"; 
-            }else{
-                icono="j";
+        while (bande.getBandejas().size() > i) {
+            if ("Enviados".equals(bande.getBandejas().get(i).getNombre())) {
+                icono = "s";
+            } else if ("Papelera".equals(bande.getBandejas().get(i).getNombre())) {
+                icono = "t";
+            } else if ("Recibidos".equals(bande.getBandejas().get(i).getNombre())) {
+                icono = "i";
+            } else {
+                icono = "j";
             }
             inbox = new DefaultTreeNode(icono, bande.getBandejas().get(i).getNombre(), mailboxes);
             i++;
         }
         inbox = new DefaultTreeNode("k", "Crear Bandeja", mailboxes);
-        int j=0;  
-        idban=new Bandeja();
+        int j = 0;
+        idban = new Bandeja();
         mails = new ArrayList<Post>();
         estadoSeleccionado = mailboxes.getChildren().get(1);
         mailboxes.getChildren().get(1).setSelected(true);
-        idban =new Bandeja();
+        idban = new Bandeja();
         idban.setId(bande.getBandejas().get(0).getId());
-        bandej=consultarMensajes(idusu, idban);
-        
-        while (bandej.getPosts().size()>j){
-            mail=bandej.getPosts().get(j);
+        bandej = consultarMensajes(idusu, idban);
+
+        while (bandej.getPosts().size() > j) {
+            mail = bandej.getPosts().get(j);
             mails.add(mail);
             j++;
         }
-        
+
         Redireccionando();
-        
+
     }
-   
-     /**
+
+    /**
      * Método que redirecciona a la página mensajeria.xhtml
      */
     public void Redireccionando() {
-        this.nombre="";
+        this.nombre = "";
         try {
             FacesContext contex = FacesContext.getCurrentInstance();
             contex.getExternalContext().redirect("/PangeaFlowProyecto/faces/mensajeria.xhtml");
@@ -603,7 +616,7 @@ public class mensajeriaController implements Serializable {
     public void setSelectedNode(TreeNode selectedNode) {
         this.selectedNode = selectedNode;
     }
-    
+
     /**
      *
      * @return
@@ -716,7 +729,7 @@ public class mensajeriaController implements Serializable {
     public void setMails(List<Post> mails) {
         this.mails = mails;
     }
-    
+
     /**
      *
      * @return
@@ -732,9 +745,8 @@ public class mensajeriaController implements Serializable {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    
-//Servicios usados de la capa de servicios
 
+//Servicios usados de la capa de servicios
     private WrResultado enviarPost(com.pangea.capadeservicios.servicios.Post mensajeActual) {
         com.pangea.capadeservicios.servicios.Mensajeria port = service.getMensajeriaPort();
         return port.enviarPost(mensajeActual);
@@ -789,16 +801,6 @@ public class mensajeriaController implements Serializable {
         return port.eliminarMensaje(mensajeActual, usuarioActual);
     }
 
-    private java.util.List<com.pangea.capadeservicios.servicios.UsuarioGrupoRol> listarUsuariosPorGrupoYRol(com.pangea.capadeservicios.servicios.Grupo grupousuarios, com.pangea.capadeservicios.servicios.Rol roles) {
-        com.pangea.capadeservicios.servicios.GestionDeGrupo port = service_2.getGestionDeGrupoPort();
-        return port.listarUsuariosPorGrupoYRol(grupousuarios, roles);
-    }
-
-    private java.util.List<com.pangea.capadeservicios.servicios.Rol> listarRolesPorGrupo(com.pangea.capadeservicios.servicios.Grupo grupousuarios, boolean borrado) {
-        com.pangea.capadeservicios.servicios.GestionDeGrupo port = service_2.getGestionDeGrupoPort();
-        return port.listarRolesPorGrupo(grupousuarios, borrado);
-    }
-
     private java.util.List<com.pangea.capadeservicios.servicios.Grupo> listarGrupos() {
         com.pangea.capadeservicios.servicios.GestionDeGrupo port = service_2.getGestionDeGrupoPort();
         return port.listarGrupos();
@@ -821,5 +823,14 @@ public class mensajeriaController implements Serializable {
         com.pangea.capadeservicios.servicios.Mensajeria port = service.getMensajeriaPort();
         return port.eliminarBandeja(bandejaActual);
     }
-    
+
+    private WrRol listarRolesPorGrupo(com.pangea.capadeservicios.servicios.Grupo grupousuarios, boolean borrado) {
+        com.pangea.capadeservicios.servicios.GestionDeGrupo port = service_2.getGestionDeGrupoPort();
+        return port.listarRolesPorGrupo(grupousuarios, borrado);
+    }
+
+    private WrUsuarioGrupoRol listarUsuariosPorGrupoYRol(com.pangea.capadeservicios.servicios.Grupo grupousuarios, com.pangea.capadeservicios.servicios.Rol roles) {
+        com.pangea.capadeservicios.servicios.GestionDeGrupo port = service_2.getGestionDeGrupoPort();
+        return port.listarUsuariosPorGrupoYRol(grupousuarios, roles);
+    }
 }

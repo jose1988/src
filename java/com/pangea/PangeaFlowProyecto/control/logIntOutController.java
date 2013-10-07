@@ -4,7 +4,6 @@ import com.pangea.capadeservicios.servicios.GestionDeControlDeUsuarios_Service;
 import com.pangea.capadeservicios.servicios.GestionDeUsuarios_Service;
 import com.pangea.capadeservicios.servicios.Sesion;
 import com.pangea.capadeservicios.servicios.Usuario;
-import com.pangea.capadeservicios.servicios.WrResultado;
 import com.pangea.capadeservicios.servicios.WrSesion;
 import java.io.Serializable;
 import java.net.InetAddress;
